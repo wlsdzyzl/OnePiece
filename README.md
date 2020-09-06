@@ -4,7 +4,7 @@ Fucking Cool Library.
 
 RGB-D based 3D vision library, you can easily use FCLib to build a SLAM system and extract a 3D model.
 
-![](./index.gif)
+![](./fba_fusion.gif)
 
 Click [documentation](http://wlsdzyzl.top/FCLib.github.io/) for more information.
 
