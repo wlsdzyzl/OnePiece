@@ -1,6 +1,12 @@
 ## FCLib
 
-Fucking Cool Library. Click [documentation](http://wlsdzyzl.top/FCLib.github.io/) for more information.
+Fucking Cool Library. 
+
+RGB-D based 3D vision library, you can easily use FCLib to build a SLAM system and extract a 3D model.
+
+![](https://wlsdzyzl.top/FCLib.github.io/img/index.gif)
+
+Click [documentation](http://wlsdzyzl.top/FCLib.github.io/) for more information.
 
 Watch some demos [here](http://wlsdzyzl.top/FCLib.github.io/examples).
 
