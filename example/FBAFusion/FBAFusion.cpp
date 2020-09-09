@@ -74,7 +74,7 @@ int main(int argc, char **argv)
     {
         // int keyframe_id = fba_slam.keyframe_ids[i];
         if(!fba_slam.global_frames[i].tracking_success) continue;
-        if(i % 8 == 0)
+        if(i % 1 == 0)
         {
 
             cv::Mat refined_depth;
@@ -95,7 +95,7 @@ int main(int argc, char **argv)
     cube_handler.ExtractTriangleMesh(mesh);
     auto c_mesh = mesh.ClusteringSimplify(voxel_resolution);
     c_mesh->WriteToPLY("./fbafusion_generated_mesh.ply");
-    //visualizer.DrawPhongRendering();
+    visualizer.DrawPhongRendering();
     visualizer.AddTriangleMesh(*c_mesh);
     //visualizer.AddPointCloud(*tsdf_pcd);
     visualizer.Show();  
