@@ -18,6 +18,7 @@ namespace tool
     void LinearTransform( cv::Mat &source, float scale, float offset);
     void BilateralFilter(const cv::Mat &source, cv::Mat &target, int range = 7);
     void ConvertDepthTo32F(const cv::Mat &depth, cv::Mat &refined_depth, float depth_scale);
+
 };
 }
 #endif 

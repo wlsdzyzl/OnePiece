@@ -151,6 +151,7 @@ add_executable(MergeMultipleSubmaps "example/MergeMultipleSubmaps.cpp")
 add_executable(RansacTest "example/RansacTest.cpp")
 add_executable(ICPTest "example/ICPTest.cpp")
 add_executable(BATest "example/BATest.cpp")
+add_executable(GenerateIncompleteModelFromScannet "example/GenerateIncompleteModelFromScannet.cpp")
 add_executable(FBAFusion ${FBAFusion_SRC})
 add_executable(BAFusion ${BAFusion_SRC})
 add_executable(DenseFusion ${DenseFusion_SRC})
@@ -391,6 +392,17 @@ target_link_libraries(ICPTest
 	${GLUT_LIBRARY}
 )
 target_link_libraries(BATest
+    fucking_cool
+    rply
+    objloader
+    mild
+    ${OpenCV_LIBS} 
+    ${Eigen_LIBRARIES}
+    ${Pangolin_LIBRARIES}
+    ${OPENGL_LIBRARIES} 
+	${GLUT_LIBRARY}
+)
+target_link_libraries(GenerateIncompleteModelFromScannet
     fucking_cool
     rply
     objloader

@@ -140,7 +140,7 @@ namespace odometry
         timer.TOCK("bf matcher");
         timer.LogAll();
 
-        
+        outlier_filter.RemoveInvalidMatches(source_local_points, target_local_points, matches);
         //outlier_filter.KnnMatch(source_descriptors,target_descriptors,bf_matcher,matches);
         //use RANSAC or other algorithms for outlier filter.
         //outlier_filter.MinDistance(source_keypoints,target_keypoints,matches);
@@ -212,6 +212,8 @@ namespace odometry
         GetLocalPointsFromKeyPoints(source_depth, source_keypoints,source_local_points);
         GetLocalPointsFromKeyPoints(target_depth, target_keypoints,target_local_points);
         sparse_matcher.Match(source_descriptors, target_descriptors, matches);
+
+        outlier_filter.RemoveInvalidMatches(source_local_points, target_local_points, matches);
 
         outlier_filter.RanSaPC(source_local_points,target_local_points,engine,matches);
         outlier_filter.RanSaPC(source_local_points,target_local_points,engine,matches);
@@ -301,7 +303,7 @@ namespace odometry
         //bf_matcher.match(source_descriptors,target_descriptors,matches);
         timer.TOCK("bf matcher");
         timer.LogAll();
-
+        outlier_filter.RemoveInvalidMatches(source_local_points, target_local_points, matches);
         
         //outlier_filter.KnnMatch(source_descriptors,target_descriptors,bf_matcher,matches);
         //use RANSAC or other algorithms for outlier filter.
@@ -393,6 +395,8 @@ namespace odometry
 
         sparse_matcher.Match(source_descriptors, target_descriptors, matches);
 
+        outlier_filter.RemoveInvalidMatches(source_local_points, target_local_points, matches);
+
         outlier_filter.RanSaPC(source_local_points,target_local_points,engine,matches);
         outlier_filter.RanSaPC(source_local_points,target_local_points,engine,matches);
         outlier_filter.RanSaPC(source_local_points,target_local_points,engine,matches);
@@ -452,7 +456,7 @@ namespace odometry
         source_XYZ.resize(pyramid_cameras.size());
         for(int i = 0; i != pyramid_cameras.size(); ++i)
         {
-            TransformToMatXYZ(depth_pyramid[i], pyramid_cameras[i], source_XYZ[i]);
+            geometry::TransformToMatXYZ(depth_pyramid[i], pyramid_cameras[i], source_XYZ[i]);
         }
     }
     

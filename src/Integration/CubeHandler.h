@@ -335,7 +335,16 @@ namespace integration
             //we can add garbage collection
             return after_trans;
         }      
-         
+        CubeMap GetCubeMap()
+        {
+            
+            return cube_map;
+        }
+        void SetCubeMap(const CubeMap & _cube_map)
+        {
+            std::cout<<YELLOW<<"[WARNING]::[SetCubeMap]::Note that you are changing the hashing map directly."<<RESET<<std::endl;
+            cube_map = _cube_map;
+        }
         void CollectGarbage();
         protected:
         CubeMap cube_map;

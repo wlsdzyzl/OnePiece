@@ -10,6 +10,22 @@ namespace odometry
     class OutlierFilter
     {
         public:
+        // remove the matches who has one point out the frustum
+        void RemoveInvalidMatches(const geometry::Point3List &source_local_points, 
+            const geometry::Point3List &target_local_points, std::vector< cv::DMatch > &init_matches)
+        {
+            int ptr = 0;
+            for(int i = 0; i < init_matches.size(); ++i)
+            {
+                auto source = source_local_points[init_matches[i].queryIdx];
+                auto target = target_local_points[init_matches[i].trainIdx];
+                if(source(2) < MIN_DEPTH || target(2) < MIN_DEPTH || source(2) > MAX_DEPTH || target(2) > MAX_DEPTH)
+                continue;
+                init_matches[ptr] = init_matches[i];
+                ptr ++;
+            }
+            init_matches.resize(ptr);
+        }
         void MinDistance(const geometry::KeyPointSet &source_keypoints, const geometry::KeyPointSet &target_keypoints,geometry::DMatchSet & matches)
         {
             /*the most naive way*/

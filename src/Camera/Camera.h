@@ -61,7 +61,7 @@ namespace camera
         float GetWidth() const {return width;}
         float GetHeight() const {return height;}
         float GetDepthScale() const {return depth_scale;}
-        void SetPara(float _fx, float _fy, float _cx, float _cy, int _width, int _height, float _depth_scale, float *_distortion = nullptr)
+        void SetPara(float _fx, float _fy, float _cx, float _cy, int _width, int _height, float _depth_scale = -1, float *_distortion = nullptr)
         {
             fx = _fx;
             fy = _fy;

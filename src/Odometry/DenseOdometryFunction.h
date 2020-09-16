@@ -17,7 +17,6 @@ namespace odometry
     void ComputeCorrespondencePixelWise(const cv::Mat &source, const cv::Mat &target, const camera::PinholeCamera &camera,
         const geometry::TransformationMatrix & relative_pose, geometry::PixelCorrespondenceSet &correspondences);
 
-    void TransformToMatXYZ(const cv::Mat &image, const camera::PinholeCamera &camera, geometry::ImageXYZ &imageXYZ);
 
     void ComputeJacobianHybridTerm(
         int row,std::vector<geometry::Se3> &J, std::vector<float> &residual, 

@@ -19,6 +19,12 @@
 
 namespace fucking_cool 
 {
+// if you want to use a class A which has been used in current class B
+// just declare the class A at current B.h file, and import the A.h file in B.cpp 
+namespace camera
+{
+    class PinholeCamera;
+}
 namespace geometry { 
     typedef float scalar;
     typedef Eigen::Matrix<scalar, 2, 1> Vector2;
@@ -59,6 +65,7 @@ namespace geometry {
     typedef std::vector<Matrix4, Eigen::aligned_allocator<Matrix4> > Mat4List;
 
     typedef std::vector<Point3List> ImageXYZ;
+    void TransformToMatXYZ(const cv::Mat &image, const camera::PinholeCamera &camera, geometry::ImageXYZ &imageXYZ);
     //lie group and lie algebra
     //SE3 and se3
     typedef Vector6 Se3;

@@ -84,7 +84,10 @@ namespace tool
             }
         }
         else
-        std::cout <<RED<< "[ImageProcessing]::[ERROR]::Unknown depth image type."<<RESET<<std::endl;
+        {
+            std::cout <<RED<< "[ImageProcessing]::[ERROR]::Unknown depth image type: "<<depth.depth()<<RESET<<std::endl;
+            exit(1);
+        }
     }
 }
 }
