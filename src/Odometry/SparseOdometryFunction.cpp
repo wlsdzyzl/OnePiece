@@ -56,8 +56,6 @@ namespace odometry
     float ReprojectionError3D(const geometry::TransformationMatrix &T, const geometry::Point3 &source, 
         const geometry::Point3 &target)
     {
-        if(source(2) < MIN_DEPTH || target(2) < MIN_DEPTH || source(2) > MAX_DEPTH || target(2) > MAX_DEPTH)
-        return 1e6;
         const geometry::Point3 predict_target = (T * geometry::Vector4(source(0),source(1),source(2),1)).head<3>();
         return (predict_target - target).norm()/source(2);
     }

@@ -95,7 +95,7 @@ namespace odometry
             feature_number = _feature_number;
         }
 
-        //void FilterOutliersUsing3DPoints(const geometry:)
+        
         void SetMultiScale(int layer_count)
         {
             multi_scale_level = layer_count;

@@ -1,4 +1,5 @@
 #include "Geometry.h"
+#include "Camera/Camera.h"
 #include <random>
 namespace fucking_cool
 {
@@ -24,6 +25,7 @@ namespace geometry
             point = new_point.head<3>() / new_point(3);
         }
     }
+
     Point3 TransformPoint(const Matrix4 &T, const Point3 &point)
     {
             Vector4 new_point =
@@ -65,6 +67,42 @@ namespace geometry
                 T *Vector4(normal(0), normal(1), normal(2), 0.0);
             normal = new_normal.head<3>();
         }
+    }
+    //transform a depth32f image into xyz image
+    void TransformToMatXYZ(const cv::Mat &image, const camera::PinholeCamera &camera, geometry::ImageXYZ &imageXYZ)
+    {
+
+        int width = image.cols;
+        int height = image.rows;
+        imageXYZ.clear();
+        if(image.depth() != CV_32FC1)
+        {
+            std::cout<<RED<<"[ERROR]::[TransformToMatXYZ] Only supports CV_32FC1. Please do the conversion."<<RESET<<std::endl;
+            return;
+        }
+        imageXYZ.resize(height);
+        float fx = camera.GetFx(), fy = camera.GetFy(), cx = camera.GetCx(), cy = camera.GetCy();
+        for(int i = 0;i!= height; ++i)
+        {
+            imageXYZ[i].resize(width);
+            for(int j = 0; j!=width; ++j)
+            {
+                float  z;
+                z = image.at<float>(i, j) ;
+                if (z > 0) 
+                {
+                    float x = (j - cx) * z / fx;
+                    float y =
+                            (i - cy) * z / fy;
+
+                    imageXYZ[i][j] = geometry::Point3(x,y,z);
+                }
+                else imageXYZ[i][j] =geometry::Point3(-1,-1,-1);
+            }
+        }
+        //geometry::PointCloud pcd;
+        //pcd.LoadFromXYZ(imageXYZ);
+        //pcd.WriteToPLY("FUCKFUCK.ply");
     }
     TransformationMatrix EstimateRigidTransformation(const  PointCorrespondenceSet & correspondence_set)
     {

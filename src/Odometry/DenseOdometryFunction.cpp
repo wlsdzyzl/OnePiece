@@ -49,7 +49,10 @@ namespace odometry
         }
     }
     else
-    std::cout <<RED<< "[DenseOdometry]::[ERROR]::Unknown depth image type."<<RESET<<std::endl;
+    {
+        std::cout <<RED<< "[ImageProcessing]::[ERROR]::Unknown depth image type: "<<depth.depth()<<RESET<<std::endl;
+        exit(1);
+    }
     //tool::PrintMat(refined_depth);
     }
 
@@ -139,35 +142,7 @@ namespace odometry
         tool::LinearTransform(source, 0.5 / mean_s, 0.0);
         tool::LinearTransform(target, 0.5 / mean_t, 0.0);
     }
-    void TransformToMatXYZ(const cv::Mat &image, const camera::PinholeCamera &camera, geometry::ImageXYZ &imageXYZ)
-    {
 
-        int width = image.cols;
-        int height = image.rows;
-        imageXYZ.resize(height);
-        float fx = camera.GetFx(), fy = camera.GetFy(), cx = camera.GetCx(), cy = camera.GetCy();
-        for(int i = 0;i!= height; ++i)
-        {
-            imageXYZ[i].resize(width);
-            for(int j = 0; j!=width; ++j)
-            {
-                float  z;
-                z = image.at<float>(i, j) ;
-                if (z > 0) 
-                {
-                    float x = (j - cx) * z / fx;
-                    float y =
-                            (i - cy) * z / fy;
-
-                    imageXYZ[i][j] = geometry::Point3(x,y,z);
-                }
-                else imageXYZ[i][j] =geometry::Point3(-1,-1,-1);
-            }
-        }
-        //geometry::PointCloud pcd;
-        //pcd.LoadFromXYZ(imageXYZ);
-        //pcd.WriteToPLY("FUCKFUCK.ply");
-    }
     void ComputeJacobianPhotoTerm(
         int row,std::vector<geometry::Se3> &J, std::vector<float> &residual, 
         const cv::Mat &source_color, const cv::Mat & source_depth, 
