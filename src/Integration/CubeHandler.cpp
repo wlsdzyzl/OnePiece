@@ -84,7 +84,7 @@ namespace integration
                     Eigen::Vector3i cube_offset =  c_para.NeighborCubeIDOffset[index];
                     //std::cout<<"CUBE OFFSET: "<<index<<std::endl;
                     bool all_neighbors_observed = true;
-                    for( int i = 0;i!= 8; ++i)
+                    for( int i = 0; i!= 8; ++i)
                     {
                         Eigen::Vector3i xyz_offset = c_para.CornerXYZOffset.block<3,1>(0,i);
                         Eigen::Vector3i neighbor_cube_id = cube_id +Eigen::Vector3i( xyz_offset(0) & cube_offset(0), xyz_offset(1) & cube_offset(1), xyz_offset(2)&cube_offset(2));
@@ -97,7 +97,8 @@ namespace integration
                         }
                         corner_voxel[i] = cube_map[neighbor_cube_id].GetOrigin(c_para) + c_para.VoxelCentroidOffSet[neighbor_voxel_id]; 
                         corner_tsdf[i] = cube_map[neighbor_cube_id].voxels[neighbor_voxel_id];
-                        if(corner_tsdf[i].sdf >= 1) 
+                        //sdf value is large than 1
+                        if(!corner_tsdf[i].IsValid()) 
                         {
                             all_neighbors_observed = false;
                             break;

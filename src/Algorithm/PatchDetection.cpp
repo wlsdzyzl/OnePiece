@@ -1,4 +1,5 @@
 #include "PatchDetection.h"
+#include "Geometry/KDTree.h"
 #include <algorithm>
 #include <queue>
 namespace fucking_cool
@@ -46,27 +47,23 @@ namespace algorithm
         std::vector<double> residuals(points.size());      
         std::set<int> un_visited;
         std::vector<std::vector<int>> adj_points(points.size());
-        std::vector<cv::Point2f> cv_pcd;
-
         for(int i = 0; i < points.size(); ++i)
         {
-            cv_pcd.push_back(cv::Point2f(points[i](0), points[i](1)));
-
             un_visited.insert(i);
         } 
-        cv::flann::KDTreeIndexParams indexParams; 
-        cv::flann::Index kdtree(cv::Mat(cv_pcd).reshape(1), indexParams);
-
-
+        // cv::flann::KDTreeIndexParams indexParams; 
+        // cv::flann::Index kdtree(cv::Mat(cv_pcd).reshape(1), indexParams);
+        geometry::KDTree<2> kdtree;
+        kdtree.BuildTree(points);
 #if 0 
         int k = 100;
         std::cout<<BLUE<<"[EstimateNormals]::[INFO]::Search "<<k<<" nearest points."<<RESET<<std::endl;
-        for(int i = 0; i < cv_pcd.size(); ++i)
+        for(int i = 0; i < points.size(); ++i)
         {
-            std::vector<float> query={points[i](0), points[i](1)};
-            std::vector<int> indices(k); 
-            std::vector<float> dists(k); 
-            kdtree.knnSearch(query, indices, dists,k,cv::flann::SearchParams(64));
+            
+            std::vector<int> indices; 
+            std::vector<float> dists; 
+            kdtree.KnnSearch(points[i], indices, dists, k, geometry::SearchParameter(64));
 
             geometry::Point2List nearest_points;
             for(int j = 0; j!= indices.size();++j)
@@ -84,23 +81,22 @@ namespace algorithm
         }
 #else 
         float radius = 0.1;
-        float squared_radius = radius * radius;
+        
         std::cout<<BLUE<<"[LineDetection]::[INFO]::radius: "<<radius<<RESET<<std::endl;
-        for(int i = 0; i < cv_pcd.size(); ++i)
+        for(int i = 0; i < points.size(); ++i)
         {
-            std::vector<float> query={points[i](0), points[i](1)};
+            
             std::vector<int> indices; 
             std::vector<float> dists; 
-            int points_num = kdtree.radiusSearch(query, indices, dists,squared_radius ,1024 ,cv::flann::SearchParams(1024));
+            kdtree.RadiusSearch(points[i], indices, dists, radius ,1024 ,geometry::SearchParameter(1024));
 
             geometry::Point2List radius_points;
-            for(int j = 0; j!= points_num;++j)
+            for(int j = 0; j!= indices.size();++j)
             {
                 radius_points.push_back(points[indices[j]]);
-                //std::cout <<indices[j]<<" "<<std::endl;
             }
             adj_points[i] = indices;
-            //std::cout <<std::endl;
+
             auto result = geometry::FitLine(radius_points);
 
             
@@ -244,37 +240,35 @@ namespace algorithm
         std::vector<double> residuals(points.size());      
         std::vector<std::vector<int>> adj_points(points.size());
         std::set<int> un_visited;
-        std::vector<cv::Point3f> cv_pcd;
         for(int i = 0; i < points.size(); ++i)
         {
-            cv_pcd.push_back(cv::Point3f(points[i](0), points[i](1), points[i](2)));
+
             un_visited.insert(i);
         } 
-        cv::flann::KDTreeIndexParams indexParams; 
-        cv::flann::Index kdtree(cv::Mat(cv_pcd).reshape(1), indexParams);
+        // cv::flann::KDTreeIndexParams indexParams; 
+        // cv::flann::Index kdtree(cv::Mat(cv_pcd).reshape(1), indexParams);
+        geometry::KDTree<> kdtree;
+        kdtree.BuildTree(points);
         //int k = 100;
         float radius = 0.3;
-        float squared_radius = radius * radius;
         std::cout<<BLUE<<"[PlaneDetection]::[INFO]::Search "<<radius<<RESET<<std::endl;
-        for(int i = 0; i < cv_pcd.size(); ++i)
+        for(int i = 0; i < points.size(); ++i)
         {
-            std::vector<float> query={points[i](0), points[i](1), points[i](2)};
             std::vector<int> indices; 
             std::vector<float> dists; 
-            int points_num = kdtree.radiusSearch(query, indices, dists,squared_radius ,1024 ,cv::flann::SearchParams(1024));
+            kdtree.RadiusSearch(points[i], indices, dists, radius ,1024 ,geometry::SearchParameter(1024));
 
             geometry::Point3List radius_points;
-            for(int j = 0; j!= points_num;++j)
+            for(int j = 0; j!= indices.size();++j)
             {
                 radius_points.push_back(points[indices[j]]);
                 //std::cout <<indices[j]<<" "<<std::endl;
             }
-            indices.resize(points_num);
+            
             adj_points[i] = indices;
-            //std::cout <<std::endl;
-            //std::cout<<points_num<<std::endl;
+
             auto result = geometry::FitPlane(radius_points);
-            //std::cout<<points_num<<std::endl;
+
             
             residuals[i] = std::get<2>(result);
             int remain_iter_times = 2;

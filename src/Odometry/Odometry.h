@@ -43,7 +43,8 @@ namespace odometry
         Odometry()
         {
             feature_extractor = cv::ORB::create();
-            engine.seed(time(0));
+            std::random_device rd;
+            engine.seed(rd());
             bf_matcher = cv::BFMatcher(cv::NORM_HAMMING,true);
         }
 
@@ -51,7 +52,8 @@ namespace odometry
         {
             feature_extractor = cv::ORB::create();
             camera = _camera;
-            engine.seed(time(0));
+            std::random_device rd;
+            engine.seed(rd());
         }
 
 

@@ -125,7 +125,7 @@ add_library(fucking_cool SHARED ${Geometry_SRC}  ${GRANSAC_SRC}
     ${Visualization_SRC} ${Odometry_SRC} ${Tool_SRC} ${LCDetection_SRC}  
     ${Integration_SRC} ${Algorithm_SRC} ${Registration_SRC} ${Optimization_SRC})
 
-set(CMAKE_CXX_FLAGS " -std=c++11")
+set(CMAKE_CXX_FLAGS " -std=c++11 ")
 set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -O0 -g -msse4.2 -Wno-deprecated-declarations -fopenmp") 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
@@ -151,7 +151,8 @@ add_executable(MergeMultipleSubmaps "example/MergeMultipleSubmaps.cpp")
 add_executable(RansacTest "example/RansacTest.cpp")
 add_executable(ICPTest "example/ICPTest.cpp")
 add_executable(BATest "example/BATest.cpp")
-add_executable(GenerateIncompleteModelFromScannet "example/GenerateIncompleteModelFromScannet.cpp")
+add_executable(GenerateModelFromScannet "example/GenerateModelFromScannet.cpp")
+add_executable(GetLabelUsingKDTree "example/GetLabelUsingKDTree.cpp")
 add_executable(FBAFusion ${FBAFusion_SRC})
 add_executable(BAFusion ${BAFusion_SRC})
 add_executable(DenseFusion ${DenseFusion_SRC})
@@ -402,7 +403,18 @@ target_link_libraries(BATest
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
 )
-target_link_libraries(GenerateIncompleteModelFromScannet
+target_link_libraries(GenerateModelFromScannet
+    fucking_cool
+    rply
+    objloader
+    mild
+    ${OpenCV_LIBS} 
+    ${Eigen_LIBRARIES}
+    ${Pangolin_LIBRARIES}
+    ${OPENGL_LIBRARIES} 
+	${GLUT_LIBRARY}
+)
+target_link_libraries(GetLabelUsingKDTree
     fucking_cool
     rply
     objloader

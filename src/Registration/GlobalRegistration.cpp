@@ -32,15 +32,17 @@ namespace registration
         std::vector<std::vector<int>> similar_features;
         
         similar_features.resize(source_feature.size());
-        std::vector<cv::Vec<float, 33>>  target_feature_cv;
+        // std::vector<cv::Vec<float, 33>>  target_feature_cv;
         
-        Eigen2OpenCV(target_feature, target_feature_cv);
-        cv::flann::KDTreeIndexParams indexParams;
+        // Eigen2OpenCV(target_feature, target_feature_cv);
+        
         //target_feature_cv.resize(100);
 #if DEBUG_MODE
         std::cout<<BLUE<<"[DEBUG]::[FPFHFeature]::Build KDTree."<<RESET<<std::endl;
 #endif
-        cv::flann::Index kdtree(cv::Mat(target_feature_cv).reshape(1), indexParams);    
+        // cv::flann::Index kdtree(cv::Mat(target_feature_cv).reshape(1), indexParams);    
+        geometry::KDTree<33> kdtree;
+        kdtree.BuildTree(target_feature);
         int k = 1;
 
         for(int i = 0; i != source_feature.size(); ++i)
@@ -51,13 +53,13 @@ namespace registration
             //std::cout<<query<<std::endl;
             //std::cout<<source_feature[i].transpose()<<std::endl;
             //
-            std::vector<float> query(source_feature[i].data(), source_feature[i].data() + 
-                source_feature[i].rows() * source_feature[i].cols());
+            // std::vector<float> query(source_feature[i].data(), source_feature[i].data() + 
+            //     source_feature[i].rows() * source_feature[i].cols());
 
-            std::vector<int> indices(k); 
-            std::vector<float> dists(k);       
+            std::vector<int> indices; 
+            std::vector<float> dists;       
 
-            kdtree.knnSearch(query, indices, dists, k, cv::flann::SearchParams(1024));
+            kdtree.KnnSearch(source_feature[i], indices, dists, k, geometry::SearchParameter(1024));
             similar_features[i] = indices;      
             //std::cout<<i<<" "<<indices.size()<<std::endl;
         }

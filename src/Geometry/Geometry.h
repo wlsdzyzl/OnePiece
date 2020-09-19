@@ -46,7 +46,10 @@ namespace geometry {
     typedef Vector2 Point2;
     typedef Eigen::Matrix<int, 2, 1> Point2i;
     typedef Eigen::Matrix<int, 3, 1> Point3i;
-
+    //cpp 11 support alias
+    template <int T>
+        using Vector = Eigen::Matrix<scalar, T, 1>;
+    
     // typedef cv::Vec<geometry::scalar,3> Point3CV;
     // typedef cv::Vec<geometry::scalar,2> Point2CV;
     typedef std::pair<Point3, Point3> PointCorrespondence;
@@ -61,9 +64,11 @@ namespace geometry {
     typedef std::vector<Point3, Eigen::aligned_allocator<Point3> > Point3List;
     
     typedef std::vector<VectorX, Eigen::aligned_allocator<VectorX> > PointXList;
-
+    template <int T>
+        using PointList = std::vector<Eigen::Matrix<scalar, T, 1>, 
+            Eigen::aligned_allocator<Eigen::Matrix<scalar, T, 1>>>;
     typedef std::vector<Matrix4, Eigen::aligned_allocator<Matrix4> > Mat4List;
-
+    
     typedef std::vector<Point3List> ImageXYZ;
     void TransformToMatXYZ(const cv::Mat &image, const camera::PinholeCamera &camera, geometry::ImageXYZ &imageXYZ);
     //lie group and lie algebra

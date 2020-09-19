@@ -1,4 +1,5 @@
 #include "PointCloud.h"
+#include "Geometry/KDTree.h"
 #include "Tool/ConsoleColor.h"
 #include "Tool/RPLYManager.h"
 #include "Tool/OBJManager.h"
@@ -109,40 +110,48 @@ namespace geometry
             mean_point+= dspcd->points[i];
         mean_point /= dspcd->points.size();
 #endif
-        float squared_radius = radius * radius;
+        
         normals.resize(points.size());        
         // fill the cv_pcd with the cartesian coordinates (x, y z) 
-        std::vector<cv::Point3f> cv_pcd;
+
+
+        // std::vector<cv::Point3f> cv_pcd;
+        // for(int i = 0; i < points.size(); ++i)
+        // {
+        //     cv_pcd.push_back(cv::Point3f(points[i](0), points[i](1), points[i](2)));
+        // } 
+        // cv::Mat input = cv::Mat(cv_pcd);
+        // std::cout<<input.rows<<" "<<input.cols<<std::endl;
+        // cv::flann::KDTreeIndexParams indexParams; 
+        // cv::flann::Index kdtree(cv::Mat(cv_pcd).reshape(1), indexParams);
+    
+        //std::vector<std::vector<int>>
+        geometry::KDTree<> kdtree;
+        kdtree.BuildTree(points);
+        std::cout<<BLUE<<"[EstimateNormals]::[INFO]::RadiusSearch "<<knn<<" nearest points, radius: "<<radius<<RESET<<std::endl;
+
         for(int i = 0; i < points.size(); ++i)
         {
-            cv_pcd.push_back(cv::Point3f(points[i](0), points[i](1), points[i](2)));
-        } 
-        cv::flann::KDTreeIndexParams indexParams; 
-        cv::flann::Index kdtree(cv::Mat(cv_pcd).reshape(1), indexParams);
-        //std::vector<std::vector<int>>
-        std::cout<<BLUE<<"[EstimateNormals]::[INFO]::RadiusSearch "<<knn<<" nearest points, radius: "<<radius<<RESET<<std::endl;
-#pragma omp parallel for
-        for(int i = 0; i < cv_pcd.size(); ++i)
-        {
-            std::vector<float> query={points[i](0), points[i](1), points[i](2)};
+            
             std::vector<int> indices; 
             std::vector<float> dists; 
             
-            int points_number = kdtree.radiusSearch(query, indices, dists, 
-                squared_radius, knn, cv::flann::SearchParams(128));
-
+            // kdtree.RadiusSearch(points[i], indices, dists, 
+            //     radius, knn, geometry::SearchParameter(128));
+            kdtree.RadiusSearch(points[i], indices, dists, radius, 
+                30, geometry::SearchParameter(30));
             /*
-            kdtree.knnSearch(query, indices, dists, knn, cv::flann::SearchParams(128));
+            kdtree.KnnSearch(query, indices, dists, knn, cv::flann::SearchParams(128));
             int points_number = indices.size();
             */
-            //std::cout<<"knn: "<<points_number<<std::endl;
+            // std::cout<<"points_number: "<<points_number<<std::endl;
             
             geometry::Point3List nearest_points;
 
             // A opencv bug: the points_number might be larger that knn, 
             // but never happen in single thread.
             
-            for(int j = 0; j!= points_number && j != knn;++j)
+            for(int j = 0; j!= indices.size() && j != knn;++j)
             {
                 nearest_points.push_back(points[indices[j]]);
                 //std::cout <<indices[j]<<" "<<std::endl;

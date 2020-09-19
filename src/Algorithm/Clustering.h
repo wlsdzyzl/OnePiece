@@ -1,6 +1,7 @@
 #ifndef CLUSTERING_H
 #define CLUSTERING_H
 #include "Geometry/Geometry.h"
+#include "Geometry/KDTree.h"
 #include "Tool/ConsoleColor.h"
 #include <opencv2/core/core.hpp>
 namespace fucking_cool
@@ -78,7 +79,7 @@ namespace algorithm
     {
         //initialize
         std::set<int > un_visited;
-        double squared_radius = (double)radius * radius;
+        
         for(int i = 0;i!= wait_to_cluster.size(); ++i)
         {
             un_visited.insert(i);
@@ -87,19 +88,12 @@ namespace algorithm
         std::vector<std::map<int, int>> visited_times(wait_to_cluster.size());
         clustering_result.clear();
         
-        std::vector<cv::Vec<float,T>> cv_pcd;
-        for(int i = 0; i < wait_to_cluster.size(); ++i)
-        {
-            cv::Vec<float,T> item;
-            for(int j = 0;j!=T ; ++j)
-            {
-                item(j) = wait_to_cluster[i](j);
-            }
-            cv_pcd.push_back(item);
-        } 
+
         //build kdtree
-        cv::flann::KDTreeIndexParams indexParams; 
-        cv::flann::Index kdtree(cv::Mat(cv_pcd).reshape(1), indexParams);
+        // cv::flann::KDTreeIndexParams indexParams; 
+        // cv::flann::Index kdtree(cv::Mat(cv_pcd).reshape(1), indexParams);
+        geometry::KDTree<T> kdtree;
+        kdtree.BuildTree(wait_to_cluster);
         while(un_visited.size() != 0)
         {
             int index = *un_visited.begin();
@@ -115,16 +109,16 @@ namespace algorithm
                 // radius search
                 Eigen::Matrix<geometry::scalar, T, 1> shift;
                 shift.setZero();
-                std::vector<float> query={center(0), center(1), center(2)};
+                // std::vector<float> query={center(0), center(1), center(2)};
                 std::vector<int> indices; 
                 std::vector<float> dists; 
                 //1024 max_result, SearchParams(1024), The number of times the tree(s) in the index should be recursively traversed. 
                 //SearchParams should be larger than max_result
                 //Attention!! The radius is squared radius.
-                int find_num = kdtree.radiusSearch(query,indices,dists,squared_radius,1024,cv::flann::SearchParams(1024));
+                kdtree.RadiusSearch(center, indices,dists,radius,1024, geometry::SearchParameter(1024));
                 //std::cout<<"search points number: "<<find_num<<" "<<cv_pcd.size()<<std::endl;
                 //std::cout<<"clustered points number: "<<find_num<<std::endl;
-                for(int i = 0; i!= find_num; ++i)
+                for(int i = 0; i!= indices.size(); ++i)
                 {
                     //std::cout<<indices[i]<<std::endl;
                     shift += (wait_to_cluster[indices[i]] - center);

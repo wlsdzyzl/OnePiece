@@ -8,6 +8,7 @@ Now we only support fpfh feature.
 
 #include "Geometry/Geometry.h"
 #include "Geometry/PointCloud.h"
+#include "Geometry/KDTree.h"
 namespace fucking_cool
 {
 namespace registration
@@ -18,7 +19,7 @@ namespace registration
     typedef geometry::PointXList FeatureSet;
     PairDescriptor ComputePairDescriptor(const geometry::Point3 &ps, const geometry::Point3 &ns,
         const geometry::Point3 &pt, const geometry::Point3 &nt);
-    void ComputeSPFH(const geometry::PointCloud &pcd, cv::flann::Index &kdtree, 
+    void ComputeSPFH(const geometry::PointCloud &pcd, geometry::KDTree<> &kdtree, 
         FeatureSet &spfh_features, std::vector<std::vector<int>> &neighbors, int knn, float radius);
     void ComputeFPFHFeature(const geometry::PointCloud &pcd, FeatureSet &fpfh_features, int knn = 100, float radius = 0.1);
 }

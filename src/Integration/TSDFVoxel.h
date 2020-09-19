@@ -74,7 +74,7 @@ namespace integration
         }
         bool IsValid() const
         {
-            return !(sdf == 999||weight == 0);
+            return !(sdf >= 1||weight <= 0);
         }
         float sdf = 999;
         float weight = 0;

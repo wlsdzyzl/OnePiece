@@ -36,7 +36,7 @@ namespace tool
                     int color_u = (int)(uv_color(0) + 0.5);
                     int color_v = (int)(uv_color(1) + 0.5);
                     if(color_u >= 0 && color_u < color_width && color_v >= 0 && color_v < color_height)
-                    aligned_color.at<cv::Vec3b>(color_v, color_u) = color.at<cv::Vec3b>(v, u);
+                    aligned_color.at<cv::Vec3b>(v, u) = color.at<cv::Vec3b>(color_v, color_u);
                 }
             }
         }

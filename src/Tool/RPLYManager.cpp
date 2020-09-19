@@ -1,5 +1,5 @@
 
-#include "rply.h"
+
 #include <iostream>
 #include <fstream>
 #include "RPLYManager.h"
@@ -31,13 +31,15 @@ namespace tool
         TriangleSet *triangle_ptr;
     };
 
-    int vertex_cb(p_ply_argument argument) {
+
+    int vertex_cb(p_ply_argument argument) 
+    {
         long index;
         PlyState *plystate_ptr;
         ply_get_argument_user_data(argument, reinterpret_cast<void **>(&plystate_ptr), &index);
         if(plystate_ptr->vertex_index >= plystate_ptr->vertex_num)
         return 0;
-        float value = ply_get_argument_value(argument);
+        double value = ply_get_argument_value(argument);
         (*plystate_ptr->vertex_ptr)[plystate_ptr->vertex_index](index) = value;
         if(index == 2)
         plystate_ptr->vertex_index++;    
@@ -50,7 +52,7 @@ namespace tool
         ply_get_argument_user_data(argument, reinterpret_cast<void **>(&plystate_ptr), &index);
         if(plystate_ptr->normal_index >= plystate_ptr->normal_num)
         return 0;
-        float value = ply_get_argument_value(argument);
+        double value = ply_get_argument_value(argument);
         (*plystate_ptr->normal_ptr)[plystate_ptr->normal_index](index) = value;
         if(index == 2)
         plystate_ptr->normal_index++;    
@@ -64,7 +66,7 @@ namespace tool
         ply_get_argument_user_data(argument, reinterpret_cast<void **>(&plystate_ptr), &index);
         if(plystate_ptr->color_index >= plystate_ptr->color_num)
         return 0;
-        float value = ply_get_argument_value(argument);
+        double value = ply_get_argument_value(argument);
         (*plystate_ptr->color_ptr)[plystate_ptr->color_index](index) = value/255.0;
         if(index == 2)
         plystate_ptr->color_index++;    
@@ -75,23 +77,23 @@ namespace tool
 
     int triangle_cb(p_ply_argument argument) 
     {
-    PlyState *plystate_ptr;
-    long dummy, length, index;
-    ply_get_argument_user_data(argument, reinterpret_cast<void **>(&plystate_ptr),
-                               &dummy);
-    float value = ply_get_argument_value(argument);
-    if(plystate_ptr->triangle_index >= plystate_ptr->triangle_num) {
-        return 0;
-    }
+        PlyState *plystate_ptr;
+        long dummy, length, index;
+        ply_get_argument_user_data(argument, reinterpret_cast<void **>(&plystate_ptr),
+                                &dummy);
+        double value = ply_get_argument_value(argument);
+        if(plystate_ptr->triangle_index >= plystate_ptr->triangle_num) {
+            return 0;
+        }
 
-    ply_get_argument_property(argument, NULL, &length, &index);
-    if(index == -1) ;
-    else
-        (*plystate_ptr->triangle_ptr)[plystate_ptr->triangle_index](index) = value;    
-    if(index == length-1) {
-        plystate_ptr->triangle_index++;
-    }
-    return 1;
+        ply_get_argument_property(argument, NULL, &length, &index);
+        if(index == -1) ;
+        else
+            (*plystate_ptr->triangle_ptr)[plystate_ptr->triangle_index](index) = value;    
+        if(index == length-1) {
+            plystate_ptr->triangle_index++;
+        }
+        return 1;
     }
 
     bool ReadPLY(const std::string &filename, geometry::Point3List &points, geometry::Point3List &normals, 
@@ -161,6 +163,7 @@ namespace tool
         }
         std::cout <<BLUE<<"[PLYReader]::[INFO]::"<<"face: "<<state.triangle_num<<" vertex: "<<state.vertex_num<<RESET<<std::endl;
         ply_close(ply_file);
+        return true;
     }
 
     bool ReadPLY(const std::string &filename, geometry::Point3List &points, geometry::Point3List &normals, 
@@ -219,19 +222,22 @@ namespace tool
         }
         std::cout <<BLUE<<"[PLYReader]::[INFO]::vertex: "<<state.vertex_num<<RESET<<std::endl;
         ply_close(ply_file);
+        return true;
     }
 
     bool WritePLY(const std::string &filename, const geometry::Point3List&points, 
-        const geometry::Point3List &normals, const geometry::Point3List &colors, bool use_ascii)
+        const geometry::Point3List &normals, const geometry::Point3List &colors, 
+        const std::vector<AdditionalLabel> & additional_labels,
+        bool use_ascii)
     {
         size_t numPoints = points.size();
         bool has_normals = normals.size()>0 && normals.size() == points.size();
         bool has_colors = colors.size() > 0 && colors.size() == points.size();
         //write ply with instance and semantic label
-        if(points.size() == 0)
-        {
-            return true;
-        }
+        // if(points.size() == 0)
+        // {
+        //     return true;
+        // }
 
         p_ply ply_file = ply_create(filename.c_str(), (use_ascii? PLY_ASCII: PLY_LITTLE_ENDIAN),
                                     NULL, 0, NULL);
@@ -257,6 +263,13 @@ namespace tool
             ply_add_property(ply_file, "red", PLY_UCHAR, PLY_UCHAR, PLY_UCHAR);
             ply_add_property(ply_file, "green", PLY_UCHAR, PLY_UCHAR, PLY_UCHAR);
             ply_add_property(ply_file, "blue", PLY_UCHAR, PLY_UCHAR, PLY_UCHAR);
+        }
+        for(int i = 0; i != additional_labels.size(); ++i)
+        {
+            std::string label_name = std::get<0>(additional_labels[i]);
+            e_ply_type type = std::get<1>(additional_labels[i]);
+            ply_add_property(ply_file, label_name.c_str(), 
+                type, type, type);
         }
         /*
         if(labels.size() > 0)
@@ -293,6 +306,36 @@ namespace tool
                 ply_write(ply_file,
                         std::min(255.0, std::max(0.0, color(2) * 255.0)));
             }
+            for(int j = 0; j != additional_labels.size(); ++j)
+            {
+                e_ply_type type = std::get<1>(additional_labels[j]);
+                void *ptr = std::get<2>(additional_labels[j]);
+                if(type == PLY_INT32)
+                {
+                    int value = *((int *)ptr + i);
+                    ply_write(ply_file, value);
+                }   
+                else if(type == PLY_UCHAR)
+                {
+                    unsigned char value = *((unsigned char *)ptr + i);
+                    ply_write(ply_file, value);
+                }
+                else if(type == PLY_USHORT)
+                {
+                    unsigned short value = *((unsigned short *)ptr + i);
+                    ply_write(ply_file, value);
+                }
+                else if(type == PLY_FLOAT32)
+                {
+                    float value = *((float *)ptr + i);
+                    ply_write(ply_file, value);
+                }
+                else if(type == PLY_FLOAT64)
+                {
+                    double value = *((double *)ptr + i);
+                    ply_write(ply_file, value);
+                }
+            }
             /*
             if(labels.size())
             {
@@ -308,16 +351,18 @@ namespace tool
     }
     bool WritePLY(const std::string &filename, const geometry::Point3List&points, 
         const geometry::Point3List &normals, const geometry::Point3List &colors,
-        const std::vector<Eigen::Vector3i> &triangles, bool use_ascii)
+        const std::vector<Eigen::Vector3i> &triangles, 
+        const std::vector<AdditionalLabel> & additional_labels,
+        bool use_ascii)
     {
         size_t numPoints = points.size();
         bool has_normals = normals.size()>0 && normals.size() == points.size();
         bool has_colors = colors.size() > 0 && colors.size() == points.size();
         //write ply with instance and semantic label
-        if(points.size() == 0) 
-        {
-            return true;
-        }
+        // if(points.size() == 0) 
+        // {
+        //     return true;
+        // }
 
         p_ply ply_file = ply_create(filename.c_str(), (use_ascii? PLY_ASCII: PLY_LITTLE_ENDIAN),
                                     NULL, 0, NULL);
@@ -342,6 +387,13 @@ namespace tool
             ply_add_property(ply_file, "red", PLY_UCHAR, PLY_UCHAR, PLY_UCHAR);
             ply_add_property(ply_file, "green", PLY_UCHAR, PLY_UCHAR, PLY_UCHAR);
             ply_add_property(ply_file, "blue", PLY_UCHAR, PLY_UCHAR, PLY_UCHAR);
+        }
+        for(int i = 0; i != additional_labels.size(); ++i)
+        {
+            std::string label_name = std::get<0>(additional_labels[i]);
+            e_ply_type type = std::get<1>(additional_labels[i]);
+            ply_add_property(ply_file, label_name.c_str(), 
+                type, type, type);
         }
         ply_add_element(ply_file, "face",
                         static_cast<long>(triangles.size()));
@@ -380,6 +432,36 @@ namespace tool
                         std::min(255.0, std::max(0.0, color(1) * 255.0)));
                 ply_write(ply_file,
                         std::min(255.0, std::max(0.0, color(2) * 255.0)));
+            }
+            for(int j = 0; j != additional_labels.size(); ++j)
+            {
+                e_ply_type type = std::get<1>(additional_labels[j]);
+                void *ptr = std::get<2>(additional_labels[j]);
+                if(type == PLY_INT32)
+                {
+                    int value = *((int *)ptr + i);
+                    ply_write(ply_file, value);
+                }   
+                else if(type == PLY_UCHAR)
+                {
+                    unsigned char value = *((unsigned char *)ptr + i);
+                    ply_write(ply_file, value);
+                }
+                else if(type == PLY_USHORT)
+                {
+                    unsigned short value = *((unsigned short *)ptr + i);
+                    ply_write(ply_file, value);
+                }
+                else if(type == PLY_FLOAT32)
+                {
+                    float value = *((float *)ptr + i);
+                    ply_write(ply_file, value);
+                }
+                else if(type == PLY_FLOAT64)
+                {
+                    double value = *((double *)ptr + i);
+                    ply_write(ply_file, value);
+                }
             }
             /*
             if(labels.size())
