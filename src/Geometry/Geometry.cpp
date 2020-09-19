@@ -151,7 +151,8 @@ namespace geometry
     }
     TransformationMatrix RandomTransformation()
     {
-        std::default_random_engine e(time(nullptr));
+        std::random_device rd;
+        std::default_random_engine e(rd());
         std::uniform_real_distribution<double> u(-1.0, 1.0);
         double a, b, c;
         a = u(e);

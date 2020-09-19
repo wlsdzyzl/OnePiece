@@ -24,26 +24,25 @@ namespace registration
     }
 
 
-    void ComputeSPFH(const geometry::PointCloud &pcd, cv::flann::Index &kdtree, 
+    void ComputeSPFH(const geometry::PointCloud &pcd, geometry::KDTree<> &kdtree, 
         FeatureSet &spfh_features, std::vector<std::vector<int>> &neighbors, int knn, float radius)
     {
         Feature init_f;
         init_f.resize(33);
         spfh_features.resize(pcd.points.size(), init_f);
-        float squared_radius = radius * radius;
         neighbors.resize(pcd.points.size());
         //std::cout<<squared_radius<<std::endl;
 
         for(int i = 0; i != pcd.points.size(); ++i)
         {
-            std::vector<float> query={pcd.points[i](0), pcd.points[i](1), pcd.points[i](2)};
+            
             std::vector<int> indices; 
             std::vector<float> dists; 
-            cv::Mat query_m = cv::Mat(query);
-            int points_num = kdtree.radiusSearch(query, indices, dists, 
-                squared_radius, knn, cv::flann::SearchParams(1024));
             
+            kdtree.RadiusSearch(pcd.points[i], indices, dists, 
+                radius, knn, geometry::SearchParameter(1024));
             
+            int points_num = indices.size();
             neighbors[i].clear();
             spfh_features[i].setZero();
             if(points_num - 1 > 0)
@@ -83,14 +82,10 @@ namespace registration
 
     void ComputeFPFHFeature(const geometry::PointCloud &pcd, FeatureSet &fpfh_features, int knn, float radius)
     {
-        std::vector<cv::Point3f> cv_pcd;
-        for(int i = 0; i < pcd.points.size(); ++i)
-        {
-            cv_pcd.push_back(cv::Point3f(pcd.points[i](0), pcd.points[i](1), pcd.points[i](2)));
-        } 
-        cv::flann::KDTreeIndexParams indexParams; 
-        cv::flann::Index kdtree(cv::Mat(cv_pcd).reshape(1), indexParams);       
-
+        // cv::flann::KDTreeIndexParams indexParams; 
+        // cv::flann::Index kdtree(cv::Mat(cv_pcd).reshape(1), indexParams);       
+        geometry::KDTree<> kdtree;
+        kdtree.BuildTree(pcd.points);
         FeatureSet spfh_features;
         std::vector<std::vector<int>> neighbor_indexs;
 #if DEBUG_MODE

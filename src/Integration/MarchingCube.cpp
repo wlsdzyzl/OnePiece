@@ -5,7 +5,8 @@ namespace fucking_cool
 namespace integration
 {
     
-    geometry::Point3 InterpolateEdgeVetex(const geometry::Point3 &corner1, const geometry::Point3 &corner2, float sdf1, float sdf2)
+    geometry::Point3 InterpolateEdgeVetex(const geometry::Point3 &corner1, const geometry::Point3 &corner2, 
+        float sdf1, float sdf2)
     {
         float sdf_diff = sdf2 - sdf1;
         float t = sdf1 / sdf_diff;
@@ -35,32 +36,40 @@ namespace integration
         std::map<int, geometry::Point3> edge_color;
         int index = mesh.points.size();
         Eigen::Vector3i triangle;
-        for(int i = 0;i < 16; ++i)
+        std::vector<int> triangle_edges(3);
+        for(int i = 0;i < 16; i += 3)
         {
-
-            if(Edges[i] == -1)
-            break;
-            if(edge_vertex.find(Edges[i]) != edge_vertex.end())
-                ;
-            else
+            if(Edges[i] == -1)   break;
+            for(int j = 0; j != 3; ++j)
             {
-                int *pair = EdgeIndexPairs[Edges[i]];
-                geometry::Point3 corner1 = corners[pair[0]];
-                geometry::Point3 corner2 = corners[pair[1]];
-                edge_vertex[Edges[i]] = InterpolateEdgeVetex(corner1, corner2, corner_sdf[pair[0]].sdf, corner_sdf[pair[1]].sdf);
-                edge_color[Edges[i]] = (corner_sdf[pair[0]].color+ corner_sdf[pair[1]].color)/2;
+                int edge_id = Edges[i + j];
+                triangle_edges[j] = edge_id;
+
+                //avoid a duplicate computation
+                if(edge_vertex.find(edge_id) != edge_vertex.end())
+                    ;
+                else
+                {
+                    int *pair = EdgeIndexPairs[edge_id];
+                    geometry::Point3 corner1 = corners[pair[0]];
+                    geometry::Point3 corner2 = corners[pair[1]];
+                    edge_vertex[edge_id] = InterpolateEdgeVetex(corner1, corner2, corner_sdf[pair[0]].sdf, corner_sdf[pair[1]].sdf);
+                    edge_color[edge_id] = (corner_sdf[pair[0]].color+ corner_sdf[pair[1]].color)/2;
+                    
+                }
 
             }
+            
 
-            mesh.points.push_back(edge_vertex[Edges[i]]);
-            mesh.colors.push_back(edge_color[Edges[i]]);
-            triangle(i%3) = index ++;
-            if(i % 3 == 2)
+            for(int j = 0; j < 3; ++j)
             {
-                mesh.triangles.push_back(triangle);
-                //std::cout<<triangle<<std::endl<<std::endl;
+                mesh.points.push_back(edge_vertex[triangle_edges[j]]);
+                mesh.colors.push_back(edge_color[triangle_edges[j]]);
+                triangle(j) = index ++;
             }
+            mesh.triangles.push_back(triangle);
         }
+        
     }    
     
 }

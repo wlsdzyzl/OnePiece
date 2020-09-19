@@ -1,5 +1,6 @@
 #include "ICP.h"
 #include <omp.h>
+#include "Geometry/KDTree.h"
 namespace fucking_cool
 {
 namespace registration
@@ -32,17 +33,15 @@ namespace registration
     {
         // cost function: Tpi - pj
         //find closest point use kd-tree
-        std::vector<cv::Point3f> cv_pcd;
         auto start_T = init_T;
         RegistrationResult result;
-        for(int i = 0; i < target.points.size(); ++i)
-        {
-            cv_pcd.push_back(cv::Point3f(target.points[i](0), target.points[i](1), target.points[i](2)));
-        } 
+
         double rmse = -1;
         geometry::FMatchSet inliers;
-        cv::flann::KDTreeIndexParams indexParams; 
-        cv::flann::Index kdtree(cv::Mat(cv_pcd).reshape(1), indexParams);
+        // cv::flann::KDTreeIndexParams indexParams; 
+        // cv::flann::Index kdtree(cv::Mat(cv_pcd).reshape(1), indexParams);
+        geometry::KDTree<> kdtree;
+        kdtree.BuildTree(target.points);
         int k = 1;
         int iteration = 0;
         std::vector<int> corresponding_index(source.points.size(), -1);
@@ -57,10 +56,9 @@ namespace registration
 #pragma omp parallel for
             for(int i = 0; i < source.points.size(); ++i)
             {
-                std::vector<float> query={transformed_points[i](0), transformed_points[i](1), transformed_points[i](2)};
-                std::vector<int> indices(k); 
-                std::vector<float> dists(k); 
-                kdtree.knnSearch(query, indices, dists,k,cv::flann::SearchParams(128));
+                std::vector<int> indices; 
+                std::vector<float> dists; 
+                kdtree.KnnSearch(transformed_points[i], indices, dists,k,geometry::SearchParameter(128));
                 
                 if(indices.size()>0)
                     corresponding_index[i] = indices[0];
@@ -146,15 +144,14 @@ namespace registration
         }
         double rmse = -1;
         geometry::FMatchSet inliers;
-        std::vector<cv::Point3f> cv_pcd;
+        
         auto start_T = init_T;
         RegistrationResult result;
-        for(int i = 0; i < target.points.size(); ++i)
-        {
-            cv_pcd.push_back(cv::Point3f(target.points[i](0), target.points[i](1), target.points[i](2)));
-        } 
-        cv::flann::KDTreeIndexParams indexParams; 
-        cv::flann::Index kdtree(cv::Mat(cv_pcd).reshape(1), indexParams);
+
+        // cv::flann::KDTreeIndexParams indexParams; 
+        // cv::flann::Index kdtree(cv::Mat(cv_pcd).reshape(1), indexParams);
+        geometry::KDTree<> kdtree;
+        kdtree.BuildTree(target.points);
         int k = 1;
         int iteration = 0;
         std::vector<int> corresponding_index(source.points.size(), -1);
@@ -168,11 +165,9 @@ namespace registration
 #pragma omp parallel for
             for(int i = 0; i < source.points.size(); ++i)
             {
-
-                std::vector<float> query={transformed_points[i](0), transformed_points[i](1), transformed_points[i](2)};
                 std::vector<int> indices(k); 
                 std::vector<float> dists(k); 
-                kdtree.knnSearch(query, indices, dists,k,cv::flann::SearchParams(128));
+                kdtree.KnnSearch(transformed_points[i], indices, dists,k,geometry::SearchParameter(128));
                 if(indices.size()>0)
                     corresponding_index[i] = indices[0];
             }

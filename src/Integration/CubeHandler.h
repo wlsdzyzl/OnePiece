@@ -345,6 +345,14 @@ namespace integration
             std::cout<<YELLOW<<"[WARNING]::[SetCubeMap]::Note that you are changing the hashing map directly."<<RESET<<std::endl;
             cube_map = _cube_map;
         }
+        void SetFarPlane(float _far)
+        {
+            far = _far;
+        }
+        void SetNearPlane(float _near)
+        {
+            near = _near;
+        }
         void CollectGarbage();
         protected:
         CubeMap cube_map;
