@@ -1,6 +1,7 @@
 #include "Geometry/KDTree.h"
 #include "Geometry/TriangleMesh.h"
 #include "Tool/RPLYManager.h"
+#include "Visualization/ColorTab.h"
 using namespace fucking_cool;
 int main(int argc, char** argv)
 {
@@ -46,7 +47,14 @@ int main(int argc, char** argv)
     tool::AdditionalLabel additional_label = std::tie(label_name, type, label_ptr);
     std::vector<tool::AdditionalLabel> additional_labels;
     additional_labels.push_back(additional_label);
-    tool::WritePLY("Labeled_model.ply", mesh.points, mesh.normals, mesh.colors, mesh.triangles);
+    tool::WritePLY("Labeled_model.ply", mesh.points, mesh.normals, mesh.colors, mesh.triangles, additional_labels);
+    mesh.colors.resize(mesh.points.size());
+    for(int i = 0; i != mesh.points.size(); ++i)
+    {
+        cv::Scalar label_color = visualization::color_tab[labels[i] % visualization::color_tab.size()];
+        mesh.colors[i] = geometry::Point3(label_color(0)/255.0, label_color(1)/255.0, label_color(2)/255.0 );
+    }
+    mesh.WriteToPLY("Colored_model.ply");
     return 1;
 
 }
