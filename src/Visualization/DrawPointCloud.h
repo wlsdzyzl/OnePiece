@@ -19,8 +19,8 @@ namespace visualization
             for(int j = 0; j !=p_patches[i].items.size(); ++j)
             {
                 pcd_3d.points.push_back(geometry::Point3(p_patches[i].items[j](0), p_patches[i].items[j](1), p_patches[i].items[j](2)));
-                pcd_3d.colors.push_back(geometry::Point3(visualization::color_tab[i](0), 
-                    visualization::color_tab[i](1), visualization::color_tab[i](2))/255.0);
+                pcd_3d.colors.push_back(geometry::Point3(visualization::color_tab[i% color_tab.size()](0), 
+                    visualization::color_tab[i](1% color_tab.size()), visualization::color_tab[i % color_tab.size()](2))/255.0);
             }
         }
         return std::make_shared<geometry::PointCloud>(pcd_3d);

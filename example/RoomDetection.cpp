@@ -235,7 +235,7 @@ class Building
                     start_eid = dcel->edges[start_eid].succ_eid;
                     start_vid = dcel->edges[start_eid].origin_vid;
                 }
-                cv::fillConvexPoly(img,&poly[0],poly.size(),visualization::color_tab[i]);                
+                cv::fillConvexPoly(img,&poly[0],poly.size(),visualization::color_tab[i % visualization::color_tab.size()]);                
             }
         }
         return img;

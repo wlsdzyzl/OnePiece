@@ -88,7 +88,7 @@ namespace visualization
 
                 cv::Point ipt = cv::Point2i((patches[i].items[j](0) - min_x ) *scalar, (patches[i].items[j](1)-min_y)* scalar);
                 //std::cout<<patches[i].items[j]<<std::endl;
-                cv::circle( img_line, ipt, 2, color_tab[i], CV_FILLED, CV_AA );
+                cv::circle( img_line, ipt, 2, color_tab[i % color_tab.size()], CV_FILLED, CV_AA );
             }
         }
         return img_line;
@@ -128,7 +128,7 @@ namespace visualization
             {
 
                 cv::Point ipt = cv::Point2i((clusters[i].items[j](0) - min_x ) *scalar, (clusters[i].items[j](1)-min_y)* scalar);
-                cv::circle( img, ipt, 2, color_tab[i], CV_FILLED, CV_AA );
+                cv::circle( img, ipt, 2, color_tab[i % color_tab.size()], CV_FILLED, CV_AA );
             }
         }
         return img;
@@ -163,7 +163,7 @@ namespace visualization
                 start_eid = dcel.edges[start_eid].succ_eid;
                 start_vid = dcel.edges[start_eid].origin_vid;
             }
-            cv::fillConvexPoly(img,&poly[0],poly.size(),color_tab[i]);
+            cv::fillConvexPoly(img,&poly[0],poly.size(),color_tab[i% color_tab.size()]);
         }
         
         for(int i = 0; i!= dcel.edges.size(); ++i)

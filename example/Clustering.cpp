@@ -5,16 +5,7 @@ int main()
 {
     int point_number = 200;
     const int MAX_CLUSTERS = 7;
-    cv::Scalar color_tab[] =   
-    {
-        cv::Scalar(0, 0, 255),
-        cv::Scalar(0,255,0),
-        cv::Scalar(255,255,0),
-        cv::Scalar(255,0,255),
-        cv::Scalar(0,255,255),
-        cv::Scalar(255,255,255),
-        cv::Scalar(255,0,0)
-    };
+
     geometry::Point2List points;
     for(int i = 0;i != point_number; ++i)
     {
