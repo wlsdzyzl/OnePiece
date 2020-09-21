@@ -14,7 +14,7 @@ int main(int argc, char** argv)
     geometry::TriangleMesh reference_mesh;
     mesh.LoadFromPLY(argv[1]);
     reference_mesh.LoadFromPLY(argv[2]);
-    std::vector<int> labels;
+    std::vector<unsigned short> labels;
     std::vector<unsigned short> reference_labels;
     tool::ReadVertexLabelFromPLY<unsigned short>(argv[2], "label", reference_labels);
     geometry::KDTree<> kdtree;
@@ -47,6 +47,7 @@ int main(int argc, char** argv)
     tool::AdditionalLabel additional_label = std::tie(label_name, type, label_ptr);
     std::vector<tool::AdditionalLabel> additional_labels;
     additional_labels.push_back(additional_label);
+    
     tool::WritePLY("Labeled_model.ply", mesh.points, mesh.normals, mesh.colors, mesh.triangles, additional_labels);
     mesh.colors.resize(mesh.points.size());
     for(int i = 0; i != mesh.points.size(); ++i)
