@@ -35,7 +35,7 @@ namespace integration
         std::map<int, geometry::Point3> edge_vertex;
         std::map<int, geometry::Point3> edge_color;
         int index = mesh.points.size();
-        Eigen::Vector3i triangle;
+        geometry::Point3ui triangle;
         std::vector<int> triangle_edges(3);
         for(int i = 0;i < 16; i += 3)
         {

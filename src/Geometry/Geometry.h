@@ -46,6 +46,8 @@ namespace geometry {
     typedef Vector2 Point2;
     typedef Eigen::Matrix<int, 2, 1> Point2i;
     typedef Eigen::Matrix<int, 3, 1> Point3i;
+    typedef Eigen::Matrix<unsigned int, 2, 1> Point2ui;
+    typedef Eigen::Matrix<unsigned int, 3, 1> Point3ui;
     //cpp 11 support alias
     template <int T>
         using Vector = Eigen::Matrix<scalar, T, 1>;
@@ -59,10 +61,11 @@ namespace geometry {
     typedef std::pair<int, int> FMatch;
     typedef std::vector<FMatch> FMatchSet;
     typedef cv::Mat Descriptor;
-    typedef std::vector<std::pair<Point2i, Point2i>> PixelCorrespondenceSet;
+    typedef std::vector<std::pair<Point2ui, Point2ui>> PixelCorrespondenceSet;
     typedef std::vector<Point2, Eigen::aligned_allocator<Point2> > Point2List;
     typedef std::vector<Point3, Eigen::aligned_allocator<Point3> > Point3List;
-    
+    typedef std::vector<Point3i, Eigen::aligned_allocator<Point3i> > Point3iList;
+    typedef std::vector<Point3ui, Eigen::aligned_allocator<Point3ui> > Point3uiList;
     typedef std::vector<VectorX, Eigen::aligned_allocator<VectorX> > PointXList;
     template <int T>
         using PointList = std::vector<Eigen::Matrix<scalar, T, 1>, 

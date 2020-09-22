@@ -65,7 +65,7 @@ namespace tool
                     return false;
                 }
 
-                Eigen::Vector3i facet;
+                geometry::Point3ui facet;
                 for (int v = 0; v < fv; v++) 
                 {
                     tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
@@ -106,7 +106,7 @@ namespace tool
         return true;
     }
     bool ReadOBJ(const std::string &filename, geometry::Point3List &points, geometry::Point3List &normals, 
-        geometry::Point3List &colors, std::vector<Eigen::Vector3i> &triangles)
+        geometry::Point3List &colors, geometry::Point3uiList &triangles)
     {
         tinyobj::attrib_t attrib;
         std::vector<tinyobj::shape_t> shapes;
@@ -164,7 +164,7 @@ namespace tool
                     return false;
                 }
 
-                Eigen::Vector3i facet;
+                geometry::Point3ui facet;
                 for (int v = 0; v < fv; v++) 
                 {
                     tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
@@ -242,7 +242,7 @@ namespace tool
         return true;        
     }
     bool WriteOBJ(const std::string &filename, const geometry::Point3List &points, const geometry::Point3List &normals, 
-        const geometry::Point3List &colors, const std::vector<Eigen::Vector3i> &triangles)
+        const geometry::Point3List &colors, const geometry::Point3uiList &triangles)
     {
         bool write_vertex_normals = true;
         bool write_vertex_colors  = true;
@@ -282,7 +282,7 @@ namespace tool
         // potentially this will be useful for exporting conformal map generation
 
         for (size_t tidx = 0; tidx < triangles.size(); ++tidx) {
-            const Eigen::Vector3i& triangle = triangles[tidx];
+            const geometry::Point3ui& triangle = triangles[tidx];
             if (write_vertex_normals) 
             {
                 file << "f " << triangle(0) + 1 << "//" << triangle(0) + 1 << " "

@@ -1,5 +1,5 @@
 #include "TriangleMesh.h"
-#include "Tool/RPLYManager.h"
+#include "Tool/PLYManager.h"
 #include "Tool/OBJManager.h"
 #include <iostream>
 #include <fstream>
@@ -12,7 +12,8 @@ namespace geometry
     bool TriangleMesh::LoadFromPLY(const std::string &filename)
     {
         Reset();
-        return tool::ReadPLY(filename,points,normals,colors,triangles);
+        std::vector<tool::AdditionalElement> additional_labels;
+        return tool::ReadPLY(filename,points,normals,colors,triangles, additional_labels);
     }
     bool TriangleMesh::LoadFromOBJ(const std::string& filename) 
     {

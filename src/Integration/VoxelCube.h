@@ -21,7 +21,7 @@ namespace integration
         {
             InitializeVoxelCube();
         }
-        std::vector<Eigen::Vector3i> NeighborCubeIDOffset;
+        geometry::Point3iList NeighborCubeIDOffset;
         Eigen::Matrix<int, 3, 8> CornerXYZOffset;//x,y,z
         geometry::Point3List VoxelCentroidOffSet;
         float VoxelResolution = 0.01;//meter

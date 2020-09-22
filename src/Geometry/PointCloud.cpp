@@ -1,7 +1,7 @@
 #include "PointCloud.h"
 #include "Geometry/KDTree.h"
 #include "Tool/ConsoleColor.h"
-#include "Tool/RPLYManager.h"
+#include "Tool/PLYManager.h"
 #include "Tool/OBJManager.h"
 #include <fstream>
 #include <iostream>
@@ -233,7 +233,9 @@ namespace geometry
     void PointCloud::LoadFromPLY(const std::string &filename)
     {
         Reset();
-        tool::ReadPLY(filename,points,normals,colors);
+        std::vector<tool::AdditionalElement> additional_labels;
+        geometry::Point3uiList triangles;
+        tool::ReadPLY(filename,points,normals,colors, triangles, additional_labels);
     }
     void PointCloud::LoadFromOBJ(const std::string &filename)
     {

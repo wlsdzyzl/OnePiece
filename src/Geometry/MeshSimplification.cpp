@@ -10,7 +10,7 @@ namespace geometry
     {
         //a triangle flipped if the normal changed to much, or the three points are on a line 
         Reference &reference = helper.references[p1];
-        std::vector<Eigen::Vector3i> &triangles = *helper.triangles_ptr;
+        geometry::Point3uiList &triangles = *helper.triangles_ptr;
         geometry::Point3List &points = *helper.points_ptr;
         geometry::Point3List &normals = helper.normals;
         for(int i = 0; i!= reference.size(); ++i)
@@ -44,7 +44,7 @@ namespace geometry
     {
         //p1 original vertex, p2 new vertiex, replace p1 with p2
         Reference &reference = helper.references[p1];
-        std::vector<Eigen::Vector3i> &triangles = *helper.triangles_ptr;
+        geometry::Point3uiList &triangles = *helper.triangles_ptr;
         geometry::Point3List &points = *helper.points_ptr;
         geometry::Point3List &normals = helper.normals;
         std::vector<std::vector<float>> &error = helper.error;
@@ -84,7 +84,7 @@ namespace geometry
     void UpdateMesh(QuadricHelper &helper)
     {
 
-        std::vector<Eigen::Vector3i> &triangles = *helper.triangles_ptr;
+        geometry::Point3uiList &triangles = *helper.triangles_ptr;
         geometry::Point3List &normals = helper.normals;
         int re_local = 0;
         for(int i = 0;i!=triangles.size();++i)
@@ -113,7 +113,7 @@ namespace geometry
     void UpdateMesh(ClusteringHelper &helper)
     {
 
-        std::vector<Eigen::Vector3i> &triangles = *helper.triangles_ptr;
+        geometry::Point3uiList &triangles = *helper.triangles_ptr;
         geometry::Point3List &points = *helper.points_ptr;
         auto &grid_to_point = helper.grid_to_point;
         float grid_len = helper.grid_len;
@@ -139,7 +139,7 @@ namespace geometry
     void UpdateMesh(PruningHelper &helper)
     {
 
-        std::vector<Eigen::Vector3i> &triangles = *helper.triangles_ptr;
+        geometry::Point3uiList &triangles = *helper.triangles_ptr;
         int re_local = 0;
         for(int i = 0;i!=triangles.size();++i)
         {
@@ -166,7 +166,7 @@ namespace geometry
         std::cout<<YELLOW << "[QuadricMeshSimplification]::[WARNING]::target number is larger than the original number."<<RESET<<std::endl;
         return;
         }
-        std::vector<Eigen::Vector3i> &triangles = *q_helper.triangles_ptr;
+        geometry::Point3uiList &triangles = *q_helper.triangles_ptr;
         geometry::Point3List &points = *q_helper.points_ptr;
         for(;iteration<=max_iteration; ++iteration)
         {
@@ -223,7 +223,7 @@ namespace geometry
 
     void ComputeVertexNormals(QuadricHelper &helper)
     {
-        std::vector<Eigen::Vector3i> &triangles = *helper.triangles_ptr;
+        geometry::Point3uiList &triangles = *helper.triangles_ptr;
         geometry::Point3List &points = *helper.points_ptr;
         geometry::Point3List &normals = helper.normals;
         std::vector<Reference> &references = helper.references;
@@ -246,7 +246,7 @@ namespace geometry
     }
     void ComputeVertexNormals(ClusteringHelper &helper)
     {
-        std::vector<Eigen::Vector3i> &triangles = *helper.triangles_ptr;
+        geometry::Point3uiList &triangles = *helper.triangles_ptr;
         geometry::Point3List &points = *helper.points_ptr;
         geometry::Point3List normals(triangles.size());
         std::vector<Reference> &references = helper.references;
@@ -283,7 +283,7 @@ namespace geometry
     {
         UpdateMesh(helper);
         
-        std::vector<Eigen::Vector3i> &triangles = *helper.triangles_ptr;
+        geometry::Point3uiList &triangles = *helper.triangles_ptr;
         geometry::Point3List &points = *helper.points_ptr;
         std::vector<Reference> &references = helper.references;
         int re_local = 0;
@@ -314,7 +314,7 @@ namespace geometry
     {
         UpdateMesh(helper);
         
-        std::vector<Eigen::Vector3i> &triangles = *helper.triangles_ptr;
+        geometry::Point3uiList &triangles = *helper.triangles_ptr;
         geometry::Point3List &points = *helper.points_ptr;
         std::vector<Reference> &references = helper.references;
         int re_local = 0;
@@ -345,7 +345,7 @@ namespace geometry
     {
         UpdateMesh(helper);
         
-        std::vector<Eigen::Vector3i> &triangles = *helper.triangles_ptr;
+        geometry::Point3uiList &triangles = *helper.triangles_ptr;
         geometry::Point3List &points = *helper.points_ptr;
         std::vector<Reference> &references = helper.references;
         int re_local = 0;
@@ -442,14 +442,14 @@ namespace geometry
         UpdateReferences(*helper.triangles_ptr, helper.references);
     }
     //Check Border: if an edge is only possessed by one triangle, it is border.
-    void CheckIsBorder(const std::vector<Eigen::Vector3i> &triangles,  const std::vector<Reference> &references, std::vector<bool> &is_border)
+    void CheckIsBorder(const geometry::Point3uiList &triangles,  const std::vector<Reference> &references, std::vector<bool> &is_border)
     {
         for(int i = 0;i!=references.size();++i)
         {
             std::map<int,int> id_count;
             for(int j = 0;j!=references[i].size();++j)
             {
-                Eigen::Vector3i triangle = triangles[references[i][j].first];
+                geometry::Point3ui triangle = triangles[references[i][j].first];
                 int vid = references[i][j].second;
                 int id1 = triangle((vid+1)%3), id2 = triangle((vid+2)%3);
                 if(id_count.find(id1) == id_count.end())
@@ -475,7 +475,7 @@ namespace geometry
         std::vector<std::vector<float>> &error = helper.error;
         for(int i = 0;i!=helper.triangles_ptr->size();++i)
         {
-            Eigen::Vector3i &triangle = (*helper.triangles_ptr)[i];
+            Point3ui &triangle = (*helper.triangles_ptr)[i];
             geometry::Point3 p;
             error[i][0] = ComputeError(helper,triangle(0), triangle(1), p );
             error[i][1] = ComputeError(helper,triangle(1), triangle(2), p );
@@ -527,7 +527,7 @@ namespace geometry
 
     }
 
-    void UpdateReferences(const std::vector<Eigen::Vector3i> &triangles, std::vector<Reference> &references)
+    void UpdateReferences(const geometry::Point3uiList &triangles, std::vector<Reference> &references)
     {
         for(int i=0; i<references.size();++i)
         references[i].clear();
@@ -538,7 +538,7 @@ namespace geometry
             references[triangles[i](2)].push_back(std::make_pair(i, 2));
         }
     }
-    void ComputeNormalsAndQMatrix(const std::vector<Eigen::Vector3i> &triangles, const geometry::Point3List &points,
+    void ComputeNormalsAndQMatrix(const geometry::Point3uiList &triangles, const geometry::Point3List &points,
         std::vector<Reference> &references, geometry::Point3List &normals ,std::vector<geometry::Matrix4> &QMatrix)
     {
         std::vector<geometry::Matrix4> plane_matrix;
@@ -585,7 +585,7 @@ namespace geometry
         std::cout<<RED<< "[ClusteringMeshSimplification]::[ERROR]::Grid length cannot be less than 0."<<RESET<<std::endl;
         return;
         }
-        std::vector<Eigen::Vector3i> &triangles = *c_helper.triangles_ptr;
+        geometry::Point3uiList &triangles = *c_helper.triangles_ptr;
         geometry::Point3List &points = *c_helper.points_ptr;
         std::unordered_map<Eigen::Vector3i, std::pair<int, int>, geometry::VoxelGridHasher > &grid_map = c_helper.grid_map;
         auto &grid_to_point = c_helper.grid_to_point;
@@ -664,7 +664,7 @@ namespace geometry
         geometry::Point3List &points = *pruning_helper.points_ptr;
         geometry::Point3List &normals = *pruning_helper.normals_ptr;
         geometry::Point3List &colors = *pruning_helper.colors_ptr;
-        std::vector<Eigen::Vector3i> &triangles = *pruning_helper.triangles_ptr;
+        geometry::Point3uiList &triangles = *pruning_helper.triangles_ptr;
         std::vector<Reference> & references = pruning_helper.references;
         std::set<int> & unvisited = pruning_helper.unvisited;
         std::vector<bool> & is_visited = pruning_helper.is_visited;

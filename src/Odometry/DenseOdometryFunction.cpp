@@ -122,7 +122,7 @@ namespace odometry
             if(wraping_depth.at<float>(i,j) != -1)//u_s
             {
                 vu_target = wraping_map.at<cv::Vec2i>(i,j);
-                correspondences.push_back(std::make_pair(geometry::Point2i(i,j), geometry::Point2i(vu_target(0), vu_target(1))));
+                correspondences.push_back(std::make_pair(geometry::Point2ui(i,j), geometry::Point2ui(vu_target(0), vu_target(1))));
             }
         }        
     }

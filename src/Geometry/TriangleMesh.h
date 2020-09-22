@@ -39,7 +39,7 @@ namespace geometry
         size_t GetTriangleSize() const{return triangles.size();}
         bool WriteToPLY(const std::string &fileName) const;
         bool WriteToOBJ(const std::string &fileName) const;
-        std::vector<Eigen::Vector3i> triangles;
+        geometry::Point3uiList triangles;
         geometry::Point3List points;
         geometry::Point3List normals;
         geometry::Point3List colors; 

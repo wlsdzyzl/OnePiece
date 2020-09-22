@@ -22,7 +22,9 @@ include_directories(${GLUT_INCLUDE_DIRS})
 include_directories(${OPENGL_INCLUDE_DIRS})
 include_directories(${OPENNI2_INCLUDE_DIR})
 include_directories(${SOPHUS_INCLUDE_DIR})
-include_directories(3rdparty/rply)
+# include_directories(3rdparty/rply)
+
+include_directories(3rdparty/tinyply/source)
 include_directories(3rdparty/tinyobjloader)
 include_directories(3rdparty/MILD)
 include_directories(3rdparty/GRANSAC)
@@ -57,16 +59,22 @@ file(GLOB Tool_SRC
 "src/Tool/*.cpp"
 "src/Tool/*.h"
 )
-file(GLOB Rply_SRC
-"3rdparty/rply/*.c"
-"3rdparty/rply/*.h"
-)
+#file(GLOB Rply_SRC
+#"3rdparty/rply/*.c"
+#"3rdparty/rply/*.h"
+#)
 file(GLOB Objloader_SRC
 "3rdparty/tinyobjloader/*.c"
 "3rdparty/tinyobjloader/*.cpp"
 "3rdparty/tinyobjloader/*.cc"
 "3rdparty/tinyobjloader/*.h"
 )
+
+file(GLOB TinyPly_SRC
+"3rdparty/tinyply/source/tinyply.h"
+"3rdparty/tinyply/source/tinyply.cpp"
+)
+
 file(GLOB Registration_SRC
 "src/Registration/*.cpp"
 "src/Registration/*.h"
@@ -104,9 +112,9 @@ file(GLOB DenseFusion_SRC
 "example/DenseFusion/*.cpp"
 "example/DenseFusion/*.h"
 )
-#message("${Objloader_SRC}")
 
-add_library(rply SHARED ${Rply_SRC})
+#add_library(rply SHARED ${Rply_SRC})
+add_library(tinyply SHARED ${TinyPly_SRC})
 add_library(objloader SHARED ${Objloader_SRC})
 add_library(mild SHARED ${MILD_SRC})
 
@@ -159,7 +167,7 @@ add_executable(DenseFusion ${DenseFusion_SRC})
 
 target_link_libraries(SparseOdometry
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS} 
@@ -170,7 +178,7 @@ target_link_libraries(SparseOdometry
 )
 target_link_libraries(SparseOdometryMild
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS} 
@@ -181,7 +189,7 @@ target_link_libraries(SparseOdometryMild
 )
 target_link_libraries(DenseOdometry 
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS} 
@@ -192,7 +200,7 @@ target_link_libraries(DenseOdometry
 )
 target_link_libraries(ReadPLYPCD
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS}
@@ -203,7 +211,7 @@ target_link_libraries(ReadPLYPCD
 )
 target_link_libraries(ReadRGBD
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS}
@@ -214,7 +222,7 @@ target_link_libraries(ReadRGBD
 )
 target_link_libraries(ReadPLYMESH
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS}
@@ -225,7 +233,7 @@ target_link_libraries(ReadPLYMESH
 )
 target_link_libraries(SimplifyMeshQuadric
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS}
@@ -236,7 +244,7 @@ target_link_libraries(SimplifyMeshQuadric
 )
 target_link_libraries(SimplifyMeshClustering
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS}
@@ -247,7 +255,7 @@ target_link_libraries(SimplifyMeshClustering
 )
 target_link_libraries(MCGenerateMesh
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS}
@@ -258,7 +266,7 @@ target_link_libraries(MCGenerateMesh
 )
 target_link_libraries(EstimateNormals
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS}
@@ -269,7 +277,7 @@ target_link_libraries(EstimateNormals
 )
 target_link_libraries(ImageIntegration
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS}
@@ -280,7 +288,7 @@ target_link_libraries(ImageIntegration
 )
 target_link_libraries(ImageSequenceIntegration
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS}
@@ -291,7 +299,7 @@ target_link_libraries(ImageSequenceIntegration
 )
 target_link_libraries(RoomDetection
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS}
@@ -302,7 +310,7 @@ target_link_libraries(RoomDetection
 )
 target_link_libraries(Clustering
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS}
@@ -313,7 +321,7 @@ target_link_libraries(Clustering
 )
 target_link_libraries(ConvertImageSequenceToPCD
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS}
@@ -324,7 +332,7 @@ target_link_libraries(ConvertImageSequenceToPCD
 )
 target_link_libraries(PruneMesh
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS}
@@ -336,7 +344,7 @@ target_link_libraries(PruneMesh
 
 target_link_libraries(AcquireLiveData
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS} 
@@ -349,7 +357,7 @@ target_link_libraries(AcquireLiveData
 
 target_link_libraries(DetectPlane
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS} 
@@ -361,7 +369,7 @@ target_link_libraries(DetectPlane
 
 target_link_libraries(MergeMultipleSubmaps
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS} 
@@ -372,7 +380,7 @@ target_link_libraries(MergeMultipleSubmaps
 )
 target_link_libraries(RansacTest
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS} 
@@ -383,7 +391,7 @@ target_link_libraries(RansacTest
 )
 target_link_libraries(ICPTest
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS} 
@@ -394,7 +402,7 @@ target_link_libraries(ICPTest
 )
 target_link_libraries(BATest
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS} 
@@ -405,7 +413,7 @@ target_link_libraries(BATest
 )
 target_link_libraries(GenerateModelFromScannet
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS} 
@@ -416,7 +424,7 @@ target_link_libraries(GenerateModelFromScannet
 )
 target_link_libraries(GetLabelUsingKDTree
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS} 
@@ -427,7 +435,7 @@ target_link_libraries(GetLabelUsingKDTree
 )
 target_link_libraries(FBAFusion
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS} 
@@ -438,7 +446,7 @@ target_link_libraries(FBAFusion
 )
 target_link_libraries(BAFusion
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS} 
@@ -449,7 +457,7 @@ target_link_libraries(BAFusion
 )
 target_link_libraries(DenseFusion
     fucking_cool
-    rply
+    tinyply
     objloader
     mild
     ${OpenCV_LIBS} 

@@ -23,7 +23,7 @@ namespace geometry
         geometry::Point3List *points_ptr;
         geometry::Point3List *normals_ptr;
         geometry::Point3List *colors_ptr;
-        std::vector<Eigen::Vector3i> *triangles_ptr;
+        geometry::Point3uiList *triangles_ptr;
         std::vector<geometry::Matrix4> QMatrix;
         std::vector<std::vector<float>> error;
         std::vector<Reference> references;
@@ -38,7 +38,7 @@ namespace geometry
         geometry::Point3List *points_ptr;
         geometry::Point3List *normals_ptr;
         geometry::Point3List *colors_ptr;
-        std::vector<Eigen::Vector3i> *triangles_ptr;      
+        geometry::Point3uiList *triangles_ptr;      
         std::vector<Reference> references;  
         float grid_len;
         std::unordered_map<Eigen::Vector3i, std::pair<int, int>, geometry::VoxelGridHasher > grid_map;
@@ -52,7 +52,7 @@ namespace geometry
         geometry::Point3List *points_ptr;
         geometry::Point3List *normals_ptr;
         geometry::Point3List *colors_ptr;
-        std::vector<Eigen::Vector3i> *triangles_ptr; 
+        geometry::Point3uiList *triangles_ptr; 
         std::vector<Reference> references; 
         std::vector<bool > is_visited;
         std::set<int> unvisited;
@@ -74,10 +74,10 @@ namespace geometry
     void InitializeHelper(TriangleMesh &wait_to_simplify, ClusteringHelper &helper);
     void InitializeHelper(TriangleMesh &wait_to_simplify, PruningHelper &helper);
     void ComputeError(QuadricHelper &helper);
-    void CheckIsBorder(const std::vector<Eigen::Vector3i> &triangles, const std::vector<Reference> &references, std::vector<bool> &is_border);
+    void CheckIsBorder(const geometry::Point3uiList &triangles, const std::vector<Reference> &references, std::vector<bool> &is_border);
     float ComputeError(QuadricHelper &helper, int i, int j, geometry::Point3 &new_p);
-    void UpdateReferences(const std::vector<Eigen::Vector3i> &triangles, std::vector<Reference> &references);
-    void ComputeNormalsAndQMatrix(const std::vector<Eigen::Vector3i> &triangles, const geometry::Point3List &points,
+    void UpdateReferences(const geometry::Point3uiList &triangles, std::vector<Reference> &references);
+    void ComputeNormalsAndQMatrix(const geometry::Point3uiList &triangles, const geometry::Point3List &points,
         std::vector<Reference> &references, geometry::Point3List &normals ,std::vector<geometry::Matrix4> &QMatrix);
     
 }
