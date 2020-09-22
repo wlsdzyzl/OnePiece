@@ -17,7 +17,7 @@ namespace tool
         tinyply::Type type;
         tinyply::Type list_type = tinyply::Type::INVALID;
         size_t list_count = 0;
-        void *data; 
+        unsigned char *data; 
     };
 
     bool ReadPLY(const std::string &filename, geometry::Point3List &points, geometry::Point3List &normals,

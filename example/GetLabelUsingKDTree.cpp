@@ -33,6 +33,8 @@ int main(int argc, char** argv)
         }
         reference_labels.resize(additional_labels[0].count);
         memcpy(reference_labels.data(), additional_labels[0].data, additional_labels[0].byte_size);
+        delete additional_labels[0].data;
+        additional_labels[0].data = nullptr;
     }
     else
     {
@@ -64,7 +66,7 @@ int main(int argc, char** argv)
     //create label writer
 
     additional_labels[0].count = labels.size();
-    additional_labels[0].data = (void *)(&labels[0]);
+    additional_labels[0].data = (unsigned char *)(&labels[0]);
 
     tool::WritePLY("Labeled_model.ply", mesh.points, mesh.normals, mesh.colors, mesh.triangles, additional_labels);
     mesh.colors.resize(mesh.points.size());
