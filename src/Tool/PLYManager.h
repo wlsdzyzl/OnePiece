@@ -27,8 +27,9 @@ namespace tool
     bool WritePLY(const std::string &filename, const geometry::Point3List&points, 
         const geometry::Point3List &normals, const geometry::Point3List &colors,
         const geometry::Point3uiList &triangles = geometry::Point3uiList(), 
+        const std::vector<std::string> & comments = std::vector<std::string>(),
         const std::vector<AdditionalElement> & additional_labels = std::vector<AdditionalElement>(),
-        bool use_ascii = true);
+        bool use_ascii = false);
 }
 }
 #endif

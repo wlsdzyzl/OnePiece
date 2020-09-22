@@ -67,8 +67,9 @@ int main(int argc, char** argv)
 
     additional_labels[0].count = labels.size();
     additional_labels[0].data = (unsigned char *)(&labels[0]);
-
-    tool::WritePLY("Labeled_model.ply", mesh.points, mesh.normals, mesh.colors, mesh.triangles, additional_labels);
+    std::vector<std::string> comments;
+    comments.push_back("each vertex will have semantic labels.");
+    tool::WritePLY("Labeled_model.ply", mesh.points, mesh.normals, mesh.colors, mesh.triangles, comments, additional_labels);
     mesh.colors.resize(mesh.points.size());
     for(int i = 0; i != mesh.points.size(); ++i)
     {
