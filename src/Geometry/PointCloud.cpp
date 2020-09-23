@@ -140,17 +140,10 @@ namespace geometry
             //     radius, knn, geometry::SearchParameter(128));
             kdtree.RadiusSearch(points[i], indices, dists, radius, 
                 30, geometry::SearchParameter(30));
-            /*
-            kdtree.KnnSearch(query, indices, dists, knn, cv::flann::SearchParams(128));
-            int points_number = indices.size();
-            */
-            // std::cout<<"points_number: "<<points_number<<std::endl;
             
             geometry::Point3List nearest_points;
 
-            // A opencv bug: the points_number might be larger that knn, 
-            // but never happen in single thread.
-            
+
             for(int j = 0; j!= indices.size() && j != knn;++j)
             {
                 nearest_points.push_back(points[indices[j]]);
