@@ -70,7 +70,7 @@ namespace geometry
             T
             > NanoKDTree;
         typedef std::shared_ptr<NanoKDTree> NanoKDTreePtr; 
-        KDTree()
+        KDTree(int _max_leaf = 10):max_leaf(_max_leaf)
         {
             //kdtree = NanoKDTree();
         }
@@ -193,7 +193,7 @@ namespace geometry
                 dists[i] = out_dist_sqr[i];
             }           
         }
-
+        protected:
         NanoKDTreePtr kdtree_ptr;
         int max_leaf = 10;
         NanoPointList<T> nano_point_list;
@@ -295,6 +295,7 @@ namespace geometry
             kdtree.knnSearch(point_cv, indices, dists, 
                 k, cv::flann::SearchParams(sp.checks, sp.eps, sp.sorted));            
         }
+        protected:
         cv::flann::Index kdtree;
         int trees;
         cv::Mat input_array;

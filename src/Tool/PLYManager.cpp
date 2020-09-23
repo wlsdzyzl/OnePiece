@@ -238,11 +238,12 @@ namespace tool
             faces_buffer.push_back((unsigned int)triangles[i](1));
             faces_buffer.push_back((unsigned int)triangles[i](2));
         }        
+        Type float_type = sizeof(geometry::scalar) == sizeof(float)? Type::FLOAT32 : Type::FLOAT64;
         geometry_file.add_properties_to_element("vertex", { "x", "y", "z" }, 
-            Type::FLOAT32, vertices_buffer.size() / 3, reinterpret_cast<uint8_t*>(vertices_buffer.data()), Type::INVALID, 0);
+            float_type, vertices_buffer.size() / 3, reinterpret_cast<uint8_t*>(vertices_buffer.data()), Type::INVALID, 0);
         if(has_normals)
         geometry_file.add_properties_to_element("vertex", { "nx", "ny", "nz" },
-            Type::FLOAT32, normals_buffer.size() / 3, reinterpret_cast<uint8_t*>(normals_buffer.data()), Type::INVALID, 0);
+            float_type, normals_buffer.size() / 3, reinterpret_cast<uint8_t*>(normals_buffer.data()), Type::INVALID, 0);
         if(has_colors)
         geometry_file.add_properties_to_element("vertex", { "red", "green", "blue" },
             Type::UINT8, colors_buffer.size() / 3, reinterpret_cast<uint8_t*>(colors_buffer.data()), Type::INVALID, 0);
