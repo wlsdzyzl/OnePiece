@@ -64,6 +64,8 @@ namespace visualization
                                                 pangolin::ModelViewLookAt(0, 0, -1, 0, 0, 1, pangolin::AxisNegY));
             pangolin::Display("cam").SetBounds(0, 1.0f, 0, 1.0f, -640 / 480.0)
                                     .SetHandler(new pangolin::Handler3D(s_cam));
+            if(dynamic_first_view)
+            SetModelViewMatrix(camera_pose_for_view);
             InitializeGlut();
             is_initialized = true;
             buffer_data_updated = false;
@@ -82,6 +84,66 @@ namespace visualization
         void SetDrawColor(bool dc)
         {
             draw_color = dc;
+        }
+        void SetModelViewMatrix(const geometry::TransformationMatrix &camera_pose, 
+            bool reversed_model = true)
+        {
+            //transform to camera coordinate system
+            geometry::Matrix3 camera_rotation = camera_pose.block<3, 3>(0, 0);
+            
+            geometry::Vector3 camera_position = camera_pose.block<3, 1>(0, 3);
+            //in OpenGL
+            //z
+            geometry::Vector3 forward_gl = - camera_rotation.block<3, 1>(0, 2);
+            //y
+            geometry::Vector3 up_gl = camera_rotation.block<3, 1>(0, 1);
+            if(reversed_model) up_gl = -up_gl;
+            //x
+            geometry::Vector3 right_gl = camera_rotation.block<3, 1>(0, 0);
+            up_gl.normalize();
+            right_gl.normalize();
+            forward_gl.normalize();
+            
+            geometry::Matrix3 camera_rotation_gl;
+            // axis of OpenGL coordinate system
+            camera_rotation_gl.block<1, 3>(0, 0) = right_gl.transpose();
+        
+            camera_rotation_gl.block<1, 3>(1, 0) = up_gl.transpose();
+
+            camera_rotation_gl.block<1, 3>(2, 0) = forward_gl.transpose();
+            // change the zero point
+            // we want the camera can be more far away to the object
+            // because in OpenGL coordinate, the Z axis is towards the camera, so if camera wants to move far away from the 
+            // objects, it need to add the z axis vector.
+            auto camera_position_gl = - camera_rotation_gl * camera_position + 2 * forward_gl;
+            
+            
+            Eigen::Matrix4d mv_eigen = Eigen::Matrix4d::Zero();
+            mv_eigen.block<3, 3>(0, 0) = camera_rotation_gl.cast<double>();
+            mv_eigen.block<3, 1>(0, 3) = camera_position_gl.cast<double>();
+            mv_eigen(3, 3) = 1.0;
+            pangolin::OpenGlMatrix mv;
+            memcpy(&mv.m[0], mv_eigen.data(), sizeof(Eigen::Matrix4d));  
+
+            s_cam.SetModelViewMatrix(mv);
+
+        }
+        void ChooseCameraPoseFromPoints(const geometry::Point3List &points)
+        {
+            geometry::Point3 average_point =  geometry::Point3::Zero();
+            for(int i = 0; i != points.size(); ++i)
+            {
+                average_point += points[i];
+            }
+            average_point /= points.size();
+            //just change the y value
+            geometry::TransformationMatrix camera_pose = geometry::TransformationMatrix::Identity();
+            camera_pose.block<3, 1>(0, 3) = average_point + geometry::Point3(0, -5, 0);
+            //let camera
+            // camera_pose.block<3, 1>(0, 0) = geometry::Point3(1, 0, 0);
+            camera_pose.block<3, 1>(0, 1) = geometry::Point3(0, 0, 1);
+            camera_pose.block<3, 1>(0, 2) = geometry::Point3(0, 1, 0);
+            camera_pose_for_view = camera_pose;
         }
         void SetDrawNormal(bool dn)
         {
@@ -106,7 +168,7 @@ namespace visualization
             camera_poses.clear();
             camera_colors.clear();
         }
-        void ConfigProgram(const std::shared_ptr<Shader> &program, const pangolin::OpenGlMatrix &mvp,
+        void ConfigProgram(const std::shared_ptr<Shader> &program, 
             const bool drawNormals, const bool drawColors);
         std::shared_ptr<Shader> GetShader()
         {
@@ -211,11 +273,14 @@ namespace visualization
         geometry::SE3List camera_poses;
         geometry::Point3List camera_colors;
         std::vector<std::pair<int, int>> line_indexs;
-
+        
+        //for model view
+        geometry::TransformationMatrix camera_pose_for_view;
+        
         bool has_lines = false;
         bool has_cameras = false;
         GeometryType geometry_type;
-         
+        bool dynamic_first_view = true;
         //vertex shader
         std::string shader_vert = "draw_all.vert";
         //fragment shader
@@ -229,6 +294,8 @@ namespace visualization
         bool has_normals = true;
         bool is_initialized = false;
         int data_type = GL_FLOAT;
+        protected:
+        
         GLuint vbo;
         GLuint ebo;
         GLuint vao;

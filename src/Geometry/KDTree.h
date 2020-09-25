@@ -128,9 +128,10 @@ namespace geometry
         {
             std::vector<std::pair<size_t, geometry::scalar> >   ret_matches;
             //std::cout<<"max result: "<<max_result<<std::endl;
-            const size_t search_num = kdtree_ptr->radiusSearch(point.data(), radius, ret_matches, max_result,
+            size_t search_num = kdtree_ptr->radiusSearch(point.data(), radius, ret_matches, max_result * 2.5,
                 nanoflann::SearchParams(sp.checks, sp.eps, sp.sorted));
-
+            if(search_num > max_result)
+            search_num = max_result;
             indices.resize(search_num);
             dists.resize(search_num);
 

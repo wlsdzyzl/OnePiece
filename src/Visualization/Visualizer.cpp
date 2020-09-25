@@ -50,7 +50,7 @@ namespace visualization
         // set this program as current program
         
         program->Bind();
-        ConfigProgram(program,s_cam.GetProjectionModelViewMatrix(),draw_normal,draw_color);
+        ConfigProgram(program, draw_normal, draw_color);
         if(point_step == 0)
             std::cout<<"[Visualizer]::[WARNING]::Nothing is in the buffer"<<std::endl;
         else
@@ -94,17 +94,17 @@ namespace visualization
             return;
         }
         Initialize();
-
+        
         while(!pangolin::ShouldQuit())
         {
             ShowOnce();
         }
         
     }
-    void Visualizer::ConfigProgram(const std::shared_ptr<Shader> &program, const pangolin::OpenGlMatrix &mvp,
-        const bool drawNormals, const bool drawColors)
+    void Visualizer::ConfigProgram(const std::shared_ptr<Shader> &program, const bool drawNormals, const bool drawColors)
     {                
-        program->setUniform(Uniform("MVP", mvp));
+        program->setUniform(Uniform("MVP", s_cam.GetProjectionModelViewMatrix()));
+        //std::cout<<"mvp: "<<mvp<<std::endl;
         int color_type = (drawNormals ? 1 : drawColors ? 2 : 0);
         if(draw_color_phong) color_type = 3;
         //std::cout<<"color_type: "<<color_type<<std::endl;
@@ -129,6 +129,10 @@ namespace visualization
     }
     void Visualizer::AddPointCloud(const geometry::PointCloud &pcd)
     {
+        if(dynamic_first_view)
+        {
+            ChooseCameraPoseFromPoints(pcd.points);
+        }
         if(point_step != 0 &&geometry_type != GeometryType::POINTCLOUD)
         {
             std::cout<<YELLOW<<"[Visualizer]::[WARNING]::Geometry type is not pointcloud, the visualizer will clear buffer."<<RESET<<std::endl;
@@ -183,6 +187,7 @@ namespace visualization
 #endif
         if(point_buffer_size > MAX_BUFFER_SIZE || index_buffer_size > MAX_BUFFER_SIZE)
         std::cout<<YELLOW<<"[Visualizer]::[WARNING]::Overflow."<<RESET<<std::endl;
+
     }
     void Visualizer::AddLineSet(const geometry::Point3List & _points, const std::vector<std::pair<int, int>> &_index,
         const geometry::Point3List &_line_colors)
@@ -217,6 +222,10 @@ namespace visualization
     }
     void Visualizer::AddTriangleMesh(const geometry::TriangleMesh &mesh)
     {
+        if(dynamic_first_view)
+        {
+            ChooseCameraPoseFromPoints(mesh.points);
+        }
         if( point_step != 0 &&geometry_type != GeometryType::TRIANGLE_MESH)
         {
             std::cout<<YELLOW<<"[Visualizer]::[WARNING]::Geometry type is not mesh, the visualizer will clear buffer."<<RESET<<std::endl;
@@ -279,6 +288,7 @@ namespace visualization
 
         if(point_buffer_size > MAX_BUFFER_SIZE || index_buffer_size > MAX_BUFFER_SIZE)
         std::cout<<YELLOW<<"[Visualizer]::[WARNING]::Overflow."<<RESET<<std::endl;
+
     }
 
 }

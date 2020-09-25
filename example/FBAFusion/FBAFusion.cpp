@@ -9,7 +9,7 @@ using namespace fucking_cool;
 
 int main(int argc, char **argv)
 {
-    if(argc < 2)
+    if(argc < 3)
     {
         std::cout<<"Usage: [basepath] [voxel resolution]"<<std::endl;
         return 0;
@@ -53,13 +53,13 @@ int main(int argc, char **argv)
             visualizer.Reset();
             visualizer.AddPointCloud(*pcd_ptr);
         }
-        geometry::SE3List camera_poses = fba_slam.global_keyframe_poses;
-        camera_poses.push_back(fba_slam.global_poses.back());
+        // geometry::SE3List camera_poses = fba_slam.global_keyframe_poses;
+        // camera_poses.push_back(fba_slam.global_poses.back());
 
-        geometry::Point3List camera_colors(camera_poses.size(), geometry::Point3(1, 0, 0));
-        camera_colors.back() = geometry::Point3(0, 1, 0);
-        visualizer.AddCameraSet(camera_poses, camera_colors);
-        
+        // geometry::Point3List camera_colors(camera_poses.size(), geometry::Point3(1, 0, 0));
+        // camera_colors.back() = geometry::Point3(0, 1, 0);
+        // visualizer.AddCameraSet(camera_poses, camera_colors);
+        visualizer.SetModelViewMatrix(fba_slam.global_poses.back());
         visualizer.ShowOnce();
     }
     

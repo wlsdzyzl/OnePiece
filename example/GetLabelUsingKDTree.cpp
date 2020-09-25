@@ -15,7 +15,6 @@ int main(int argc, char** argv)
     mesh.LoadFromPLY(argv[1]);
     
     std::vector<unsigned short> labels;
-
     std::vector<unsigned short> reference_labels;
     std::vector<tool::AdditionalElement> additional_labels;
     tool::AdditionalElement additional_label;
