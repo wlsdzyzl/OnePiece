@@ -9,7 +9,7 @@ namespace fucking_cool
 namespace algorithm
 {
     //clustering algorithm, we will implement k-means, means-shift, k-medoids clustering
-    template <int T > class Cluster
+    template <size_t T > class Cluster
     {
 
         public:
@@ -34,14 +34,14 @@ namespace algorithm
         geometry::PointXList items;
         std::vector<int > indexs;        
     };
-    template <int T >
+    template <size_t T >
     void KMeansClustering(const std::vector<Eigen::Matrix<geometry::scalar,T,1>, Eigen::aligned_allocator<Eigen::Matrix<geometry::scalar,T,1>> > & wait_to_cluster, std::vector<Cluster<T>> &clustering_result, int K)
     {
         std::vector<cv::Vec<float,T>> cv_pcd;
-        for(int i = 0; i < wait_to_cluster.size(); ++i)
+        for(size_t i = 0; i < wait_to_cluster.size(); ++i)
         {
             cv::Vec<float,T> item;
-            for(int j = 0;j!=T ; ++j)
+            for(size_t j = 0;j!=T ; ++j)
             {
                 item(j) = wait_to_cluster[i](j);
             }
@@ -55,16 +55,16 @@ namespace algorithm
         cv::kmeans(cv_pcd,K,labels,cv::TermCriteria( CV_TERMCRIT_EPS+CV_TERMCRIT_ITER, 10, 1.0),
             3, cv::KMEANS_PP_CENTERS,centers);     
             
-        for(int i = 0;i!=K; ++i)
+        for(size_t i = 0;i!=K; ++i)
         {
             Eigen::Matrix<geometry::scalar, T, 1> item;
-            for(int j = 0;j!= T ; ++j)
+            for(size_t j = 0;j!= T ; ++j)
             {
                 item(j) = centers[i](j);
             }
             clustering_result.push_back(Cluster<T>(item));
         }
-        for(int i = 0; i!=labels.size(); ++i)
+        for(size_t i = 0; i!=labels.size(); ++i)
         {
             int label = labels[i];
             clustering_result[label].items.push_back(wait_to_cluster[i]);   
@@ -73,14 +73,14 @@ namespace algorithm
     }
 
 
-    template <int T >
+    template <size_t T >
         void MeansShiftClustering(const std::vector<Eigen::Matrix<geometry::scalar,T,1>, Eigen::aligned_allocator<Eigen::Matrix<geometry::scalar,T,1>> > & wait_to_cluster, 
         std::vector<Cluster<T>> &clustering_result, float radius)
     {
         //initialize
         std::set<int > un_visited;
         
-        for(int i = 0;i!= wait_to_cluster.size(); ++i)
+        for(size_t i = 0;i!= wait_to_cluster.size(); ++i)
         {
             un_visited.insert(i);
         }
@@ -118,7 +118,7 @@ namespace algorithm
                 kdtree.RadiusSearch(center, indices,dists,radius,1024, geometry::SearchParameter(1024));
                 //std::cout<<"search points number: "<<find_num<<" "<<cv_pcd.size()<<std::endl;
                 //std::cout<<"clustered points number: "<<find_num<<std::endl;
-                for(int i = 0; i!= indices.size(); ++i)
+                for(size_t i = 0; i!= indices.size(); ++i)
                 {
                     //std::cout<<indices[i]<<std::endl;
                     shift += (wait_to_cluster[indices[i]] - center);
@@ -139,7 +139,7 @@ namespace algorithm
             }
 
             //A merger for the clusters whose centers are close. 
-            for(int i = 0; i!= clustering_result.size(); ++i)
+            for(size_t i = 0; i!= clustering_result.size(); ++i)
             {
                 if((clustering_result[i].center - center).norm() < 0.01)
                 {
@@ -162,7 +162,7 @@ namespace algorithm
 
         }
         // distribute the points to the cluster who has highest frequency
-        for(int i = 0; i!= wait_to_cluster.size(); ++i)
+        for(size_t i = 0; i!= wait_to_cluster.size(); ++i)
         {
             int max_times=0;
             int max_id = -1;
@@ -184,9 +184,9 @@ namespace algorithm
         //return clustering_result;
     }
 
-    template <int T >
+    template <size_t T >
     void KMedoidsClustering(const std::vector<Eigen::Matrix<geometry::scalar,T,1>, Eigen::aligned_allocator<Eigen::Matrix<geometry::scalar,T,1>> > & wait_to_cluster, 
-        std::vector<Cluster<T>> &clustering_result, int target_number, bool initialized = false, 
+        std::vector<Cluster<T>> &clustering_result, size_t target_number, bool initialized = false, 
         const std::vector<int> & initialized_index = std::vector<int>())
     {
         //randomly pick $target_number points as the start medoids
@@ -200,7 +200,7 @@ namespace algorithm
         }
         else
         {
-            for(int i = 0; i != wait_to_cluster.size(); ++i)
+            for(size_t i = 0; i != wait_to_cluster.size(); ++i)
             indexs.push_back(i);
             std::random_shuffle(indexs.begin(), indexs.end());
             indexs.resize(target_number);
@@ -213,17 +213,17 @@ namespace algorithm
             //std::cout<<"iteration "<<iteration<<std::endl;
             std::vector<bool> no_change(target_number, false);
             iteration += 1;
-            for(int i = 0; i != target_number; ++i)
+            for(size_t i = 0; i != target_number; ++i)
             {
                 cluster_index[i].clear();
                 //cluster_index[i].push_back(indexs[i]);
             }
             //std::cout<<"choose new medoid "<<std::endl;
-            for(int i = 0; i != wait_to_cluster.size(); ++i)
+            for(size_t i = 0; i != wait_to_cluster.size(); ++i)
             {
                 int min_index = -1;
                 float min_distance = std::numeric_limits<float>::max ();
-                for(int j = 0; j != target_number; ++j)
+                for(size_t j = 0; j != target_number; ++j)
                 {
                     float distance = (wait_to_cluster[i] - wait_to_cluster[indexs[j]]).norm();
                     if( distance < min_distance)
@@ -237,15 +237,15 @@ namespace algorithm
             }
             //choose new medoid
 
-            for(int i = 0; i != target_number; ++i)
+            for(size_t i = 0; i != target_number; ++i)
             {
                 float min_distance_sum = std::numeric_limits<float>::max ();
                 int new_medoid_index = -1;
                 auto &current_cluster_index = cluster_index[i];
-                for(int test_id = 0; test_id != current_cluster_index.size(); ++test_id)
+                for(size_t test_id = 0; test_id != current_cluster_index.size(); ++test_id)
                 {
                     float distance_sum = 0;
-                    for(int j = 0; j != current_cluster_index.size(); ++j)
+                    for(size_t j = 0; j != current_cluster_index.size(); ++j)
                     {
                         distance_sum +=
                             (wait_to_cluster[current_cluster_index[j]] -wait_to_cluster[current_cluster_index[test_id]]).norm();
@@ -261,7 +261,7 @@ namespace algorithm
                 else indexs[i] = new_medoid_index;
             }
             bool all_no_change = true;
-            for(int i = 0; i != target_number; ++i)
+            for(size_t i = 0; i != target_number; ++i)
             {
                 all_no_change = all_no_change & no_change[i];
             }
@@ -269,18 +269,18 @@ namespace algorithm
             if(all_no_change == true)
             break;
         }
-        for(int i = 0; i != target_number; ++i)
+        for(size_t i = 0; i != target_number; ++i)
         {
              
             clustering_result.push_back(Cluster<T>(wait_to_cluster[indexs[i]]));
             clustering_result.back().indexs = cluster_index[i];
-            for(int j = 0; j != cluster_index[i].size(); ++j)
+            for(size_t j = 0; j != cluster_index[i].size(); ++j)
                 clustering_result.back().items.push_back(wait_to_cluster[cluster_index[i][j]]);
         }
     }
 
     void KMedoidsClusteringDynamic(const geometry::PointXList & wait_to_cluster, 
-        std::vector<ClusterDynamic> &clustering_result, int target_number, bool initialized = false, 
+        std::vector<ClusterDynamic> &clustering_result, size_t target_number, bool initialized = false, 
         const std::vector<int> & initialized_index = std::vector<int>());
     
 }

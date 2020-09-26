@@ -24,9 +24,9 @@ namespace tool
             std::cout<<RED<<"[ERROR]::[AlignColorToDepth]::XYZImage has zero rows."<<RESET<<std::endl;
             return aligned_color;
         }
-        for(int v = 0; v != xyz.size(); ++v)
+        for(size_t v = 0; v != xyz.size(); ++v)
         {            
-            for(int u = 0; u != xyz[0].size(); ++u)
+            for(size_t u = 0; u != xyz[0].size(); ++u)
             {
                 auto tmp_point = xyz[v][u];
                 if(tmp_point[2] > 0)
@@ -101,10 +101,10 @@ namespace tool
         int color_width = -1, color_height = -1;
         int depth_width = -1, depth_height = -1;
         int depth_scale = -1;
-        int frames_size = -1;
+        size_t frames_size = 0;
         //color intrinsics and depth intrinsics
-        float fx_c, cx_c, fy_c, cy_c;
-        float fx_d, cx_d, fy_d, cy_d;
+        float fx_c = 0, cx_c = 0, fy_c = 0, cy_c = 0;
+        float fx_d = 0, cx_d = 0, fy_d = 0, cy_d = 0;
         while(ifs.getline(line, 1000,'\n'))
         {
             std::vector<std::string> parse_results = Split(line, " = ");
@@ -150,7 +150,7 @@ namespace tool
         depth_camera.SetPara(fx_d, fy_d, cx_d, cy_d, depth_width, depth_height, depth_scale);
         rgb_files.clear();
         depth_files.clear();
-        for(int i = 0; i != frames_size; ++i)
+        for(size_t i = 0; i != frames_size; ++i)
         {
             std::ostringstream oss;
             oss<<std::setw(6)<<std::setfill('0')<<i; 
@@ -166,7 +166,7 @@ namespace tool
     {
         ReadImageSequenceFromScannet(path, rgb_files, depth_files, rgb_camera, depth_camera);
         poses.clear();
-        for(int i = 0; i < rgb_files.size(); ++i)
+        for(size_t i = 0; i < rgb_files.size(); ++i)
         {
             
             std::ostringstream oss;

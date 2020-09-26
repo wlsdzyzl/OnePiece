@@ -19,7 +19,7 @@ namespace fucking_cool
         geometry::PointCloudPtr GenerateSubmapModel(const std::vector<geometry::RGBDFrame> global_frames, const geometry::SE3List &relative_poses, const camera::PinholeCamera &camera)
         {
             geometry::PointCloud pcd;
-            for(int i = 0; i < containted_frames.size(); i+=3)
+            for(size_t i = 0; i < containted_frames.size(); i+=3)
             {
                 geometry::PointCloud tmp_pcd;
                 int containted_frame_id = containted_frames[i];
@@ -73,7 +73,7 @@ namespace fucking_cool
         geometry::PointCloudPtr GetPosedPCD()
         {
             geometry::PointCloud v_pcd;
-            for(int i = 0; i != submaps.size(); ++i)
+            for(size_t i = 0; i != submaps.size(); ++i)
             {
                 auto tmp_pcd = submaps[i].downsampled_pcd;
                 tmp_pcd.Transform(submap_poses[i]);
@@ -84,7 +84,7 @@ namespace fucking_cool
         void ReleaseSubmapFrame(int submap_id)
         {
             auto &containted_frames = submaps[submap_id].containted_frames;
-            for(int i = 0; i != containted_frames.size(); ++i)
+            for(size_t i = 0; i != containted_frames.size(); ++i)
             {
                 global_frames[containted_frames[i]].Release();
             }
@@ -92,10 +92,10 @@ namespace fucking_cool
         void UpdateAllPoses()
         {
         
-            for(int i = 0; i != submaps.size(); ++i)
+            for(size_t i = 0; i != submaps.size(); ++i)
             {
                 auto &containted_frames = submaps[i].containted_frames;
-                for(int j = 0; j != containted_frames.size(); ++j)
+                for(size_t j = 0; j != containted_frames.size(); ++j)
                     global_poses[containted_frames[j]] = submap_poses[i] * relative_poses[containted_frames[j]];
             }
         }

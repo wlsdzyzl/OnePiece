@@ -24,8 +24,7 @@ namespace integration
     class CubeHandler
     {
         public:
-        //Prepare cube id, has two flags: is_new_chunk, and is_updated.
-        typedef std::tuple<CubeID, bool, bool> PreparedCubeID; 
+
         CubeHandler()
         {
             c_para.InitializeVoxelCube();
@@ -66,6 +65,7 @@ namespace integration
                 ++i;
             }
             std::cout<<GREEN<<"[CubeHandler]::[INFO]::Load TSDF field done!(From BinaryFile) "<<RESET<<std::endl;            
+            return true;
         }
         /*
         This function is nothing but to read a float tsdf file I defined before, which has been abandoned.
@@ -105,6 +105,7 @@ namespace integration
                 ++i;
             }
             std::cout<<GREEN<<"[CubeHandler]::[INFO]::Load TSDF field done!(From BinaryFile) "<<RESET<<std::endl;            
+            return true;
         }
         std::shared_ptr<geometry::PointCloud> GetPointCloud() const;
         void GenerateMeshByCube(const CubeID &cube_id, geometry::TriangleMesh &mesh);
@@ -157,7 +158,7 @@ namespace integration
                 }
                 else
                 {
-                    for(int voxel_id = 0; voxel_id != iter->second.voxels.size(); ++voxel_id)
+                    for(size_t voxel_id = 0; voxel_id != iter->second.voxels.size(); ++voxel_id)
                     {
                         cube_map[iter->first].voxels[voxel_id] += iter->second.voxels[voxel_id];
                     }
@@ -177,7 +178,7 @@ namespace integration
         void ComputeBounding(const cv::Mat &depth, const geometry::TransformationMatrix & pose, 
             geometry::Point3 & max_pos, geometry::Point3 &min_pos);
         void PrepareCubes(const cv::Mat &depth, const geometry::TransformationMatrix &pose, 
-            std::vector<PreparedCubeID> &cube_id_list);
+            std::vector<CubeID> &cube_id_list);
         // A volumetric method for building complex models from range images, B. Curless and M. Levoy, 1996 SIGGRAPH
         void IntegrateImage(const cv::Mat &depth, const cv::Mat &rgb, const geometry::TransformationMatrix & pose);
         void IntegrateImage(const geometry::RGBDFrame &rgbd, const geometry::TransformationMatrix & pose);
@@ -197,7 +198,7 @@ namespace integration
         }
         void AddTransformedCube(const VoxelCube &v_cube, const geometry::TransformationMatrix &trans)
         {
-            for(int voxel_id = 0; voxel_id != v_cube.voxels.size(); ++voxel_id)
+            for(size_t voxel_id = 0; voxel_id != v_cube.voxels.size(); ++voxel_id)
             {
                 geometry::Point3 center_position = c_para.GetGlobalPoint(v_cube.cube_id, voxel_id);
                 geometry::Vector4 tmp_position = 
@@ -215,7 +216,7 @@ namespace integration
                 _8_neighbor[5] = _8_neighbor[0] + geometry::Point3i(1,0,1);
                 _8_neighbor[6] = _8_neighbor[0] + geometry::Point3i(0,1,1);
                 _8_neighbor[7] = _8_neighbor[0] + geometry::Point3i(1,1,1);
-                for(int i = 0; i != 8; ++i)
+                for(size_t i = 0; i != 8; ++i)
                 {
                     CubeID cube_id = c_para.GetCubeID(_8_neighbor[i]);
                     AddCube(cube_id);
@@ -224,7 +225,7 @@ namespace integration
         }
         void AddTransformedCubeNearest(const VoxelCube &v_cube, const geometry::TransformationMatrix &trans)
         {
-            for(int voxel_id = 0; voxel_id != v_cube.voxels.size(); ++voxel_id)
+            for(size_t voxel_id = 0; voxel_id != v_cube.voxels.size(); ++voxel_id)
             {
                 geometry::Point3 center_position = c_para.GetGlobalPoint(v_cube.cube_id, voxel_id);
                 geometry::Vector4 tmp_position = 
@@ -254,7 +255,7 @@ namespace integration
             {
                 //read each voxel from eight neighbor
                 auto &v_cube = iter->second;
-                for(int voxel_id = 0; voxel_id != v_cube.voxels.size(); ++voxel_id)
+                for(size_t voxel_id = 0; voxel_id != v_cube.voxels.size(); ++voxel_id)
                 {
                     geometry::Point3 center_position = c_para.GetGlobalPoint(v_cube.cube_id, voxel_id);
                     geometry::Vector4 tmp_position = 
@@ -275,7 +276,7 @@ namespace integration
                     _8_neighbor[7] = _8_neighbor[0] + geometry::Point3i(1,1,1);
 
                     
-                    for(int i = 0; i != 8; ++i)
+                    for(size_t i = 0; i != 8; ++i)
                     {
                         auto cube_id = c_para.GetCubeID(_8_neighbor[i]);
                         auto _voxel_id = c_para.GetVoxelID(_8_neighbor[i]);
@@ -312,7 +313,7 @@ namespace integration
             {
                 //read each voxel from eight neighbor
                 auto &v_cube = iter->second;
-                for(int voxel_id = 0; voxel_id != v_cube.voxels.size(); ++voxel_id)
+                for(size_t voxel_id = 0; voxel_id != v_cube.voxels.size(); ++voxel_id)
                 {
                     geometry::Point3 center_position = c_para.GetGlobalPoint(v_cube.cube_id, voxel_id);
                     geometry::Vector4 tmp_position = 

@@ -94,7 +94,7 @@ namespace MILD
 			{
 				unsigned long nidx = entry_idx ^ (1 << i);
 				int redundancy_flag = 0;
-				for (int j = 0; j < neighbor_entry_idx.size(); j++)
+				for (size_t j = 0; j < neighbor_entry_idx.size(); j++)
 				{
 					if (nidx == neighbor_entry_idx[j])
 					{

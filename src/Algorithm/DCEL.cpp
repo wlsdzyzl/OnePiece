@@ -24,7 +24,7 @@ namespace algorithm
             std::cout<<"Not in the bounding box!"<<std::endl;
             return -1;
         }
-        for(int i = 0; i != faces.size(); ++ i)
+        for(size_t i = 0; i != faces.size(); ++ i)
         {
             if(faces[i].is_valid == false)
             continue;
@@ -112,7 +112,7 @@ namespace algorithm
     void DCEL::IncrementLine(const geometry::Line &line)
     {
         std::set<int> edge_ids;
-        for(int i = 0; i!=edges.size(); ++i)
+        for(size_t i = 0; i!=edges.size(); ++i)
         {
             if(edges[i].is_valid == false) continue;
             if(edge_ids.find(edges[i].twin_eid) == edge_ids.end())
@@ -135,7 +135,7 @@ namespace algorithm
         
         auto tmp_inter_points = inter_points;
         inter_points.clear();
-        for(int i = 0; i != tmp_inter_points.size(); ++i)
+        for(size_t i = 0; i != tmp_inter_points.size(); ++i)
         {
 
             if(inter_points.size() == 0 || 
@@ -144,10 +144,10 @@ namespace algorithm
                 inter_points.push_back(tmp_inter_points[i]);
             }
         }
-        int new_eid0;
-        int old_eid1;
-        int vid1;
-        int vid2;
+        int new_eid0 = -1;
+        int old_eid1 = -1;
+        int vid1 = -1;
+        int vid2 = -1;
         //std::cout<<"Add "<<inter_points.size()<<" vertexs."<<std::endl;
         int line_id = AllocateLID();
         DCELLine d_line(line_id, line);
@@ -155,7 +155,7 @@ namespace algorithm
         InsertLine(d_line);
         
         bool restart = true;
-        for(int i = 0; i < inter_points.size(); ++i)
+        for(size_t i = 0; i < inter_points.size(); ++i)
         {
             //std::cout<<i<<std::endl;
             //Check if the point is on the edge

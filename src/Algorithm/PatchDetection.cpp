@@ -47,7 +47,7 @@ namespace algorithm
         std::vector<double> residuals(points.size());      
         std::set<int> un_visited;
         std::vector<std::vector<int>> adj_points(points.size());
-        for(int i = 0; i < points.size(); ++i)
+        for(size_t i = 0; i < points.size(); ++i)
         {
             un_visited.insert(i);
         } 
@@ -58,7 +58,7 @@ namespace algorithm
 #if 0 
         int k = 100;
         std::cout<<BLUE<<"[EstimateNormals]::[INFO]::Search "<<k<<" nearest points."<<RESET<<std::endl;
-        for(int i = 0; i < points.size(); ++i)
+        for(size_t i = 0; i < points.size(); ++i)
         {
             
             std::vector<int> indices; 
@@ -66,7 +66,7 @@ namespace algorithm
             kdtree.KnnSearch(points[i], indices, dists, k, geometry::SearchParameter(64));
 
             geometry::Point2List nearest_points;
-            for(int j = 0; j!= indices.size();++j)
+            for(size_t j = 0; j!= indices.size();++j)
             {
                 nearest_points.push_back(points[indices[j]]);
                 //std::cout <<indices[j]<<" "<<std::endl;
@@ -83,7 +83,7 @@ namespace algorithm
         float radius = 0.1;
         
         std::cout<<BLUE<<"[LineDetection]::[INFO]::radius: "<<radius<<RESET<<std::endl;
-        for(int i = 0; i < points.size(); ++i)
+        for(size_t i = 0; i < points.size(); ++i)
         {
             
             std::vector<int> indices; 
@@ -91,7 +91,7 @@ namespace algorithm
             kdtree.RadiusSearch(points[i], indices, dists, radius ,1024 ,geometry::SearchParameter(1024));
 
             geometry::Point2List radius_points;
-            for(int j = 0; j!= indices.size();++j)
+            for(size_t j = 0; j!= indices.size();++j)
             {
                 radius_points.push_back(points[indices[j]]);
             }
@@ -108,7 +108,7 @@ namespace algorithm
                 geometry::Vector2 n = std::get<0>(result);
                 float d  =std::get<1>(result);
                 
-                for(int i = 0; i!= radius_points.size(); ++i)
+                for(size_t i = 0; i!= radius_points.size(); ++i)
                 {
                     if(std::fabs(n.transpose() * radius_points[i] + d ) <= radius / 2)
                     {
@@ -131,10 +131,9 @@ namespace algorithm
             geometry::Point3 line = k_lines[seed_id];
             geometry::Point2List tmp_points;
             std::vector<int > tmp_indexs;
-            int last_number = 0;
-            int add_number = 1000;
-            double threshold = 0.1;
-            float indicator;
+
+
+            float indicator = 1e6;
 #if DEBUG_MODE
             std::cout<<BLUE<<"[LineDetection]::[Debug]::"<<iter_th<<"th iteration."<<RESET<<std::endl;
 #endif
@@ -151,7 +150,7 @@ namespace algorithm
                 int search_id = wait_to_search.front();
                 wait_to_search.pop();
                 //int out_lier = 0;
-                for(int i = 0; i!= adj_points[search_id].size(); ++i)
+                for(size_t i = 0; i!= adj_points[search_id].size(); ++i)
                 {
                     int index = adj_points[search_id][i];
                     if(un_visited.find(index) == un_visited.end())
@@ -173,6 +172,7 @@ namespace algorithm
                 }
             }
 #else
+            int add_number = 1000;
             while(add_number >= 100)
             {
             
@@ -189,7 +189,7 @@ namespace algorithm
                         deleted_id.push_back(i);
                     }
                 }
-                for(int i = 0; i != deleted_id.size(); ++i)
+                for(size_t i = 0; i != deleted_id.size(); ++i)
                 {
                     un_visited.erase(deleted_id[i]);
                 }
@@ -240,7 +240,7 @@ namespace algorithm
         std::vector<double> residuals(points.size());      
         std::vector<std::vector<int>> adj_points(points.size());
         std::set<int> un_visited;
-        for(int i = 0; i < points.size(); ++i)
+        for(size_t i = 0; i < points.size(); ++i)
         {
 
             un_visited.insert(i);
@@ -252,14 +252,14 @@ namespace algorithm
         //int k = 100;
         float radius = 0.3;
         std::cout<<BLUE<<"[PlaneDetection]::[INFO]::Search "<<radius<<RESET<<std::endl;
-        for(int i = 0; i < points.size(); ++i)
+        for(size_t i = 0; i < points.size(); ++i)
         {
             std::vector<int> indices; 
             std::vector<float> dists; 
             kdtree.RadiusSearch(points[i], indices, dists, radius ,1024 ,geometry::SearchParameter(1024));
 
             geometry::Point3List radius_points;
-            for(int j = 0; j!= indices.size();++j)
+            for(size_t j = 0; j!= indices.size();++j)
             {
                 radius_points.push_back(points[indices[j]]);
                 //std::cout <<indices[j]<<" "<<std::endl;
@@ -278,7 +278,7 @@ namespace algorithm
                 geometry::Point3 n = std::get<0>(result);
                 float d  =std::get<1>(result);
                 
-                for(int i = 0; i!= radius_points.size(); ++i)
+                for(size_t i = 0; i!= radius_points.size(); ++i)
                 {
                     if(std::fabs(n.transpose() * radius_points[i] + d ) <= radius / 2)
                     {
@@ -302,10 +302,10 @@ namespace algorithm
             geometry::Vector4 plane = each_plane[seed_id];
             geometry::Point3List tmp_points;
             std::vector<int > tmp_indexs;
-            int last_number = 0;
-            int add_number = 1000;
-            double threshold = 0.1;
-            float indicator;
+
+
+
+            float indicator = 1e6;
 #if DEBUG_MODE
             std::cout<<BLUE<<"[LineDetection]::[Debug]::"<<iter_th<<"th iteration."<<RESET<<std::endl;
 #endif
@@ -324,7 +324,7 @@ namespace algorithm
                 wait_to_search.pop();
                 //int out_lier = 0;
                 //std::set<int> inlier_seed;
-                for(int i = 0; i!= adj_points[search_id].size(); ++i)
+                for(size_t i = 0; i!= adj_points[search_id].size(); ++i)
                 {
                     int index = adj_points[search_id][i];
                     if(un_visited.find(index) == un_visited.end())
@@ -346,6 +346,7 @@ namespace algorithm
                 }
             }
 #else
+            int add_number = 1000;
             while(add_number >= 100)
             {
             
@@ -362,7 +363,7 @@ namespace algorithm
                         deleted_id.push_back(i);
                     }
                 }
-                for(int i = 0; i != deleted_id.size(); ++i)
+                for(size_t i = 0; i != deleted_id.size(); ++i)
                 {
                     un_visited.erase(deleted_id[i]);
                 }

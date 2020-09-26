@@ -35,12 +35,12 @@ int main(int argc, char **argv)
     s_pcd.colors.resize(s_pcd.points.size());
     t_pcd.colors.resize(t_pcd.points.size());
 
-    for(int i = 0; i != s_pcd.points.size(); ++i)
+    for(size_t i = 0; i != s_pcd.points.size(); ++i)
     {
         s_pcd.colors[i] = geometry::Point3(1, 0, 0);
     }
     s_pcd.Transform(result1->T);
-    for(int i = 0; i != t_pcd.points.size(); ++i)
+    for(size_t i = 0; i != t_pcd.points.size(); ++i)
         t_pcd.colors[i] = geometry::Point3(0, 1, 0);
 
     visualization::Visualizer visualizer;

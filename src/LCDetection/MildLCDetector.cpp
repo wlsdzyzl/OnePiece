@@ -33,7 +33,7 @@ namespace lcdetection
         }
 
         std::sort(tmp_candidates.begin(), tmp_candidates.end(),std::greater<MILD::LCDCandidate>());
-        for (int k = 0; k < tmp_candidates.size() && k < max_candidate_num; ++k)
+        for (size_t k = 0; k < tmp_candidates.size() && k < max_candidate_num; ++k)
         {
             candidates.push_back(tmp_candidates[k].index);
         }

@@ -2,7 +2,6 @@
 #define MARCHING_CUBE_H
 #include "Geometry/Geometry.h"
 #include "Geometry/TriangleMesh.h"
-#include "MarchingCubePredefined.h"
 #include "TSDFVoxel.h"
 #include <map>
 namespace fucking_cool

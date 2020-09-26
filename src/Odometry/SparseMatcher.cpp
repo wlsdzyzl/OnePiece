@@ -16,7 +16,7 @@ namespace odometry
     void SparseMatcher::Clear()
     {
         sparse_matcher.features_buffer = std::vector<MILD::sparse_match_entry>(sparse_matcher.features_buffer.size());
-		for (int i = 0; i < sparse_matcher.features_buffer.size(); i++)
+		for(size_t i = 0; i < sparse_matcher.features_buffer.size(); i++)
 		{
 			sparse_matcher.features_buffer[i].clear();
 		}
@@ -33,7 +33,7 @@ namespace odometry
         float fx = camera.GetFx();
         float fy = camera.GetFy();
         predict_ref_points.resize(source_local_points.size());
-        for (int i = 0; i < predict_ref_points.size(); i++)
+        for(size_t i = 0; i < predict_ref_points.size(); i++)
         {
             geometry::Vector4 homo_points;
             homo_points << source_local_points[i](0), source_local_points[i](1), source_local_points[i](2), 1;

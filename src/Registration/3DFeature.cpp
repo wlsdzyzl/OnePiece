@@ -33,7 +33,7 @@ namespace registration
         neighbors.resize(pcd.points.size());
         //std::cout<<squared_radius<<std::endl;
 
-        for(int i = 0; i != pcd.points.size(); ++i)
+        for(size_t i = 0; i != pcd.points.size(); ++i)
         {
             
             std::vector<int> indices; 
@@ -100,12 +100,12 @@ namespace registration
         std::cout<<BLUE<<"[DEBUG]::[FPFHFeature]::Compute FPFH"<<RESET<<std::endl;
 #endif
 
-        for(int i = 0; i != spfh_features.size(); ++i)
+        for(size_t i = 0; i != spfh_features.size(); ++i)
         {
             
             std::vector<double> sum = {0,0,0};
             fpfh_features[i] = f_zero;
-            for(int j = 0; j != neighbor_indexs[i].size(); ++j)
+            for(size_t j = 0; j != neighbor_indexs[i].size(); ++j)
             {
                 float dist = (pcd.points[i] - pcd.points[neighbor_indexs[i][j]]).norm();
                 if(dist != 0.0)

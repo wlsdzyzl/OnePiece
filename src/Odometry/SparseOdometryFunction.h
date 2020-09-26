@@ -15,7 +15,7 @@ namespace odometry
             const geometry::Point3List &target_local_points, std::vector< cv::DMatch > &init_matches)
         {
             int ptr = 0;
-            for(int i = 0; i < init_matches.size(); ++i)
+            for(size_t i = 0; i < init_matches.size(); ++i)
             {
                 auto source = source_local_points[init_matches[i].queryIdx];
                 auto target = target_local_points[init_matches[i].trainIdx];
@@ -30,7 +30,7 @@ namespace odometry
         {
             /*the most naive way*/
             float mindist = 1000000;
-            for(int i = 0;i!=matches.size();i++)
+            for(size_t i = 0;i!=matches.size();i++)
             {
                 float dist = matches[i].distance;
                 
@@ -39,7 +39,7 @@ namespace odometry
             if(mindist < 20) mindist = 20;
             std::cout<<"MinDistance: "<<mindist<<std::endl;
             geometry::DMatchSet good_matches;
-            for( int i = 0;i!=matches.size();++i)
+            for(size_t i = 0;i!=matches.size();++i)
             {
                 if(matches[i].distance <= 2*mindist)
                     good_matches.push_back(matches[i]);
@@ -50,9 +50,9 @@ namespace odometry
         void RanSaPC(const geometry::Point3List &source_local_points, 
             const geometry::Point3List &target_local_points, std::default_random_engine &engine, std::vector< cv::DMatch > &init_matches)
         {
-            int candidate_num = 8;
+            size_t candidate_num = 8;
             float distance_threshold = 0.015;
-            int N = init_matches.size();
+            size_t N = init_matches.size();
             std::vector< cv::DMatch > filtered_matches;
             filtered_matches.reserve(N);
             std::uniform_int_distribution<int> uniform(0,N-1);
@@ -89,7 +89,7 @@ namespace odometry
             matches.clear();
             std::vector<std::vector<cv::DMatch>> knnMatches;
             matcher.knnMatch(source, target, knnMatches, 2);
-            for(int i = 0; i < knnMatches.size(); ++i)
+            for(size_t i = 0; i < knnMatches.size(); ++i)
             {
                 const cv::DMatch & bestMatch = knnMatches[i][0];
                 const cv::DMatch & betterMatch = knnMatches[i][1];

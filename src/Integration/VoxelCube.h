@@ -47,11 +47,11 @@ namespace integration
                                 0, 0, 0, 0, 1, 1, 1, 1;
             VoxelCentroidOffSet.resize(CUBE_SIZE * CUBE_SIZE * CUBE_SIZE);
             float half_resolution = VoxelResolution / 2;
-            for(int x = 0; x!= CUBE_SIZE; ++x)
+            for(size_t x = 0; x!= CUBE_SIZE; ++x)
             {
-                for(int y = 0; y!= CUBE_SIZE; ++y)
+                for(size_t y = 0; y!= CUBE_SIZE; ++y)
                 {
-                    for(int z = 0; z!= CUBE_SIZE; ++z)
+                    for(size_t z = 0; z!= CUBE_SIZE; ++z)
                     {
                         VoxelCentroidOffSet[x + y * CUBE_SIZE + z *CUBE_SIZE * CUBE_SIZE] 
                             = geometry::Point3(x*VoxelResolution + half_resolution,
@@ -112,7 +112,7 @@ namespace integration
                 std::cout<<YELLOW<<"[Integration]::[WARNING]::Integrate two cubes which do not have the same cube_id."<<RESET<<std::endl;
                 return;
             }
-            for(int i = 0;i!= voxels.size(); ++i)
+            for(size_t i = 0;i!= voxels.size(); ++i)
             {
                 voxels[i] += other.voxels[i];
             }
@@ -131,7 +131,7 @@ namespace integration
             buffer.push_back(cube_id(1));
             buffer.push_back(cube_id(2));
 
-            for(int i = 0;i!= voxels.size(); ++i)
+            for(size_t i = 0;i!= voxels.size(); ++i)
             {
                 if(std::fabs(voxels[i].sdf) <1 && voxels[i].weight!= 0 )
                 {
@@ -178,7 +178,7 @@ namespace integration
             ptr++;
             size_t count = buffer[ptr++];
             //std::cout<<"count: "<<count<<std::endl;
-            int c = 0;
+            size_t c = 0;
             while(c<count)
             {
                 c++;

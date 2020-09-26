@@ -47,7 +47,7 @@ namespace geometry
         
         if (((d1 < -EPS && d2 > EPS) || (d1 > EPS && d2 < -EPS)) && ((d3 < -EPS && d4 > EPS) || (d3 > EPS && d4 < -EPS)))
             return 1;
-        if (fabs(d1) <= EPS && InSegBounding(l1, l2.p0) || (fabs(d2) <= EPS && InSegBounding(l1, l2.p1)) 
+        if ((fabs(d1) <= EPS && InSegBounding(l1, l2.p0)) || (fabs(d2) <= EPS && InSegBounding(l1, l2.p1)) 
             || (fabs(d3) <= EPS && InSegBounding(l2, l1.p0)) || (fabs(d4) <= EPS && InSegBounding(l2, l1.p1)))
             return 1;
         return 0;
@@ -98,7 +98,7 @@ namespace geometry
         float distance = line.n.transpose() * point + line.d;
         if(std::fabs(distance) < EPS) return 0;
         if(distance > 0) return 1;
-        if(distance < 0) return -1;
+        return -1;
         //if(distance == 0) return 0;
         //return distance; 
     }
@@ -109,7 +109,7 @@ namespace geometry
         //std::cout<<d<<std::endl;
         if(std::fabs(d) < EPS) return 0;
         if(d > 0) return 1;
-        if(d < 0) return -1;
+        return -1;
     }
     int CheckPointInTriangle(const Point2 & a, const Point2 &b, const Point2 & c, const Point2 &p)
     {
@@ -121,9 +121,9 @@ namespace geometry
         //std::cout<<a_r<<" "<<b_r<<" "<<c_r<<std::endl;
         if(a_r == b_r && b_r == c_r)
         return 1;
-        if(a_r == b_r &&  c_r == 0 || a_r == c_r && b_r == 0 || c_r == b_r && a_r == 0)
+        if((a_r == b_r && c_r == 0) || (a_r == c_r && b_r == 0) || (c_r == b_r && a_r == 0))
         return 1;
-        if(a_r == b_r && a_r == 0 || a_r == c_r && a_r == 0 || c_r == b_r && c_r == 0)
+        if((a_r == b_r && a_r == 0) || (a_r == c_r && a_r == 0) || (c_r == b_r && c_r == 0))
         return 1;
 
         return 0;

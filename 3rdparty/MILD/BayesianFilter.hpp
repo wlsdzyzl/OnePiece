@@ -40,7 +40,7 @@ namespace MILD
         inline void calculateSalientScore(const std::vector<float> &similarity_score, std::vector<float> &salient_score)
         {
 
-            int dataset_size = similarity_score.size();
+            size_t dataset_size = similarity_score.size();
 
             if (dataset_size == 0)
             {
@@ -49,7 +49,7 @@ namespace MILD
             salient_score.clear();
             salient_score = std::vector<float>(dataset_size);
             float average_similarity_score = 0;
-            for (int i = 0; i < dataset_size; i++)
+            for (size_t i = 0; i < dataset_size; i++)
             {
                 average_similarity_score += similarity_score[i];
             }
@@ -66,7 +66,7 @@ namespace MILD
             }
             if (history_loop <= 0)					// indicating all the frames are significiant
             {
-                for (int i = 0; i < dataset_size; i++)
+                for (size_t i = 0; i < dataset_size; i++)
                 {
                     salient_score[i] = 3;
                 }
@@ -82,7 +82,7 @@ namespace MILD
 
             if (mean_score < 1e-8 || history_loop < 3)
             {
-                for (int i = 0; i < dataset_size; i++)
+                for (size_t i = 0; i < dataset_size; i++)
                 {
                     salient_score[i] = 1;
                 }
@@ -91,7 +91,7 @@ namespace MILD
 
             float delta = (sim_score.rowwise() - sim_score.colwise().mean()).norm() / fmax(sqrt(sim_score.size() - 1), 1);
 
-            for (int i = 0; i < dataset_size; i++)
+            for (size_t i = 0; i < dataset_size; i++)
             {
                 float saliency = (similarity_score[i] - delta) / mean_score;
                 salient_score[i] = saliency;
@@ -108,11 +108,11 @@ namespace MILD
 
             float trans_model[2][2] = { 0.95, 0.05, 0.05, 0.95 };
             // bayesian filter
-            int dataset_size = similarity_score.size();
-            if (dataset_size > min_distance)
+            size_t dataset_size = similarity_score.size();
+            if (dataset_size > static_cast<size_t>(min_distance))
             {
                 Eigen::VectorXf sim_score(dataset_size - min_distance);
-                for (int i = 0; i < dataset_size - min_distance; i++)
+                for (size_t i = 0; i < dataset_size - min_distance; i++)
                 {
                     sim_score[i] = similarity_score[i];
                 }
@@ -139,8 +139,8 @@ namespace MILD
                 int previous_visit_idx = privious_visit_flag.size() - 1;
                 if (privious_visit_flag.size() >= 4)
                 {
-                    int search_range = privious_visit_flag[previous_visit_idx].size();
-                    for (int i = 0; i < search_range; i++)
+                    size_t search_range = privious_visit_flag[previous_visit_idx].size();
+                    for (size_t i = 0; i < search_range; i++)
                     {
                         if (privious_visit_flag[previous_visit_idx][i] > 0)
                         {

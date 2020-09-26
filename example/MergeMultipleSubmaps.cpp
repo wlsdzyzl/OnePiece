@@ -19,7 +19,7 @@ int main(int argc, char **argv)
     ifs>>submap_count;
     relative_poses.resize(submap_count);
     geometry::Matrix4 tmp_pos = geometry::Matrix4::Zero();
-    for(int i = 0; i != relative_poses.size(); ++i)
+    for(size_t i = 0; i != relative_poses.size(); ++i)
     {
         int submap_id;
         ifs>>submap_id;
@@ -31,7 +31,7 @@ int main(int argc, char **argv)
         tmp_pos(3,3) = 1.0;
         relative_poses[i] = tmp_pos;
     }    
-    for(int i = 0; i < submap_count; ++i)
+    for(size_t i = 0; i < submap_count; ++i)
     {
         std::cout<<"merge "<<i<<"th submap..."<<std::endl;
         integration::CubeHandler tmp_cube_handler;

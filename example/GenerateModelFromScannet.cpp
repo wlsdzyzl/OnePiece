@@ -46,7 +46,7 @@ int main(int argc, char ** argv)
 //         filtered_index.resize(local_rate * filtered_index.size());
 //     }
 // #endif
-    for(int i = 0; i != rgb_files.size(); ++i) 
+    for(size_t i = 0; i != rgb_files.size(); ++i) 
     { 
         if(i % 10 != 0) continue;
         int frame_id = i;

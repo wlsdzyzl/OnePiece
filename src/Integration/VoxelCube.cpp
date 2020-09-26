@@ -7,7 +7,7 @@ namespace integration
         const std::vector<TSDFVoxel> &_8_voxels, const geometry::Point3 &new_position, const CubePara &c_para)
     {
         //return _8_voxels[0];
-        const geometry::Point3 center = new_position; 
+        //const geometry::Point3 center = new_position; 
         float x_weight = (new_position(0) - _8_neighbor[0](0) * c_para.VoxelResolution ) / c_para.VoxelResolution;
         float y_weight = (new_position(1) - _8_neighbor[0](1) * c_para.VoxelResolution ) / c_para.VoxelResolution;
         float z_weight = (new_position(2) - _8_neighbor[0](2) * c_para.VoxelResolution ) / c_para.VoxelResolution;

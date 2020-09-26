@@ -50,7 +50,7 @@ namespace geometry
     {
         //camera pose from source to target.
         double sum_error = 0.0;
-        for(int j = 0; j != correspondence_set.size(); ++j)
+        for(size_t j = 0; j != correspondence_set.size(); ++j)
         {
             sum_error += 
                 (TransformPoint(camera_pose,
@@ -119,7 +119,7 @@ namespace geometry
         W.setZero();
         T.setZero();
         
-        for(int i = 0;i!=correspondence_set.size();++i)
+        for(size_t i = 0;i!=correspondence_set.size();++i)
         {
 
             mean_source += correspondence_set[i].first;
@@ -127,7 +127,7 @@ namespace geometry
         }            
         mean_source /= correspondence_set.size();
         mean_target /= correspondence_set.size();
-        for(int i = 0;i!=correspondence_set.size();++i)
+        for(size_t i = 0;i!=correspondence_set.size();++i)
         {
             W+=(correspondence_set[i].first - mean_source) * (correspondence_set[i].second - mean_target).transpose();
         }
@@ -179,14 +179,14 @@ namespace geometry
         Point3 mean_point;
         Point3 sum_point;
         sum_point.setZero();
-        for(int i = 0;i < _points.size(); ++i)
+        for(size_t i = 0;i < _points.size(); ++i)
         {
             sum_point+=_points[i];
         }
         mean_point = sum_point / _points.size();
         Matrix3 W, W_tmp;
         W.setZero();
-        for(int i = 0; i!= _points.size(); ++i)
+        for(size_t i = 0; i!= _points.size(); ++i)
         {
             W += (_points[i] - mean_point)* (_points[i] - mean_point).transpose();
         }
@@ -209,7 +209,7 @@ namespace geometry
         /*
         double residual = 0;
         
-        for(int i = 0; i!= _points.size(); ++i)
+        for(size_t i = 0; i!= _points.size(); ++i)
         {
             residual = residual +  std::fabs((_points[i].transpose() * normal)(0) + d );
         }*/
@@ -227,14 +227,14 @@ namespace geometry
         Vector2 mean_point;
         Vector2 sum_point;
         sum_point.setZero();
-        for(int i = 0;i < _points.size(); ++i)
+        for(size_t i = 0;i < _points.size(); ++i)
         {
             sum_point+=_points[i];
         }
         mean_point = sum_point / _points.size();
         Matrix2 W, W_tmp;
         W.setZero();
-        for(int i = 0; i!= _points.size(); ++i)
+        for(size_t i = 0; i!= _points.size(); ++i)
         {
             W += (_points[i] - mean_point)* (_points[i] - mean_point).transpose();
         }
@@ -248,7 +248,7 @@ namespace geometry
         double d = - mean_point.transpose() * normal;
         /*
         double residual = 0;
-        for(int i = 0; i!= _points.size(); ++i)
+        for(size_t i = 0; i!= _points.size(); ++i)
         {
             
             residual = residual +  std::fabs((_points[i].transpose() * normal)(0) + d );

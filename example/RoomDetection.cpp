@@ -32,7 +32,7 @@ class Building
     }
     void ComputeWeightsForEachEdge()
     {
-        for(int i = 0; i!=dcel->edges.size(); ++i)
+        for(size_t i = 0; i!=dcel->edges.size(); ++i)
         {
             if(dcel->edges[i].weight != 0 || dcel->edges[i].line_id < 4 || dcel->edges[i].is_valid == false)
                 continue;
@@ -40,7 +40,7 @@ class Building
             algorithm::LinePatch &line = lines[l_id];
             geometry::LineSegment ls = dcel->EdgeSegment(i); 
             int points_on_line = 0;
-            for(int j = 0; j!= line.items.size(); ++j)
+            for(size_t j = 0; j!= line.items.size(); ++j)
             {
                 geometry::Vector2 &inlier_point = line.items[j];
                 geometry::Vector2 pro_point = 
@@ -74,7 +74,7 @@ class Building
         affinity_matrix.setZero();
         int infty_id = dcel->faces.size();
 
-        for(int i = 0; i!=dcel->faces.size(); ++i)
+        for(size_t i = 0; i!=dcel->faces.size(); ++i)
         {
             affinity_matrix(i, i) = 1;
             if(dcel->faces[i].is_valid == false)
@@ -111,7 +111,7 @@ class Building
         geometry::MatrixX D;// = Eigen::Matrix<float, dcel->faces.size(), dcel->faces.size()>();
         D.resize(dcel->faces.size()+1, dcel->faces.size()+1);
         D.setZero();
-        for(int i = 0; i != dcel->faces.size() + 1 ; ++i)
+        for(size_t i = 0; i != dcel->faces.size() + 1 ; ++i)
         {
             D(i,i) = affinity_matrix.block(i,0,1, dcel->faces.size() + 1).sum();
         }
@@ -126,11 +126,11 @@ class Building
 
         //std::cout<< eigenvector * eigenvalue * eigenvector.inverse()<<std::endl;
         
-        for(int i = 0; i!=dcel->faces.size() + 1; ++i)
+        for(size_t i = 0; i!=dcel->faces.size() + 1; ++i)
             eigenvalue(i,i) = std::pow(eigenvalue(i,i),t);       
     
         geometry::MatrixX help = eigenvalue * eigenvector.transpose();
-        for(int i = 0; i!=dcel->faces.size() + 1; ++i)
+        for(size_t i = 0; i!=dcel->faces.size() + 1; ++i)
         {
             auto tmp = help.block(0,i, m, 1);
             embeddings.push_back(tmp);
@@ -139,9 +139,9 @@ class Building
 
         distance_matrix.resize(dcel->faces.size() + 1, dcel->faces.size() + 1);
 
-        for(int i = 0; i!= dcel->faces.size()+ 1; ++i)
+        for(size_t i = 0; i!= dcel->faces.size()+ 1; ++i)
         {
-            for(int j = 0; j!= dcel->faces.size() + 1; ++j)
+            for(size_t j = 0; j!= dcel->faces.size() + 1; ++j)
             distance_matrix(i,j) = (embeddings[i] - embeddings[j]).norm();
         }
         //std::cout<<distance_matrix<<std::endl;
@@ -155,7 +155,7 @@ class Building
         //SeparateRoom
         int room_number = 1;
         std::set<int> un_labeled_face;
-        for(int i = 0; i != dcel->faces.size()+1; ++i)
+        for(size_t i = 0; i != dcel->faces.size()+1; ++i)
         un_labeled_face.insert(i);
         int infty_id = dcel->faces.size();
         for(int i = 0; i != room_number; ++i)
@@ -166,7 +166,7 @@ class Building
             geometry::PointXList wait_to_clustering;
             std::vector<algorithm::ClusterDynamic> cluster_result;
             int max_index = -1;
-            for(int j = 0; j != un_labeled_face_v.size(); ++j)
+            for(size_t j = 0; j != un_labeled_face_v.size(); ++j)
             {
                 float distance = distance_matrix(infty_id,un_labeled_face_v[j]);
                 if( distance > max_distance)
@@ -182,7 +182,7 @@ class Building
             algorithm::KMedoidsClusteringDynamic(wait_to_clustering, cluster_result, 2, true, initial_index);
             
             rooms.push_back(std::vector<int>());
-            for(int j = 0; j != cluster_result[0].indexs.size(); ++j)
+            for(size_t j = 0; j != cluster_result[0].indexs.size(); ++j)
             {
                 //std::cout<<cluster_result[0].indexs[j]<<std::endl;
                 un_labeled_face.erase(un_labeled_face_v[cluster_result[0].indexs[j]]);
@@ -190,16 +190,16 @@ class Building
             }
         }
         /*
-        for(int i = 0; i != rooms.size(); ++i)                                                                                                      
+        for(size_t i = 0; i != rooms.size(); ++i)                                                                                                      
         {
             std::cout<<"Room "<<i<<":";
-            for(int j = 0; j != rooms[i].size(); ++j)
+            for(size_t j = 0; j != rooms[i].size(); ++j)
             std::cout<<" "<<rooms[i][j];
             std::cout<<std::endl;
 
-            for(int j = 0; j != rooms[i].size(); ++j)
+            for(size_t j = 0; j != rooms[i].size(); ++j)
             {
-                for(int k = 0; k != rooms[i].size(); ++k)
+                for(size_t k = 0; k != rooms[i].size(); ++k)
                     std::cout<<distance_matrix(rooms[i][j], rooms[i][k])<<" ";
                     std::cout<<distance_matrix(rooms[i][j], infty_id);
                 std::cout<<std::endl;
@@ -215,9 +215,9 @@ class Building
         geometry::Point2 max_xy = dcel->right_up - dcel->left_bottom;
         float max_c = std::max(max_xy(0), max_xy(1));
         float scalar = 600 / max_c; 
-        for(int i = 0; i != rooms.size(); ++i)
+        for(size_t i = 0; i != rooms.size(); ++i)
         {
-            for(int j = 0; j != rooms[i].size(); ++ j)
+            for(size_t j = 0; j != rooms[i].size(); ++ j)
             {
                 int fid = rooms[i][j];
                 std::vector<cv::Point> poly; 
@@ -260,7 +260,7 @@ int main(int argc, char* argv[])
     geometry::Point3List f_points,w_points,d_points;
     geometry::Point2List _2d_points;
     geometry::Point3List _3d_points;
-    for(int i = 0; i!=pcd.points.size(); ++i)
+    for(size_t i = 0; i!=pcd.points.size(); ++i)
     {
             unsigned int c = pcd.colors[i][0] * 255;
             c = c << 8;
@@ -295,11 +295,11 @@ int main(int argc, char* argv[])
 
     //std::cout<<max_x<<" "<<min_x<<" "<<max_y<<" "<<min_y<<std::endl;
     //project the wall and door to the floor
-    for(int i = 0; i!=w_points.size(); ++i)
+    for(size_t i = 0; i!=w_points.size(); ++i)
     {
         _2d_points.push_back((R * w_points[i]).head<2>());
     }
-    for(int i = 0; i!=d_points.size(); ++i)
+    for(size_t i = 0; i!=d_points.size(); ++i)
     {
         _2d_points.push_back((R * d_points[i]).head<2>());
     }
@@ -314,7 +314,7 @@ int main(int argc, char* argv[])
     cv::imwrite("Patches.png", img_line);
     geometry::PointCloud pcd_3d;
     std::vector<geometry::Line> lines;
-    for(int i = 0; i != l_patches.size(); ++i)
+    for(size_t i = 0; i != l_patches.size(); ++i)
     {
         lines.push_back(geometry::Line(l_patches[i].rep));
     }
@@ -322,10 +322,10 @@ int main(int argc, char* argv[])
     cv::Mat img_cell;
     algorithm::ComputeIntersect(lines, inter_points);
     std::cout<<inter_points.size()<<std::endl;
-    //for(int i = 0; i!=inter_points.size(); ++i)
+    //for(size_t i = 0; i!=inter_points.size(); ++i)
     //std::cout<<"["<<inter_points[i](0)<<" "<<inter_points[i](1)<<"]"<<std::endl;
     auto dcel = algorithm::CreateBoundingBoxDcel(inter_points);
-    for(int i = 0; i!=lines.size(); ++i)
+    for(size_t i = 0; i!=lines.size(); ++i)
         dcel->IncrementLine(lines[i]);
 
     // img_cell = dcel->Draw();
@@ -391,7 +391,7 @@ int main(int argc, char* argv[])
     {
         geometry::PointCloud help_pcd = pcd;
         unsigned int now = iter->first;
-        for(int i = 0; i!=pcd.points.size(); ++i)
+        for(size_t i = 0; i!=pcd.points.size(); ++i)
         {
                 unsigned int c = pcd.colors[i][0] * 255;
                 c = c << 8;

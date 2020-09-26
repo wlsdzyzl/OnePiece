@@ -137,9 +137,9 @@ namespace algorithm
         }
         void InsertFace(const Face &f)
         {
-            if(f.id == faces.size())
+            if(f.id == static_cast<int>(faces.size()))
             faces.push_back(f);
-            else if(f.id < faces.size())
+            else if(f.id < static_cast<int>(faces.size()))
             faces[f.id] = f;
             else 
             {
@@ -149,9 +149,9 @@ namespace algorithm
         }
         void InsertEdge(const Edge &e)
         {
-            if(e.id == edges.size())
+            if(e.id == static_cast<int>(edges.size()))
             edges.push_back(e);
-            else if(e.id < edges.size())
+            else if(e.id < static_cast<int>(edges.size()))
             edges[e.id] = e;
             else 
             {
@@ -161,12 +161,12 @@ namespace algorithm
         }
         void InsertLine(const DCELLine &l)
         {
-            if(l.id == lines.size())
+            if(l.id == static_cast<int>(lines.size()))
             {
             lines.push_back(l);
             line_to_edge.push_back(std::set<int>());
             }
-            else if(l.id< lines.size())
+            else if(l.id< static_cast<int>(lines.size()))
             {
             lines[l.id] = l;
             line_to_edge[l.id].clear();
@@ -180,9 +180,9 @@ namespace algorithm
         }
         void InsertVertex(const Vertex & v)
         {
-            if(v.id == vertexs.size())
+            if(v.id == static_cast<int>(vertexs.size()))
             vertexs.push_back(v);
-            else if(v.id < vertexs.size())
+            else if(v.id < static_cast<int>(vertexs.size()))
             vertexs[v.id] = v;
             else 
             {
@@ -198,7 +198,7 @@ namespace algorithm
         }
         void EraseEdge(int eid)
         {
-            if(eid >= edges.size() || eid_pool.find(eid) != eid_pool.end())
+            if(eid >=static_cast<int>( edges.size()) || eid_pool.find(eid) != eid_pool.end())
             {
                 std::cout<<YELLOW<<"[LineArrangement]::[WARNING]::Edge id does not exist!"<<RESET<<std::endl;
                 return;                
@@ -208,7 +208,7 @@ namespace algorithm
         }
         void EraseLine(int lid)
         {
-            if(lid >= lines.size() || lid_pool.find(lid) != lid_pool.end())
+            if(lid >= static_cast<int>(lines.size()) || lid_pool.find(lid) != lid_pool.end())
             {
                 std::cout<<YELLOW<<"[LineArrangement]::[WARNING]::Line id does not exist!"<<RESET<<std::endl;
                 return;                
@@ -218,7 +218,7 @@ namespace algorithm
         }
         void EraseFace(int fid)
         {
-            if(fid >= faces.size() || fid_pool.find(fid) != fid_pool.end())
+            if(fid >= static_cast<int>(faces.size()) || fid_pool.find(fid) != fid_pool.end())
             {
                 std::cout<<YELLOW<<"[LineArrangement]::[WARNING]::face id does not exist!"<<RESET<<std::endl;
                 return;
@@ -228,7 +228,7 @@ namespace algorithm
         }
         void EraseVertex(int vid)
         {
-            if(vid >= vertexs.size() || vid_pool.find(vid) != vid_pool.end())
+            if(vid >=static_cast<int>( vertexs.size()) || vid_pool.find(vid) != vid_pool.end())
             {
                 std::cout<<YELLOW<<"[LineArrangement]::[WARNING]::vertex id does not exist!"<<RESET<<std::endl;
                 return;                

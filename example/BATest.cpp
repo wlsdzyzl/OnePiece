@@ -110,13 +110,13 @@ void GenerateData(geometry::Point3List &world_points,
     auto &T = tracking_result.T;
     poses.resize(2, geometry::SE3::Identity());
     projected_points.resize(2);
-    auto K = camera.ToCameraMatrix();
+
     poses[1] = T.inverse();
     std::vector<float> residuals;
     std::set<int> source_local_id;
     std::set<int> target_local_id;
     std::cout<<matches.size()<<std::endl;
-    for(int i = 0; i != matches.size(); ++i)
+    for(size_t i = 0; i != matches.size(); ++i)
     {
         // std::cout<<matches[i].first<<" "<<matches[i].second<<std::endl;
         residuals.push_back((source_frame.feature_pcd.points[matches[i].first] - geometry::TransformPoint(T.inverse() ,
@@ -150,7 +150,7 @@ optimization::ProjectedPointsOnFrame GetReprojectedPoints(const geometry::Point3
 {
     optimization::ProjectedPointsOnFrame result;
     auto K = camera.ToCameraMatrix();
-    for(int i = 0; i < world_points.size(); ++i)
+    for(size_t i = 0; i < world_points.size(); ++i)
     {
         auto reprojected_point_3d = K * geometry::TransformPoint(pose.inverse(), world_points[i]);
         auto uv = (reprojected_point_3d/ reprojected_point_3d(2)).head<2>();
@@ -232,10 +232,10 @@ int main(int argc, char** argv)
     pcd_source.LoadFromRGBD(source_rgb,source_depth,camera);
     pcd_target.LoadFromRGBD(target_rgb,target_depth,camera);
     pcd_target.Transform(poses[1]);
-    for(int i = 0; i != pcd_source.colors.size(); ++i)
+    for(size_t i = 0; i != pcd_source.colors.size(); ++i)
     pcd_source.colors[i] = geometry::Point3(1,0,0);
 
-    for(int i = 0; i != pcd_target.colors.size(); ++i)
+    for(size_t i = 0; i != pcd_target.colors.size(); ++i)
     pcd_target.colors[i] = geometry::Point3(0,1,0);
     
     visualization::Visualizer visualizer;

@@ -56,8 +56,8 @@ namespace geometry
     {
         Reset();
         int start_index = 0;
-        int triangles_num;
-        for(int i = 0; i < meshes.size(); ++i)
+        size_t triangles_num;
+        for(size_t i = 0; i < meshes.size(); ++i)
         {
             triangles.insert(triangles.end(),meshes[i].triangles.begin(),meshes[i].triangles.end());
             colors.insert(colors.end(),meshes[i].colors.begin(),meshes[i].colors.end());
@@ -65,7 +65,7 @@ namespace geometry
             normals.insert(normals.end(),meshes[i].normals.begin(),meshes[i].normals.end());
             triangles_num = meshes[i].triangles.size();
             if(start_index != 0)
-            for(int i = triangles.size()-1, j = 0;j!=triangles_num; ++j, --i )
+            for(size_t i = triangles.size()-1, j = 0;j!=triangles_num; ++j, --i )
             {
                 triangles[i](0) = triangles[i](0) + start_index;
                 triangles[i](1) = triangles[i](1) + start_index;
@@ -84,7 +84,7 @@ namespace geometry
         triangle_normals.resize(triangles.size());
         geometry::Point3 n,p1,p2,p3;
       
-        for( int i = 0;i!= triangles.size(); ++i)
+        for(size_t i = 0;i!= triangles.size(); ++i)
         {
             p1 = points[triangles[i](0)];
             p2 = points[triangles[i](1)];
@@ -93,12 +93,12 @@ namespace geometry
             n.normalize();
             triangle_normals[i] = n;
         }
-		for(int i = 0;i!=points.size();++i)
+		for(size_t i = 0;i!=points.size();++i)
 		{
 
 			geometry::Point3 vnormal; 
             vnormal.setZero();
-            for(int j = 0;j!=references[i].size();++j)
+            for(size_t j = 0;j!=references[i].size();++j)
 			{
 				vnormal += triangle_normals[references[i][j].first];
 			}

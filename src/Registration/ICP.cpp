@@ -13,7 +13,7 @@ namespace registration
         double sum_error = 0;
         inliers.clear();
         double squared_threshold = threshold * threshold;
-        for(int i = 0; i != correspondence_index.size(); ++i)
+        for(size_t i = 0; i != correspondence_index.size(); ++i)
         {
             if(correspondence_index[i] != -1)
             {
@@ -36,7 +36,6 @@ namespace registration
         auto start_T = init_T;
         RegistrationResult result;
 
-        double rmse = -1;
         geometry::FMatchSet inliers;
         // cv::flann::KDTreeIndexParams indexParams; 
         // cv::flann::Index kdtree(cv::Mat(cv_pcd).reshape(1), indexParams);
@@ -49,12 +48,12 @@ namespace registration
         {   
             iteration ++ ;
 
-            for(int i = 0; i != corresponding_index.size(); ++i)
+            for(size_t i = 0; i != corresponding_index.size(); ++i)
             corresponding_index[i] = -1;
             auto transformed_points = source.points;
             geometry::TransformPoints(start_T, transformed_points);
 #pragma omp parallel for
-            for(int i = 0; i < source.points.size(); ++i)
+            for(size_t i = 0; i < source.points.size(); ++i)
             {
                 std::vector<int> indices; 
                 std::vector<float> dists; 
@@ -66,8 +65,8 @@ namespace registration
             //std::cout<<"fuck"<<std::endl;
             geometry::PointCorrespondenceSet correspondence_set;
 
-            rmse = CountInliers(source.points, target.points, corresponding_index, start_T, icp_para.threshold, inliers);
-            for(int i = 0; i != inliers.size(); ++i)
+            CountInliers(source.points, target.points, corresponding_index, start_T, icp_para.threshold, inliers);
+            for(size_t i = 0; i != inliers.size(); ++i)
             {
                 correspondence_set.push_back(std::make_pair(transformed_points[inliers[i].first], 
                     target.points[inliers[i].second]));
@@ -86,7 +85,7 @@ namespace registration
         result.correspondence_set_index = inliers;
         result.T = start_T;
 
-        for(int i = 0; i != inliers.size(); ++i)
+        for(size_t i = 0; i != inliers.size(); ++i)
         {
             result.correspondence_set.push_back(std::make_pair(source.points[inliers[i].first], 
                 target.points[inliers[i].second]));
@@ -107,7 +106,7 @@ namespace registration
         geometry::Se3 JTr = geometry::Se3::Zero();
         geometry::Se3 x;
 
-        for(int i = 0; i != inliers.size(); ++i)
+        for(size_t i = 0; i != inliers.size(); ++i)
         {
             int source_id = inliers[i].first;
             int target_id = inliers[i].second;
@@ -142,7 +141,7 @@ namespace registration
             std::cout<<RED<<"[ERROR]::[ICPPointToPlane]::target point cloud need to have normals."<<RESET<<std::endl;
             return std::make_shared<RegistrationResult>(RegistrationResult());
         }
-        double rmse = -1;
+        
         geometry::FMatchSet inliers;
         
         auto start_T = init_T;
@@ -158,12 +157,12 @@ namespace registration
         while(iteration < icp_para.max_iteration)
         {   
             iteration ++ ;
-            for(int i = 0; i != corresponding_index.size(); ++i)
+            for(size_t i = 0; i != corresponding_index.size(); ++i)
             corresponding_index[i] = -1;
             auto transformed_points = source.points;
             geometry::TransformPoints(start_T, transformed_points);
 #pragma omp parallel for
-            for(int i = 0; i < source.points.size(); ++i)
+            for(size_t i = 0; i < source.points.size(); ++i)
             {
                 std::vector<int> indices(k); 
                 std::vector<float> dists(k); 
@@ -171,7 +170,7 @@ namespace registration
                 if(indices.size()>0)
                     corresponding_index[i] = indices[0];
             }
-            rmse = CountInliers(source.points, target.points, corresponding_index, start_T, icp_para.threshold, inliers);
+            CountInliers(source.points, target.points, corresponding_index, start_T, icp_para.threshold, inliers);
 
             geometry::TransformationMatrix tmp_T = EstimateRigidTransformationPointToPlane(transformed_points, target.points, 
                 target.normals, inliers);
@@ -187,7 +186,7 @@ namespace registration
         result.rmse = CountInliers(source.points, target.points, corresponding_index, start_T, icp_para.threshold, inliers);
         result.correspondence_set_index = inliers;
         result.T = start_T;
-        for(int i = 0; i != inliers.size(); ++i)
+        for(size_t i = 0; i != inliers.size(); ++i)
         {
             result.correspondence_set.push_back(std::make_pair(source.points[inliers[i].first], 
                 target.points[inliers[i].second]));

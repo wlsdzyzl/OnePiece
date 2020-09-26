@@ -23,7 +23,7 @@ namespace lcdetection
         MILD::LoopClosureDetector lcdetector;
         
         float salient_score_threshold = 1.5;
-        int max_candidate_num = 7;
+        size_t max_candidate_num = 7;
     };
 }
 }

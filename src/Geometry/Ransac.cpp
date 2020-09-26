@@ -14,7 +14,7 @@ namespace geometry
         }
         GRANSAC::RANSAC<TransformationModel, MIN_INLIER_SIZE_RANSAC_TRANSFORMATION> Estimator;
         std::vector<std::shared_ptr<GRANSAC::AbstractParameter>> CandPoints;
-        for(int i = 0; i != correspondence_set.size(); ++i)
+        for(size_t i = 0; i != correspondence_set.size(); ++i)
         {
             std::shared_ptr<GRANSAC::AbstractParameter> CandPt = 
                 std::make_shared<Point3fPair>(correspondence_set[i].first, correspondence_set[i].second, i);
@@ -23,7 +23,7 @@ namespace geometry
         Estimator.Initialize(threshold, max_iteration);
         Estimator.Estimate(CandPoints);
         auto bestInliers = Estimator.GetBestInliers();
-        for(int i = 0; i < bestInliers.size();++i)
+        for(size_t i = 0; i < bestInliers.size();++i)
         {
             auto inlier =  std::dynamic_pointer_cast<Point3fPair>(bestInliers[i]);
             inliers.push_back(inlier->_3d_pair);
@@ -32,7 +32,7 @@ namespace geometry
         auto bestModel = Estimator.GetBestModel();
         auto bestPoints = bestModel->GetModelParams();
         PointCorrespondenceSet model_points; 
-        for(int i = 0; i != MIN_INLIER_SIZE_RANSAC_TRANSFORMATION; ++i )
+        for(size_t i = 0; i != MIN_INLIER_SIZE_RANSAC_TRANSFORMATION; ++i )
         {
             model_points.push_back(std::dynamic_pointer_cast<Point3fPair>(bestPoints[i])->_3d_pair);
         }
@@ -50,14 +50,14 @@ namespace geometry
         GRANSAC::RANSAC<PlaneFittingModel, MIN_INLIER_SIZE_RANSAC_PLANEFITTING> Estimator;      
         std::vector<std::shared_ptr<GRANSAC::AbstractParameter>> CandPoints;
         Point3List model_points;
-        for(int i = 0; i != points.size(); ++i)
+        for(size_t i = 0; i != points.size(); ++i)
         {
             CandPoints.push_back(std::make_shared<GPoint3f>(points[i]));
         }          
         Estimator.Initialize(threshold, max_iteration);
         Estimator.Estimate(CandPoints);
         auto bestInliers = Estimator.GetBestInliers();
-        for(int i = 0; i < bestInliers.size();++i)
+        for(size_t i = 0; i < bestInliers.size();++i)
         {
             auto inlier =  std::dynamic_pointer_cast<GPoint3f>(bestInliers[i]);
             inliers.push_back(inlier->p);
@@ -67,7 +67,7 @@ namespace geometry
         auto bestModel = Estimator.GetBestModel();
         auto bestPoints = bestModel->GetModelParams(); 
 
-        for(int i = 0; i != MIN_INLIER_SIZE_RANSAC_PLANEFITTING; ++i )
+        for(size_t i = 0; i != MIN_INLIER_SIZE_RANSAC_PLANEFITTING; ++i )
         {
             model_points.push_back(std::dynamic_pointer_cast<GPoint3f>(bestPoints[i])->p);
         }

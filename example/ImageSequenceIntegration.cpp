@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     tool::ReadImageSequenceWithPose(argv[1],rgb_files, depth_files,poses);
     visualization::Visualizer visualizer;
     //cube_handler.SetTruncation(0.15);
-    for(int i = 0; i < poses.size() ; ++i)
+    for(size_t i = 0; i < poses.size() ; ++i)
     {
         if(i%10 == 0)
         {

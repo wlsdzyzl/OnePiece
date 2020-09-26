@@ -13,7 +13,6 @@ int main(int argc, char **argv)
         std::cout<<"Usage: [basepath] [voxel resolution]"<<std::endl;
         return 0;
     }
-    int keyframe_step = 8;
     std::string base_path = std::string(argv[1]);
     float voxel_resolution = atof(argv[2]);
     geometry::TriangleMesh mesh;
@@ -27,7 +26,6 @@ int main(int argc, char **argv)
     std::vector<std::string> rgb_files, depth_files;
 
     std::vector<optimization::Correspondence> global_correspondences;
-    optimization::Optimizer optimizer;
 
     tool::ReadImageSequence(base_path,rgb_files, depth_files);
     // rgb_files.resize(150);
@@ -36,7 +34,7 @@ int main(int argc, char **argv)
     visualizer.Initialize();
 
     DenseSlam dense_slam(camera);
-    for(int frame_id = 0; frame_id < rgb_files.size(); ++frame_id)
+    for(size_t frame_id = 0; frame_id < rgb_files.size(); ++frame_id)
     {
         cv::Mat rgb = cv::imread(rgb_files[frame_id]);
         cv::Mat depth = cv::imread(depth_files[frame_id],-1);
@@ -80,7 +78,7 @@ int main(int argc, char **argv)
     cube_handler.SetVoxelResolution(voxel_resolution);
     
     std::ofstream ofs(base_path +"/trajectory.txt");
-    for(int i = 0; i < dense_slam.global_frames.size() ; ++i)
+    for(size_t i = 0; i < dense_slam.global_frames.size() ; ++i)
     {
         // int keyframe_id = dense_slam.keyframe_ids[i];
         if(!dense_slam.global_frames[i].tracking_success) continue;

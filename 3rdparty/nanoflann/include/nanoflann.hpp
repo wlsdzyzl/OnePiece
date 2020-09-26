@@ -224,12 +224,13 @@ public:
 
 public:
   const DistanceType radius;
+
+  
+  std::vector<std::pair<IndexType, DistanceType>> &m_indices_dists;
   /*
   if max_neighbors is set to zero, radiusSearch will find all the points in the radius.
   */
   _IndexType max_neighbors;
-  std::vector<std::pair<IndexType, DistanceType>> &m_indices_dists;
-
   inline RadiusResultSet(
       DistanceType radius_,
       std::vector<std::pair<IndexType, DistanceType>> &indices_dists, _IndexType max_neighbors_ )

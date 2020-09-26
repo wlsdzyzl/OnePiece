@@ -131,7 +131,7 @@ namespace visualization
         void ChooseCameraPoseFromPoints(const geometry::Point3List &points)
         {
             geometry::Point3 average_point =  geometry::Point3::Zero();
-            for(int i = 0; i != points.size(); ++i)
+            for(size_t i = 0; i != points.size(); ++i)
             {
                 average_point += points[i];
             }
@@ -261,11 +261,11 @@ namespace visualization
             std::cout<<BLUE<<"[Visualizer]::[INFO]::Using shader: "<<shader_vert<<RESET<<std::endl;
         }
         protected:
-        int point_step;
+        size_t point_step;
         scalar * point_buffer;
         int * index_buffer;
-        int point_buffer_size;
-        int index_buffer_size;
+        size_t point_buffer_size;
+        size_t index_buffer_size;
         bool buffer_data_updated = false;
         //for draw line.
         geometry::Point3List line_points;

@@ -26,7 +26,7 @@ namespace optimization
             auto K = camera.ToCameraMatrix();
             double sum_error = 0.0;
             int count = 0;
-            for(int i = 0; i != poses.size(); ++i)
+            for(size_t i = 0; i != poses.size(); ++i)
             {
                 //std::cout<<"projected_points: "<<i<<" "<<projected_points[i].size()<<std::endl;
                 auto pose_inv = poses[i].inverse();
@@ -48,7 +48,7 @@ namespace optimization
     geometry::scalar MaxDiagonalValue(const std::vector<Eigen::Triplet<geometry::scalar>> &coefficients)
     {
         geometry::scalar max_value = 0;
-        for(int i = 0; i != coefficients.size(); ++i)
+        for(size_t i = 0; i != coefficients.size(); ++i)
         {
             if(coefficients[i].col() == coefficients[i].row())
                 max_value = std::max(max_value, std::fabs(coefficients[i].value()));
@@ -80,7 +80,7 @@ namespace optimization
         int iteration = 0;
         double lambda = -1;
 
-        // for(int i = 0; i != poses.size(); ++i)
+        // for(size_t i = 0; i != poses.size(); ++i)
         // {
         //     //std::cout<<"projected_points: "<<i<<" "<<projected_points[i].size()<<std::endl;
         //     std::cout<<"frame "<<i<<": "<<std::endl;
@@ -127,7 +127,7 @@ namespace optimization
            
                 timer.TICK("Make Normal Equation");  
 
-                for(int i = 0; i != poses.size(); ++i)
+                for(size_t i = 0; i != poses.size(); ++i)
                 {
                     //std::cout<<"projected_points: "<<i<<" "<<projected_points[i].size()<<std::endl;
                     for(auto iter = projected_points[i].begin(); iter != projected_points[i].end(); ++iter)
@@ -219,7 +219,7 @@ namespace optimization
                 //schur complement
                 
                 geometry::MatrixX V_inv = geometry::MatrixX(V);
-                for(int i = 0; i != world_points.size(); ++i)
+                for(size_t i = 0; i != world_points.size(); ++i)
                 {
                     V_inv.block(i*3, i*3, 3, 3) = V_inv.block(i*3, i*3, 3, 3).inverse();
                 }
@@ -234,13 +234,13 @@ namespace optimization
                 delta_point = V_inv * (r_point -  W_trans * delta_pose);
 #endif
 
-                for(int i = 0; i != poses.size(); ++i)
+                for(size_t i = 0; i != poses.size(); ++i)
                 {
                     geometry::Se3 tmp_delta_pose = delta_pose.block<6, 1>(i * 6, 0);
                     poses[i] =   geometry::Se3ToSE3(tmp_delta_pose) * poses[i];
                 }
 
-                for(int i = 0; i != world_points.size(); ++i)
+                for(size_t i = 0; i != world_points.size(); ++i)
                 {
                     geometry::Point3 tmp_delta_point = delta_point.block<3, 1>(i * 3, 0);
                     world_points[i] = world_points[i] + tmp_delta_point;
@@ -254,13 +254,13 @@ namespace optimization
                 if(reduction < 0)
                 {
                     //back to origin poses and position
-                    for(int i = 0; i != poses.size(); ++i)
+                    for(size_t i = 0; i != poses.size(); ++i)
                     {
                         geometry::Se3 tmp_delta_pose = delta_pose.block<6, 1>(i * 6, 0);
                         poses[i] =   geometry::Se3ToSE3(tmp_delta_pose).inverse() * poses[i];
                     }
 
-                    for(int i = 0; i != world_points.size(); ++i)
+                    for(size_t i = 0; i != world_points.size(); ++i)
                     {
                         geometry::Point3 tmp_delta_point = delta_point.block<3, 1>(i * 3, 0);
                         world_points[i] = world_points[i] - tmp_delta_point;

@@ -51,7 +51,7 @@ namespace integration
 
                 geometry::Point3 point;
                 float t = 0;
-                float step;
+                float step = 0;
                 for(int j = 0;j!= 3; ++j)
                 if(std::fabs(diff(j)) >= 0.000001)
                 {

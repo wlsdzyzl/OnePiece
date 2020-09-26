@@ -25,7 +25,7 @@ namespace tool
         geometry::PointCloudPtr GetPosedPCD()
         {
             geometry::PointCloud global_pcd;
-            for(int i = 0; i != keyframe_ids.size(); ++i)
+            for(size_t i = 0; i != keyframe_ids.size(); ++i)
             {
                 auto pcd = global_frames[keyframe_ids[i]].down_sampled_pcd;
                 pcd.Transform(global_poses[keyframe_ids[i]]);
@@ -36,7 +36,7 @@ namespace tool
         void UpdateAllPoses()
         {
             int anchor_keyframe_id = 0;
-            for(int i = 0; i < global_poses.size(); ++i)
+            for(size_t i = 0; i < global_poses.size(); ++i)
             {
                 if(global_frames[i].keyframe_kid != -1)
                 anchor_keyframe_id = i;

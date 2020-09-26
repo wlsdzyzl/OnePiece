@@ -56,10 +56,10 @@ namespace visualization
     {
         float max_c = std::numeric_limits<float>::lowest (), min_c = std::numeric_limits<float>::max ();
         float max_x = max_c, max_y = max_c, min_x = min_c, min_y = min_c;
-        for(int i = 0; i != patches.size(); ++i)
+        for(size_t i = 0; i != patches.size(); ++i)
         {
             const geometry::Point2List &points = patches[i].items;
-            for(int j = 0; j!= points.size(); ++j)
+            for(size_t j = 0; j!= points.size(); ++j)
             {
                 if(points[j](0) > max_x)
                 max_x = points[j](0);
@@ -80,10 +80,10 @@ namespace visualization
         img_line = cv::Scalar::all(0);
         float scalar =600 / max_c;
 
-        for( int i = 0; i < patches.size(); ++i )
+        for(size_t i = 0; i < patches.size(); ++i )
         {
             //std::cout<<clusters[i].items.size()<<std::endl;
-            for(int j = 0; j!=patches[i].items.size(); ++j)
+            for(size_t j = 0; j!=patches[i].items.size(); ++j)
             {
 
                 cv::Point ipt = cv::Point2i((patches[i].items[j](0) - min_x ) *scalar, (patches[i].items[j](1)-min_y)* scalar);
@@ -97,10 +97,10 @@ namespace visualization
     {
         float max_c = std::numeric_limits<float>::lowest (), min_c = std::numeric_limits<float>::max ();
         float max_x = max_c, max_y = max_c, min_x = min_c, min_y = min_c;
-        for(int i = 0; i != clusters.size(); ++i)
+        for(size_t i = 0; i != clusters.size(); ++i)
         {
             const geometry::Point2List &points = clusters[i].items;
-            for(int j = 0; j!= points.size(); ++j)
+            for(size_t j = 0; j!= points.size(); ++j)
             {
                 if(points[j](0) > max_x)
                 max_x = points[j](0);
@@ -121,10 +121,10 @@ namespace visualization
         img = cv::Scalar::all(0);
         float scalar =600 / max_c;
 
-        for( int i = 0; i < clusters.size(); ++i )
+        for(size_t i = 0; i < clusters.size(); ++i )
         {
             //std::cout<<clusters[i].items.size()<<std::endl;
-            for(int j = 0; j!=clusters[i].items.size(); ++j)
+            for(size_t j = 0; j!=clusters[i].items.size(); ++j)
             {
 
                 cv::Point ipt = cv::Point2i((clusters[i].items[j](0) - min_x ) *scalar, (clusters[i].items[j](1)-min_y)* scalar);
@@ -144,7 +144,7 @@ namespace visualization
     std::cout<<BLUE<<"[DrawDCEL]::[DEBUG]::Vertexs: "<<dcel.vertexs.size() - dcel.vid_pool.size()<<" "
         <<"Edges: "<<dcel.edges.size() - dcel.eid_pool.size()<<" Faces: "<<dcel.faces.size() - dcel.fid_pool.size()<<RESET<<std::endl;
 #endif
-        for(int i = 0; i!=dcel.faces.size(); ++i)
+        for(size_t i = 0; i!=dcel.faces.size(); ++i)
         {
             if(dcel.faces[i].is_valid == false)
             continue;
@@ -166,7 +166,7 @@ namespace visualization
             cv::fillConvexPoly(img,&poly[0],poly.size(),color_tab[i% color_tab.size()]);
         }
         
-        for(int i = 0; i!= dcel.edges.size(); ++i)
+        for(size_t i = 0; i!= dcel.edges.size(); ++i)
         {
             if(dcel.edges[i].is_valid == false)
             continue;
@@ -187,7 +187,7 @@ namespace visualization
         }
 
 
-        for(int i = 0; i !=dcel.vertexs.size(); ++i)
+        for(size_t i = 0; i !=dcel.vertexs.size(); ++i)
         {
             if(dcel.vertexs[i].is_valid == false)
             continue;

@@ -13,7 +13,7 @@ namespace geometry
         geometry::Point3uiList &triangles = *helper.triangles_ptr;
         geometry::Point3List &points = *helper.points_ptr;
         geometry::Point3List &normals = helper.normals;
-        for(int i = 0; i!= reference.size(); ++i)
+        for(size_t i = 0; i!= reference.size(); ++i)
         {
             int tid = reference[i].first;
             if(helper.t_deleted[tid]) continue;
@@ -46,9 +46,9 @@ namespace geometry
         Reference &reference = helper.references[p1];
         geometry::Point3uiList &triangles = *helper.triangles_ptr;
         geometry::Point3List &points = *helper.points_ptr;
-        geometry::Point3List &normals = helper.normals;
+        // geometry::Point3List &normals = helper.normals;
         std::vector<std::vector<float>> &error = helper.error;
-        for(int i = 0;i!= reference.size();++i)
+        for(size_t i = 0;i!= reference.size();++i)
         {
             int tid = reference[i].first;
             int vid = reference[i].second;
@@ -85,9 +85,9 @@ namespace geometry
     {
 
         geometry::Point3uiList &triangles = *helper.triangles_ptr;
-        geometry::Point3List &normals = helper.normals;
+        // geometry::Point3List &normals = helper.normals;
         int re_local = 0;
-        for(int i = 0;i!=triangles.size();++i)
+        for(size_t i = 0;i!=triangles.size();++i)
         {
             if(helper.t_deleted[i]) continue;
             triangles[re_local] = triangles[i];
@@ -102,7 +102,7 @@ namespace geometry
         helper.t_deleted.clear();
         helper.t_dirty.resize(re_local,0);
         helper.t_deleted.resize(re_local,0);
-        //for(int i = 0;i!=helper.t_deleted.size(); ++i)
+        //for(size_t i = 0;i!=helper.t_deleted.size(); ++i)
         //std::cout<<helper.t_deleted[i]<<" ";
         //std::cout<<std::endl;
         helper.error.resize(re_local);
@@ -116,9 +116,9 @@ namespace geometry
         geometry::Point3uiList &triangles = *helper.triangles_ptr;
         geometry::Point3List &points = *helper.points_ptr;
         auto &grid_to_point = helper.grid_to_point;
-        float grid_len = helper.grid_len;
+        // float grid_len = helper.grid_len;
         int re_local = 0;
-        for(int i = 0;i!=triangles.size();++i)
+        for(size_t i = 0;i!=triangles.size();++i)
         {
             if(helper.t_deleted[i]) continue;
             triangles[re_local] = triangles[i];
@@ -141,7 +141,7 @@ namespace geometry
 
         geometry::Point3uiList &triangles = *helper.triangles_ptr;
         int re_local = 0;
-        for(int i = 0;i!=triangles.size();++i)
+        for(size_t i = 0;i!=triangles.size();++i)
         {
             if(helper.t_deleted[i]) continue;
             triangles[re_local] = triangles[i];
@@ -174,13 +174,13 @@ namespace geometry
             UpdateMesh(q_helper);
             error_threshold = 0.000000001*std::pow(float(iteration+3),6);
             //std::cout<<"Iteration "<<iteration<<", deleted_triangle: "<<q_helper.deleted_triangle<<std::endl;
-            for(int i=0;i!=q_helper.triangles_ptr->size(); ++i)
+            for(size_t i=0;i!=q_helper.triangles_ptr->size(); ++i)
             {
                 //std::cout<<q_helper.error[i][3]<<std::endl;
                 if(q_helper.error[i][3] > error_threshold) continue;
                 if(q_helper.t_deleted[i]) continue;
                 if(q_helper.t_dirty[i]) continue;
-                for( int j = 0;j!=3;++j)
+                for(int j = 0;j!=3;++j)
                 {
                     if(q_helper.error[i][j] <= error_threshold)
                     {
@@ -188,7 +188,7 @@ namespace geometry
                         int p1 = triangles[i](j); 
                         geometry::Point3 &v1 = points[p1];
                         int p2 = triangles[i]((j+1)%3);
-                        geometry::Point3 &v2 = points[p2];
+                        // geometry::Point3 &v2 = points[p2];
                         if(q_helper.is_border[p1]!= q_helper.is_border[p2]) continue;
 
                         geometry::Point3 v3;
@@ -223,17 +223,17 @@ namespace geometry
 
     void ComputeVertexNormals(QuadricHelper &helper)
     {
-        geometry::Point3uiList &triangles = *helper.triangles_ptr;
+        // geometry::Point3uiList &triangles = *helper.triangles_ptr;
         geometry::Point3List &points = *helper.points_ptr;
         geometry::Point3List &normals = helper.normals;
         std::vector<Reference> &references = helper.references;
         //std::cout<<"Compacting.."<<std::endl;
-		for(int i = 0;i!=points.size();++i)
+		for(size_t i = 0;i!=points.size();++i)
 		{
 
 			geometry::Point3 vnormal; 
             vnormal.setZero();
-            for(int j = 0;j!=references[i].size();++j)
+            for(size_t j = 0;j!=references[i].size();++j)
 			{
 				vnormal += normals[references[i][j].first];
 			}
@@ -253,7 +253,7 @@ namespace geometry
 
         geometry::Point3 n,p1,p2,p3;
         
-        for( int i = 0;i!= triangles.size(); ++i)
+        for(size_t i = 0;i!= triangles.size(); ++i)
         {
             p1 = points[triangles[i](0)];
             p2 = points[triangles[i](1)];
@@ -263,12 +263,12 @@ namespace geometry
             normals[i] = n;
         }
         //std::cout<<"Compacting.."<<std::endl;
-		for(int i = 0;i!=points.size();++i)
+		for(size_t i = 0;i!=points.size();++i)
 		{
 
 			geometry::Point3 vnormal; 
             vnormal.setZero();
-            for(int j = 0;j!=references[i].size();++j)
+            for(size_t j = 0;j!=references[i].size();++j)
 			{
 				vnormal += normals[references[i][j].first];
 			}
@@ -287,11 +287,11 @@ namespace geometry
         geometry::Point3List &points = *helper.points_ptr;
         std::vector<Reference> &references = helper.references;
         int re_local = 0;
-        for(int i = 0;i != points.size(); ++i)
+        for(size_t i = 0;i != points.size(); ++i)
         {
             if(references[i].size() == 0) continue;
             points[re_local] = points[i];
-            for(int j = 0;j!=references[i].size();++j)
+            for(size_t j = 0;j!=references[i].size();++j)
             {
                 triangles[references[i][j].first](references[i][j].second) = re_local;
             }
@@ -318,11 +318,11 @@ namespace geometry
         geometry::Point3List &points = *helper.points_ptr;
         std::vector<Reference> &references = helper.references;
         int re_local = 0;
-        for(int i = 0;i != points.size(); ++i)
+        for(size_t i = 0;i != points.size(); ++i)
         {
             if(references[i].size() == 0) continue;
             points[re_local] = points[i];
-            for(int j = 0;j!=references[i].size();++j)
+            for(size_t j = 0;j!=references[i].size();++j)
             {
                 triangles[references[i][j].first](references[i][j].second) = re_local;
             }
@@ -349,11 +349,11 @@ namespace geometry
         geometry::Point3List &points = *helper.points_ptr;
         std::vector<Reference> &references = helper.references;
         int re_local = 0;
-        for(int i = 0;i != points.size(); ++i)
+        for(size_t i = 0;i != points.size(); ++i)
         {
             if(references[i].size() == 0) continue;
             points[re_local] = points[i];
-            for(int j = 0;j!=references[i].size();++j)
+            for(size_t j = 0;j!=references[i].size();++j)
             {
                 triangles[references[i][j].first](references[i][j].second) = re_local;
             }
@@ -436,7 +436,7 @@ namespace geometry
         helper.t_deleted.resize(helper.triangles_ptr->size(),0);
         helper.is_visited.resize(helper.points_ptr->size(), false);
         helper.unvisited.clear();
-        for(int i = 0; i !=helper.points_ptr->size(); ++i )
+        for(size_t i = 0; i !=helper.points_ptr->size(); ++i )
         helper.unvisited.insert(i);
         helper.connected_patches.clear();
         UpdateReferences(*helper.triangles_ptr, helper.references);
@@ -444,10 +444,10 @@ namespace geometry
     //Check Border: if an edge is only possessed by one triangle, it is border.
     void CheckIsBorder(const geometry::Point3uiList &triangles,  const std::vector<Reference> &references, std::vector<bool> &is_border)
     {
-        for(int i = 0;i!=references.size();++i)
+        for(size_t i = 0;i!=references.size();++i)
         {
             std::map<int,int> id_count;
-            for(int j = 0;j!=references[i].size();++j)
+            for(size_t j = 0;j!=references[i].size();++j)
             {
                 geometry::Point3ui triangle = triangles[references[i][j].first];
                 int vid = references[i][j].second;
@@ -473,7 +473,7 @@ namespace geometry
     void ComputeError(QuadricHelper &helper)
     {
         std::vector<std::vector<float>> &error = helper.error;
-        for(int i = 0;i!=helper.triangles_ptr->size();++i)
+        for(size_t i = 0;i!=helper.triangles_ptr->size();++i)
         {
             Point3ui &triangle = (*helper.triangles_ptr)[i];
             geometry::Point3 p;
@@ -529,9 +529,9 @@ namespace geometry
 
     void UpdateReferences(const geometry::Point3uiList &triangles, std::vector<Reference> &references)
     {
-        for(int i=0; i<references.size();++i)
+        for(size_t i=0; i<references.size();++i)
         references[i].clear();
-        for(int i = 0;i!=triangles.size(); ++i)
+        for(size_t i = 0;i!=triangles.size(); ++i)
         {
             references[triangles[i](0)].push_back(std::make_pair(i, 0)); 
             references[triangles[i](1)].push_back(std::make_pair(i, 1));
@@ -548,7 +548,7 @@ namespace geometry
 
         plane_matrix.resize(triangles.size());
         
-        for( int i = 0;i!= triangles.size(); ++i)
+        for(size_t i = 0;i!= triangles.size(); ++i)
         {
             p1 = points[triangles[i](0)];
             p2 = points[triangles[i](1)];
@@ -562,11 +562,11 @@ namespace geometry
         }
         geometry::Matrix4 tmp; 
         //compute Q matrix by add all the plane matrix.       
-        for(int i = 0;i!=points.size();++i)
+        for(size_t i = 0;i!=points.size();++i)
         {
             tmp.setZero();
             
-            for(int j = 0;j!=references[i].size();++j)
+            for(size_t j = 0;j!=references[i].size();++j)
             tmp += plane_matrix[references[i][j].first];
             QMatrix[i] = tmp;
         }
@@ -589,7 +589,7 @@ namespace geometry
         geometry::Point3List &points = *c_helper.points_ptr;
         std::unordered_map<Eigen::Vector3i, std::pair<int, int>, geometry::VoxelGridHasher > &grid_map = c_helper.grid_map;
         auto &grid_to_point = c_helper.grid_to_point;
-        for(int i = 0;i!=triangles.size();++i)
+        for(size_t i = 0;i!=triangles.size();++i)
         {
             geometry::Point3 p1 = points[triangles[i](0)];
             geometry::Point3 p2 = points[triangles[i](1)];
@@ -654,16 +654,16 @@ namespace geometry
         CompactMesh(c_helper);
         std::cout<<GREEN<< "[ClusteringMeshSimplification]::[INFO]::Simplify done."<<RESET<<std::endl;
     }
-    void MeshPruning(TriangleMesh &mesh, int min_points)
+    void MeshPruning(TriangleMesh &mesh, size_t min_points)
     {
         PruningHelper pruning_helper;
         InitializeHelper(mesh, pruning_helper);
         //std::cout<<GREEN<< "[MeshPruning]::[INFO]::Prune mesh done. "<<RESET<<std::endl;
  
         std::vector<bool> &t_deleted = pruning_helper.t_deleted;
-        geometry::Point3List &points = *pruning_helper.points_ptr;
-        geometry::Point3List &normals = *pruning_helper.normals_ptr;
-        geometry::Point3List &colors = *pruning_helper.colors_ptr;
+        // geometry::Point3List &points = *pruning_helper.points_ptr;
+        // geometry::Point3List &normals = *pruning_helper.normals_ptr;
+        // geometry::Point3List &colors = *pruning_helper.colors_ptr;
         geometry::Point3uiList &triangles = *pruning_helper.triangles_ptr;
         std::vector<Reference> & references = pruning_helper.references;
         std::set<int> & unvisited = pruning_helper.unvisited;
@@ -687,7 +687,7 @@ namespace geometry
                 int vid = wait_to_visited.front();
                 wait_to_visited.pop();
                 Reference & reference = references[vid];
-                for(int i = 0; i != reference.size(); ++i)
+                for(size_t i = 0; i != reference.size(); ++i)
                 {
                     int tid = reference[i].first;
                     int t_vid = reference[i].second;
@@ -711,7 +711,7 @@ namespace geometry
             }
         }
         int prune_count = 0;
-        for(int i = 0; i != connected_patches.size(); ++i)
+        for(size_t i = 0; i != connected_patches.size(); ++i)
         {
             if(connected_patches[i].size() <= min_points)
             {
@@ -720,7 +720,7 @@ namespace geometry
                 {
                     prune_count++;
                     Reference & reference = references[*iter];
-                    for(int j = 0; j != reference.size(); ++j)
+                    for(size_t j = 0; j != reference.size(); ++j)
                     {
                         t_deleted[reference[j].first] = true;
                     }

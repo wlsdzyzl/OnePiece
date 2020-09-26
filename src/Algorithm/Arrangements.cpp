@@ -7,9 +7,9 @@ namespace algorithm
         geometry::Point2List &intersect_points)
     {
         intersect_points.clear();
-        for(int i = 0; i!= lines.size(); ++i)
+        for(size_t i = 0; i!= lines.size(); ++i)
         {
-            for(int j = i+1; j < lines.size(); ++j)
+            for(size_t j = i+1; j < lines.size(); ++j)
             {
                 if(std::fabs(lines[i].n.transpose() * lines[j].n ) < 0.9)
                 {
@@ -27,7 +27,7 @@ namespace algorithm
             min_x = std::numeric_limits<float>::max (),
             max_y = std::numeric_limits<float>::lowest (),
             min_y = std::numeric_limits<float>::max ();
-        for(int i = 0; i!=points.size(); ++i)
+        for(size_t i = 0; i!=points.size(); ++i)
         {
             if(points[i](0) > max_x) max_x = points[i](0);
             if(points[i](0) < min_x) min_x = points[i](0);

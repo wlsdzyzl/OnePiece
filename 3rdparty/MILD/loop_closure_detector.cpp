@@ -63,7 +63,7 @@ namespace MILD
 		distance_threshold = input_distance_threshold;
 
 		features_buffer = std::vector<mild_entry>(entry_num_per_hash_table * hash_table_num);
-		for (int i = 0; i < entry_num_per_hash_table * hash_table_num; i++)
+		for (unsigned int i = 0; i < entry_num_per_hash_table * hash_table_num; i++)
 		{
 			features_buffer[i].clear();
 		}
@@ -82,8 +82,8 @@ namespace MILD
 	int LoopClosureDetector::count_feature_in_database()
 	{
 		int database_feature_num = 0;
-		int database_size = features_descriptor.size();
-		for (int i = 0; i < database_size; i++)
+		size_t database_size = features_descriptor.size();
+		for (size_t i = 0; i < database_size; i++)
 		{
 			database_feature_num += features_descriptor[i].descriptor.rows;
 		}
@@ -104,7 +104,7 @@ namespace MILD
 			}
 		}
 		
-		int image_index = features_descriptor.size(); 
+		size_t image_index = features_descriptor.size(); 
 		std::vector<unsigned long> hash_entry_index = std::vector<unsigned long>(hash_table_num);
 
 		database_frame df;
@@ -116,7 +116,7 @@ namespace MILD
   			feature_indicator f;
 			f.image_index = image_index;
 			f.feature_index = feature_idx;
-			for (int hash_table_id = 0; hash_table_id < hash_table_num; hash_table_id++)
+			for (unsigned int hash_table_id = 0; hash_table_id < hash_table_num; hash_table_id++)
 			{
 				int entry_pos = hash_table_id*entry_num_per_hash_table + hash_entry_index[hash_table_id];
 				if (features_buffer[entry_pos].size() == 0 || 
@@ -161,11 +161,11 @@ namespace MILD
 		df.descriptor = desc;
 		features_descriptor.push_back(df);
 
-		int database_size = features_descriptor.size();
+		size_t database_size = features_descriptor.size();
 		score.clear();
 		score = std::vector<float>(database_size);
 		std::vector<float> feature_score = std::vector<float>(database_size);
-		for (int i = 0; i < database_size; i++)
+		for (size_t i = 0; i < database_size; i++)
 		{
 			score[i] = 0;
 		}
@@ -175,7 +175,7 @@ namespace MILD
 
 		for (int feature_idx = 0; feature_idx < feature_num; feature_idx++)
 		{
-			for (int cnt = 0; cnt < database_size; cnt++)
+			for (size_t cnt = 0; cnt < database_size; cnt++)
 			{
 				feature_score[cnt] = 0;
 			}
@@ -185,7 +185,7 @@ namespace MILD
 			feature_indicator f;
 			f.image_index = image_index;
 			f.feature_index = feature_idx;
-			for (int hash_table_id = 0; hash_table_id < hash_table_num; hash_table_id++)
+			for (unsigned int hash_table_id = 0; hash_table_id < hash_table_num; hash_table_id++)
 			{
 				int entry_pos = hash_table_id*entry_num_per_hash_table + hash_entry_index[hash_table_id];
 				if (features_buffer[entry_pos].size() == 0 ||
@@ -201,7 +201,7 @@ namespace MILD
 						std::vector<unsigned long> neighbor_entry_idx;
 						neighbor_entry_idx.clear();
 						generate_neighbor_candidates(depth_level, entry_idx, neighbor_entry_idx, bits_per_substring);
-						for (int iter = 0; iter < neighbor_entry_idx.size(); iter++)
+						for (size_t iter = 0; iter < neighbor_entry_idx.size(); iter++)
 						{
 							search_entry(f1, neighbor_entry_idx[iter], feature_score);
 						}
@@ -212,7 +212,7 @@ namespace MILD
 			}
 			int similar_feature_count = 0;
 			float total_feature_energy = lut_feature_similarity[20];
-			for (int cnt = 0; cnt < database_size; cnt++)
+			for (size_t cnt = 0; cnt < database_size; cnt++)
 			{
 				total_feature_energy += feature_score[cnt];
 				similar_feature_count += (feature_score[cnt] > 0);
@@ -221,7 +221,7 @@ namespace MILD
 			float idf_freq = (float)database_size / similar_feature_count;
 			idf_freq = idf_freq > 1 ? idf_freq : 1;
 			idf_freq = log(idf_freq);
-			for (int cnt = 0; cnt < database_size; cnt++)
+			for (size_t cnt = 0; cnt < database_size; cnt++)
 			{
 				score[cnt] += feature_score[cnt] / total_feature_energy * idf_freq;
 			}
@@ -232,13 +232,13 @@ namespace MILD
 	int LoopClosureDetector::query_database(cv::Mat desc, std::vector<float> &score)
 	{
 		int feature_num = desc.rows;
-		int descriptor_length = desc.cols * 8;
-		int database_feature_num = count_feature_in_database();
-		int database_size = features_descriptor.size(); 
+		// int descriptor_length = desc.cols * 8;
+		// int database_feature_num = count_feature_in_database();
+		size_t database_size = features_descriptor.size(); 
 		score.clear();
 		score = std::vector<float>(database_size);
 		std::vector<float> feature_score = std::vector<float>(database_size);
-		for (int i = 0; i < database_size; i++)
+		for (size_t i = 0; i < database_size; i++)
 		{
 			score[i] = 0;
 		}
@@ -250,7 +250,7 @@ namespace MILD
 			unsigned int *data = desc.ptr<unsigned int>(feature_idx);
             uint64_t * f1 = desc.ptr<uint64_t>(feature_idx);
 			multi_index_hashing(hash_entry_index, data, hash_table_num, bits_per_substring);
-			for (int hash_table_id = 0; hash_table_id < hash_table_num; hash_table_id++)
+			for (unsigned int hash_table_id = 0; hash_table_id < hash_table_num; hash_table_id++)
 			{
 				unsigned long entry_idx = hash_table_id*entry_num_per_hash_table + hash_entry_index[hash_table_id];
 				search_entry(f1, entry_idx, feature_score);
@@ -262,7 +262,7 @@ namespace MILD
 				{
 					std::vector<unsigned long> neighbor_entry_idx;
 					generate_neighbor_candidates(depth_level, entry_idx, neighbor_entry_idx, bits_per_substring);
-					for (int iter = 0; iter < neighbor_entry_idx.size(); iter++)
+					for (size_t iter = 0; iter < neighbor_entry_idx.size(); iter++)
 					{
 						search_entry(f1, neighbor_entry_idx[iter], feature_score);
 					}
@@ -270,7 +270,7 @@ namespace MILD
 			}
 			int similar_feature_count = 0;
 			float total_feature_energy = lut_feature_similarity[20];
-			for (int cnt = 0; cnt < database_size; cnt++)
+			for (size_t cnt = 0; cnt < database_size; cnt++)
 			{
 				total_feature_energy += feature_score[cnt];
 				similar_feature_count += (feature_score[cnt] > 0);
@@ -279,7 +279,7 @@ namespace MILD
 			float idf_freq = (float)database_size / similar_feature_count;
 			idf_freq = idf_freq > 1 ? idf_freq : 1;
 			idf_freq = log(idf_freq);
-			for (int cnt = 0; cnt < database_size; cnt++)
+			for (size_t cnt = 0; cnt < database_size; cnt++)
 			{
 				score[cnt] += feature_score[cnt] / total_feature_energy * idf_freq;			
 			}
@@ -290,8 +290,8 @@ namespace MILD
     void LoopClosureDetector::search_entry(uint64_t * f1, unsigned long search_entry_idx, std::vector<float> &score)
 	{
 		mild_entry &current_entry = features_buffer[search_entry_idx];
-		int conflict_num = current_entry.size();
-		for (int i = 0; i < conflict_num; i++)
+		size_t conflict_num = current_entry.size();
+		for (size_t i = 0; i < conflict_num; i++)
 		{
 			feature_indicator &f = current_entry[i];
             uint64_t * f2 = (uint64_t *)features_descriptor[f.image_index].descriptor.data + f.feature_index * 4;

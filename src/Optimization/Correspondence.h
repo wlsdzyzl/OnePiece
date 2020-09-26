@@ -27,7 +27,7 @@ namespace optimization
             float sum_disparity = 0;
             
             //disparity means the distance of matching points on 2D
-            for(int i = 0; i < correspondence_set.size(); ++i)
+            for(size_t i = 0; i < correspondence_set.size(); ++i)
             {
                 geometry::Point3 ref_p = K * correspondence_set[i].first;
                 geometry::Point3 new_p = K * correspondence_set[i].second;
@@ -41,7 +41,7 @@ namespace optimization
         float ComputeReprojectionError3D(const geometry::SE3List &camera_poses) const
         {
             float sum_error = 0.0;
-            for(int j = 0; j != correspondence_set.size(); ++j)
+            for(size_t j = 0; j != correspondence_set.size(); ++j)
             {
                 sum_error += 
                     (geometry::TransformPoint(camera_poses[source_id],
@@ -55,7 +55,7 @@ namespace optimization
         {
             //camera pose from source to target.
             float sum_error = 0.0;
-            for(int j = 0; j != correspondence_set.size(); ++j)
+            for(size_t j = 0; j != correspondence_set.size(); ++j)
             {
                 sum_error += 
                     (geometry::TransformPoint(camera_pose,

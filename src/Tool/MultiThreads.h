@@ -20,11 +20,11 @@ namespace tool
         std::vector<std::thread> threads;
         if(p1.size() <= MAX_THREADS)
         {
-            for(int i = 0; i!= p1.size(); ++i)
+            for(size_t i = 0; i!= p1.size(); ++i)
             {
                 threads.push_back(std::thread(f,std::ref(p1[i]),std::ref(p2[i])));
             }
-            for(int i = 0; i!= p1.size(); ++i)
+            for(size_t i = 0; i!= p1.size(); ++i)
             {
                 threads[i].join();
             }
@@ -36,13 +36,13 @@ namespace tool
             int max_iteration_time = p1.size() / MAX_THREADS;
             for(int iter = 0; iter <= max_iteration_time; ++iter)
             {
-                int j = iter *MAX_THREADS;
-                for(int i = 0; j< p1.size() && i < MAX_THREADS; ++j, ++i)
+                size_t j = iter *MAX_THREADS;
+                for(size_t i = 0; j< p1.size() && i < MAX_THREADS; ++j, ++i)
                 {
                     threads[i] = std::thread(f, std::ref(p1[j]),std::ref(p2[j]));
                 }
                 //std::cout<<j<<std::endl;       
-                for(int i = 0; i < MAX_THREADS; ++i)
+                for(size_t i = 0; i < MAX_THREADS; ++i)
                 {
                     if(threads[i].joinable())
                     threads[i].join();

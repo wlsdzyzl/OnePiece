@@ -16,7 +16,7 @@ namespace tool
             //std::cout<<count<<std::endl;
             point_list.resize(count);
             float *data_ptr = (float *)p_data->buffer.get(); 
-            for(int i = 0; i < count; ++i)
+            for(size_t i = 0; i < count; ++i)
             {
                 point_list[i] = geometry::Point3((geometry::scalar)(*(data_ptr + i*3 + 0)), 
                     (geometry::scalar)(*(data_ptr + i*3 + 1)), (geometry::scalar)(*(data_ptr + i*3 + 2)));
@@ -27,7 +27,7 @@ namespace tool
             size_t count = p_data->count;
             point_list.resize(count);
             double *data_ptr = (double *)p_data->buffer.get(); 
-            for(int i = 0; i < count; ++i)
+            for(size_t i = 0; i < count; ++i)
             {
                 point_list[i] = geometry::Point3((geometry::scalar)(*(data_ptr + i*3 + 0)), 
                     (geometry::scalar)(*(data_ptr + i*3 + 1)), (geometry::scalar)(*(data_ptr + i*3 + 2)));
@@ -38,7 +38,7 @@ namespace tool
             size_t count = p_data->count;
             point_list.resize(count);
             unsigned char *data_ptr = (unsigned char *)p_data->buffer.get(); 
-            for(int i = 0; i < count; ++i)
+            for(size_t i = 0; i < count; ++i)
             {
                 point_list[i] = geometry::Point3((*(data_ptr + i*3 + 0))/255.0, 
                     (*(data_ptr + i*3 + 1))/255.0, (*(data_ptr + i*3 + 2))/255.0);
@@ -56,7 +56,7 @@ namespace tool
             size_t count = p_data->count;
             point_list.resize(count);
             unsigned int *data_ptr = (unsigned int *)p_data->buffer.get(); 
-            for(int i = 0; i < count; ++i)
+            for(size_t i = 0; i < count; ++i)
             {
                 point_list[i] = geometry::Point3ui((unsigned int)(*(data_ptr + i*3 + 0)), 
                     (unsigned int)(*(data_ptr + i*3 + 1)), (unsigned int)(*(data_ptr + i*3 + 2)));
@@ -132,7 +132,7 @@ namespace tool
                 catch (const std::exception & e) { }
             }
 
-            for(int i = 0; i != additional_labels.size(); ++i)
+            for(size_t i = 0; i != additional_labels.size(); ++i)
             {
                 additional_elements_ptr[i] = file.request_properties_from_element(additional_labels[i].element_key, 
                     additional_labels[i].element_property);
@@ -143,7 +143,7 @@ namespace tool
             if (normals)    std::cout << "\tRead " << normals->count   << " total vertex normals " << std::endl;
             if (colors)     std::cout << "\tRead " << colors->count << " total vertex colors " << std::endl;
             if (faces)     std::cout << "\tRead " << faces->count << " total faces" << std::endl;
-            for(int i = 0; i != additional_labels.size(); ++i)
+            for(size_t i = 0; i != additional_labels.size(); ++i)
             {
                 if(additional_elements_ptr[i])
                 std::cout << "\tRead " << additional_elements_ptr[i]->count << " total "
@@ -161,7 +161,7 @@ namespace tool
                 PlyDataToPoint3List(colors, _colors);
                 if(faces)
                 PlyDataToPoint3uiList(faces, _triangles);
-                for(int i = 0; i != additional_labels.size(); ++i)
+                for(size_t i = 0; i != additional_labels.size(); ++i)
                 {
                     if(additional_elements_ptr[i])
                     {
@@ -190,7 +190,7 @@ namespace tool
         const std::vector<AdditionalElement> & additional_labels,
         bool use_ascii)
     {
-        size_t numPoints = points.size();
+        //size_t numPoints = points.size();
         bool has_normals = normals.size()>0 && normals.size() == points.size();
         bool has_colors = colors.size() > 0 && colors.size() == points.size();
         bool has_faces = triangles.size() > 0;
@@ -211,28 +211,28 @@ namespace tool
         std::vector<geometry::scalar> vertices_buffer, normals_buffer;
         std::vector<unsigned char> colors_buffer;
         std::vector<unsigned int> faces_buffer;
-        for(int i = 0; i != points.size(); ++i)
+        for(size_t i = 0; i != points.size(); ++i)
         {
             vertices_buffer.push_back(points[i](0));
             vertices_buffer.push_back(points[i](1));
             vertices_buffer.push_back(points[i](2));
         }
         if(has_normals)
-        for(int i = 0; i != normals.size(); ++i)
+        for(size_t i = 0; i != normals.size(); ++i)
         {
             normals_buffer.push_back(normals[i](0));
             normals_buffer.push_back(normals[i](1));
             normals_buffer.push_back(normals[i](2));
         }
         if(has_colors)
-        for(int i = 0; i != colors.size(); ++i)
+        for(size_t i = 0; i != colors.size(); ++i)
         {
             colors_buffer.push_back((unsigned char)(colors[i](0) * 255));
             colors_buffer.push_back((unsigned char)(colors[i](1) * 255));
             colors_buffer.push_back((unsigned char)(colors[i](2) * 255));
         }
         if(has_faces)
-        for(int i = 0; i != triangles.size(); ++i)
+        for(size_t i = 0; i != triangles.size(); ++i)
         {
             faces_buffer.push_back((unsigned int)triangles[i](0));
             faces_buffer.push_back((unsigned int)triangles[i](1));
@@ -251,7 +251,7 @@ namespace tool
         geometry_file.add_properties_to_element("face", { "vertex_indices" },
             Type::UINT32, faces_buffer.size() / 3, reinterpret_cast<uint8_t*>(faces_buffer.data()), Type::UINT8, 3);
 
-        for(int i = 0; i != additional_labels.size(); ++i)
+        for(size_t i = 0; i != additional_labels.size(); ++i)
         {   
             geometry_file.add_properties_to_element(additional_labels[i].element_key, additional_labels[i].element_property,
                 additional_labels[i].type, additional_labels[i].count, 
@@ -259,7 +259,7 @@ namespace tool
         }
 
         geometry_file.get_comments().push_back("generated by FCLib");
-        for(int i = 0;  i != comments.size(); ++i)
+        for(size_t i = 0;  i != comments.size(); ++i)
         {
             geometry_file.get_comments().push_back(comments[i]);
         }

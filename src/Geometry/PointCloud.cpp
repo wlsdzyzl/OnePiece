@@ -73,7 +73,7 @@ namespace geometry
         Reset();   
         float fx = camera.GetFx(), fy = camera.GetFy(), cx = camera.GetCx(), cy = camera.GetCy();
         float depth_scale = camera.GetDepthScale();
-        float scale = 255.0;
+        // float scale = 255.0;
         points.resize(depth.rows*depth.cols);
         int cnt = 0;
         for (int i = 0; i < depth.rows; i++) 
@@ -106,7 +106,7 @@ namespace geometry
         geometry::Point3 mean_point(0,0,0);
 
         auto dspcd = DownSample(0.05);
-        for(int i = 0; i != dspcd->points.size(); ++i)
+        for(size_t i = 0; i != dspcd->points.size(); ++i)
             mean_point+= dspcd->points[i];
         mean_point /= dspcd->points.size();
 #endif
@@ -116,7 +116,7 @@ namespace geometry
 
 
         // std::vector<cv::Point3f> cv_pcd;
-        // for(int i = 0; i < points.size(); ++i)
+        // for(size_t i = 0; i < points.size(); ++i)
         // {
         //     cv_pcd.push_back(cv::Point3f(points[i](0), points[i](1), points[i](2)));
         // } 
@@ -130,7 +130,7 @@ namespace geometry
         kdtree.BuildTree(points);
         std::cout<<BLUE<<"[EstimateNormals]::[INFO]::RadiusSearch "<<knn<<" nearest points, radius: "<<radius<<RESET<<std::endl;
 
-        for(int i = 0; i < points.size(); ++i)
+        for(size_t i = 0; i < points.size(); ++i)
         {
             
             std::vector<int> indices; 
@@ -144,7 +144,7 @@ namespace geometry
             geometry::Point3List nearest_points;
 
 
-            for(int j = 0; j!= indices.size() && j != knn;++j)
+            for(size_t j = 0; j!= indices.size() && j != static_cast<size_t>(knn);++j)
             {
                 nearest_points.push_back(points[indices[j]]);
                 //std::cout <<indices[j]<<" "<<std::endl;
@@ -156,7 +156,7 @@ namespace geometry
         }
 
 #if 0
-        for(int i = 0; i < cv_pcd.size(); ++i)
+        for(size_t i = 0; i < cv_pcd.size(); ++i)
         {
             if(normals[i].dot(points[i] - mean_point) < 0)
             normals[i] = -normals[i];
@@ -171,8 +171,8 @@ namespace geometry
         int ptr = 0;  
         bool has_color = HasColors();
         bool has_normal = HasNormals();
-        float half_len = grid_len / 2;
-        for(int i = 0;i!= pcd.points.size(); ++i)
+        //float half_len = grid_len / 2;
+        for(size_t i = 0;i!= pcd.points.size(); ++i)
         {
             Eigen::Vector3i index = Eigen::Vector3i(std::floor(pcd.points[i](0) / grid_len), 
                 std::floor(pcd.points[i](1) / grid_len), std::floor(pcd.points[i](2) / grid_len));
@@ -215,9 +215,9 @@ namespace geometry
         if(xyz.size() == 0) return;
         points.resize(xyz.size()* xyz[0].size()); 
 
-        for(int i = 0;i!=xyz.size();++i)
+        for(size_t i = 0;i!=xyz.size();++i)
         {
-            for(int j = 0;j!=xyz[i].size();++j)
+            for(size_t j = 0;j!=xyz[i].size();++j)
             if(xyz[i][j](2)>0)
                 points[cnt++] = xyz[i][j];
         }

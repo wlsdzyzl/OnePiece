@@ -8,8 +8,8 @@ namespace optimization
     float ComputeReprojectionError3D(const std::vector<Correspondence> &correspondences, const geometry::SE3List &camera_poses)
     {
         float sum_error = 0;
-        int sum_correspondences = 0;
-        for(int i = 0; i != correspondences.size(); ++i)
+        //int sum_correspondences = 0;
+        for(size_t i = 0; i != correspondences.size(); ++i)
         {
             sum_error += correspondences[i].ComputeReprojectionError3D(camera_poses);
         }
@@ -38,7 +38,7 @@ namespace optimization
         JTr_s.setZero();
         JTr_t.setZero();
 
-        for(int i = 0; i != correspondence.correspondence_set.size(); ++i)
+        for(size_t i = 0; i != correspondence.correspondence_set.size(); ++i)
         {
             auto p1 = correspondence.correspondence_set[i].first;
             auto p2 = correspondence.correspondence_set[i].second;
@@ -109,7 +109,7 @@ namespace optimization
             //because each correspondence can bring 4 * Matrix6f(if the correspondence don't contains the first frame.)
             
             coefficients.reserve(correspondences.size() * 4 * 6 * 6);
-            for(int i = 0; i != correspondences.size(); ++i)
+            for(size_t i = 0; i != correspondences.size(); ++i)
             {
                 geometry::Matrix6 JTJ_ss, JTJ_st, JTJ_ts, JTJ_tt;
                 geometry::Se3 JTr_s, JTr_t;
@@ -140,7 +140,7 @@ namespace optimization
             sldlt_solver.compute(JTJ);
             pose_delta = sldlt_solver.solve(JTr);
 
-            for(int i = 1; i != camera_poses.size(); ++i)
+            for(size_t i = 1; i != camera_poses.size(); ++i)
             {
                 //update the camera pose.
                 geometry::Se3 delta_i = pose_delta.block<6,1>((i-1) * 6, 0);

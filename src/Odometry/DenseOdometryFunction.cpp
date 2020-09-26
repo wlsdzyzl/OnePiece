@@ -76,7 +76,7 @@ namespace odometry
 
         int width = camera.GetWidth();
         int height = camera.GetHeight();
-        float fx = camera.GetFx(), fy = camera.GetFy(), cx = camera.GetCx(), cy = camera.GetCy();
+        // float fx = camera.GetFx(), fy = camera.GetFy(), cx = camera.GetCx(), cy = camera.GetCy();
         //std::cout << width << " " << height << std::endl;
         cv::Mat wraping_depth(height,width,CV_32FC1,cv::Scalar(-1)); 
         cv::Mat wraping_map(height,width,CV_32SC2,cv::Scalar(-1));       
@@ -152,7 +152,7 @@ namespace odometry
         const geometry::TransformationMatrix & relative_pose, 
         const geometry::PixelCorrespondenceSet &correspondences)
     {
-        float fx = camera.GetFx(), fy = camera.GetFy(), cx = camera.GetCx(), cy = camera.GetCy();
+        float fx = camera.GetFx(), fy = camera.GetFy();
         geometry::Matrix3 R = relative_pose.block<3,3>(0,0);
         geometry::Point3 t = relative_pose.block<3,1>(0,3);
 
@@ -194,7 +194,7 @@ namespace odometry
         const geometry::ImageXYZ & source_XYZ, const camera::PinholeCamera &camera, const geometry::TransformationMatrix & relative_pose, 
         const geometry::PixelCorrespondenceSet &correspondences)
     {
-        float fx = camera.GetFx(), fy = camera.GetFy(), cx = camera.GetCx(), cy = camera.GetCy();
+        float fx = camera.GetFx(), fy = camera.GetFy();
         geometry::Matrix3 R = relative_pose.block<3,3>(0,0);
         geometry::Point3 t = relative_pose.block<3,1>(0,3);
 
@@ -241,7 +241,7 @@ namespace odometry
         sqrt_lamba_dep = sqrt(LAMBDA_HYBRID_DEPTH);
         sqrt_lambda_img = sqrt(1.0 - LAMBDA_HYBRID_DEPTH);
 
-        float fx = camera.GetFx(), fy = camera.GetFy(), cx = camera.GetCx(), cy = camera.GetCy();
+        float fx = camera.GetFx(), fy = camera.GetFy();
         geometry::Matrix3 R = relative_pose.block<3,3>(0,0);
         geometry::Point3 t = relative_pose.block<3,1>(0,3);
 
@@ -307,13 +307,13 @@ namespace odometry
         float r2_sum_private = 0.0;
         JTJ_private.setZero();
         JTr_private.setZero();
-        for(int i = 0;i!=correspondences.size();++i)
+        for(size_t i = 0;i!=correspondences.size();++i)
         {
             std::vector<geometry::Se3> J;
             std::vector<float > r;
             ComputeJacobianHybridTerm(i,J,r,source_color,source_depth,target_color,target_depth,target_color_dx ,
                 target_depth_dx, target_color_dy, target_depth_dy, source_XYZ, camera, relative_pose,correspondences);            
-            for(int j = 0; j!=J.size();++j)
+            for(size_t j = 0; j!=J.size();++j)
             {
                 JTJ_private.noalias() += J[j] * J[j].transpose();
                 JTr_private.noalias() += J[j] * r[j];
@@ -335,13 +335,13 @@ namespace odometry
         float r2_sum_private = 0.0;
         JTJ_private.setZero();
         JTr_private.setZero();
-        for(int i = 0;i!=correspondences.size();++i)
+        for(size_t i = 0;i!=correspondences.size();++i)
         {
             std::vector<geometry::Se3> J;
             std::vector<float > r;
             ComputeJacobianPhotoTerm(i,J,r,source_color,source_depth,target_color,target_depth,target_color_dx ,
                  target_color_dy, source_XYZ, camera, relative_pose,correspondences);            
-            for(int j = 0; j!=J.size();++j)
+            for(size_t j = 0; j!=J.size();++j)
             {
                 JTJ_private.noalias() += J[j] * J[j].transpose();
                 JTr_private.noalias() += J[j] * r[j];
@@ -363,13 +363,13 @@ namespace odometry
         float r2_sum_private = 0.0;
         JTJ_private.setZero();
         JTr_private.setZero();
-        for(int i = 0;i!=correspondences.size();++i)
+        for(size_t i = 0;i!=correspondences.size();++i)
         {
             std::vector<geometry::Se3> J;
             std::vector<float > r;
             ComputeJacobianDepthTerm(i,J,r,source_color,source_depth,target_color,target_depth,
                 target_depth_dx, target_depth_dy, source_XYZ, camera, relative_pose,correspondences);            
-            for(int j = 0; j!=J.size();++j)
+            for(size_t j = 0; j!=J.size();++j)
             {
                 JTJ_private.noalias() += J[j] * J[j].transpose();
                 JTr_private.noalias() += J[j] * r[j];
@@ -391,7 +391,7 @@ namespace odometry
         //std::cout<<"find correspondences[pixel]..."<<std::endl;
         ComputeCorrespondencePixelWise(source_depth,target_depth,camera,relative_pose,correspondences);
         //std::cout<<"correspondences: "<<correspondences.size()<<std::endl;
-        int valid_count = correspondences.size();
+        
         geometry::Matrix6 JTJ;
         geometry::Se3 JTr;
         float r;
@@ -403,7 +403,8 @@ namespace odometry
         
         //geometry::TransformationMatrix delta_matrix = geometry::TransformVector6fToMatrix4f(delta);
         geometry::TransformationMatrix delta_matrix = geometry::Se3ToSE3(delta);
-#if SHOW_VERBOSE      
+#if SHOW_VERBOSE     
+        size_t valid_count = correspondences.size(); 
         std::cout<<BLUE <<"[DEBUG]::residual: "<<r/valid_count<<" element_num: "<<valid_count <<RESET<<std::endl;
         //std::cout<<"delta: "<<delta<<std::endl;
 #endif
@@ -421,7 +422,7 @@ namespace odometry
         //std::cout<<"find correspondences[pixel]..."<<std::endl;
         ComputeCorrespondencePixelWise(source_depth,target_depth,camera,relative_pose,correspondences);
         //std::cout<<"correspondences: "<<correspondences.size()<<std::endl;
-        int valid_count = correspondences.size();
+
         geometry::Matrix6 JTJ;
         geometry::Se3 JTr;
         float r;
@@ -433,7 +434,8 @@ namespace odometry
         
         //geometry::TransformationMatrix delta_matrix = geometry::TransformVector6fToMatrix4f(delta);
         geometry::TransformationMatrix delta_matrix = geometry::Se3ToSE3(delta);
-#if SHOW_VERBOSE      
+#if SHOW_VERBOSE    
+        size_t valid_count = correspondences.size();  
         std::cout<<BLUE <<"[DEBUG]::residual: "<<r/valid_count<<" element_num: "<<valid_count <<RESET<<std::endl;
         //std::cout<<"delta: "<<delta<<std::endl;
 #endif
@@ -451,7 +453,7 @@ namespace odometry
         //std::cout<<"find correspondences[pixel]..."<<std::endl;
         ComputeCorrespondencePixelWise(source_depth,target_depth,camera,relative_pose,correspondences);
         //std::cout<<"correspondences: "<<correspondences.size()<<std::endl;
-        int valid_count = correspondences.size();
+        
         geometry::Matrix6 JTJ;
         geometry::Se3 JTr;
         float r;
@@ -464,6 +466,7 @@ namespace odometry
         //geometry::TransformationMatrix delta_matrix = geometry::TransformVector6fToMatrix4f(delta);
         geometry::TransformationMatrix delta_matrix = geometry::Se3ToSE3(delta);
 #if SHOW_VERBOSE  
+        size_t valid_count = correspondences.size();
         std::cout<<BLUE <<"[DEBUG]::residual: "<<r/valid_count<<" element_num: "<<valid_count <<RESET<<std::endl;
         //std::cout<<"delta: "<<delta<<std::endl;
 #endif

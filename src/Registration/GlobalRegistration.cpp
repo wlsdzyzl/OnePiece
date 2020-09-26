@@ -8,7 +8,7 @@ namespace registration
         const geometry::TransformationMatrix &T)
     {
         float sum_error = 0.0;
-        for(int i = 0; i != inliers.size(); ++i)
+        for(size_t i = 0; i != inliers.size(); ++i)
             sum_error += (T.block<3,3>(0,0) * inliers[i].first + T.block<3,1>(0,3) - inliers[i].second).squaredNorm();
             //std::cout<<sum_error<<std::endl;
         return sqrt(sum_error / inliers.size());
@@ -16,7 +16,7 @@ namespace registration
     void Eigen2OpenCV(const FeatureSet &features, std::vector<cv::Vec<float, 33>> &cv_features)
     {
         cv_features.clear();
-        for(int i = 0; i != features.size(); ++i)
+        for(size_t i = 0; i != features.size(); ++i)
         {
             cv::Mat feature_cv;
             //std::cout<<features[i].transpose()<<std::endl;
@@ -45,7 +45,7 @@ namespace registration
         kdtree.BuildTree(target_feature);
         int k = 1;
 
-        for(int i = 0; i != source_feature.size(); ++i)
+        for(size_t i = 0; i != source_feature.size(); ++i)
         {
             // cv::Mat query;
             // cv::eigen2cv(source_feature[i], query);
@@ -64,7 +64,7 @@ namespace registration
             //std::cout<<i<<" "<<indices.size()<<std::endl;
         }
         matching_index.clear();
-        for(int i = 0; i != similar_features.size(); ++i)
+        for(size_t i = 0; i != similar_features.size(); ++i)
         {
             if(similar_features[i].size())
             {
@@ -77,7 +77,7 @@ namespace registration
         const geometry::Point3List &target_points, std::default_random_engine &engine, 
         geometry::FMatchSet &init_matches, int candidate_num, float difference)
     {
-        int N = init_matches.size();
+        size_t N = init_matches.size();
         geometry::FMatchSet filtered_matches;
         filtered_matches.reserve(N);
         std::uniform_int_distribution<int> uniform(0,N-1);
@@ -87,7 +87,7 @@ namespace registration
             geometry::Point3 new_point = target_points[init_matches[i].second];
 
             int distance_preserve_flag = 0;
-            for (size_t j = 0; j < candidate_num; j++)
+            for (size_t j = 0; j < static_cast<size_t>(candidate_num); j++)
             {
                 int rand_choice = uniform(engine);
                 geometry::Point3 ref_point_p = source_points[init_matches[rand_choice].first];
@@ -112,7 +112,7 @@ namespace registration
     {
         std::ofstream ofs(filename);
         ofs<<mat.size()<<" "<<mat[0].rows()<<std::endl;
-        for(int i = 0; i != mat.size(); ++ i)
+        for(size_t i = 0; i != mat.size(); ++ i)
         {
             ofs<<mat[i].transpose()<<std::endl;
         }
@@ -162,7 +162,7 @@ namespace registration
         std::cout<<BLUE<<"[DEBUG]::[GlobalRegistrationRANSAC]::Before/After: "<<before<<"/"<<after<<RESET<<std::endl;
 #endif        
         geometry::PointCorrespondenceSet correspondence_set;
-        for(int i = 0; i != matches.size(); ++i)
+        for(size_t i = 0; i != matches.size(); ++i)
         {
             correspondence_set.push_back(std::make_pair(source_ptr->points[matches[i].first], 
                 target_ptr->points[matches[i].second]));
@@ -178,7 +178,7 @@ namespace registration
         result.T = T;
         result.correspondence_set = inliers;
         result.rmse = ComputeRMSE(inliers, T);
-        for(int i = 0; i < inlier_ids.size(); ++i)
+        for(size_t i = 0; i < inlier_ids.size(); ++i)
         result.correspondence_set_index.push_back(matches[inlier_ids[i]]);
 #if DEBUG_MODE
         std::cout<<BLUE<<"[DEBUG]::[GlobalRegistrationRANSAC]::Inliers: "<<inliers.size()<<RESET<<std::endl;
@@ -221,7 +221,7 @@ namespace registration
         std::cout<<BLUE<<"[DEBUG]::[GlobalRegistrationRANSAC]::Before/After: "<<before<<"/"<<after<<RESET<<std::endl;
 #endif        
         geometry::PointCorrespondenceSet correspondence_set;
-        for(int i = 0; i != matches.size(); ++i)
+        for(size_t i = 0; i != matches.size(); ++i)
         {
             correspondence_set.push_back(std::make_pair(source_feature_pcd.points[matches[i].first], 
                 target_feature_pcd.points[matches[i].second]));
@@ -237,7 +237,7 @@ namespace registration
         result.T = T;
         result.correspondence_set = inliers;
         result.rmse = ComputeRMSE(inliers, T);
-        for(int i = 0; i < inlier_ids.size(); ++i)
+        for(size_t i = 0; i < inlier_ids.size(); ++i)
         result.correspondence_set_index.push_back(matches[inlier_ids[i]]);
 #if DEBUG_MODE
         std::cout<<BLUE<<"[DEBUG]::[GlobalRegistrationRANSAC]::Inliers: "<<inliers.size()<<RESET<<std::endl;

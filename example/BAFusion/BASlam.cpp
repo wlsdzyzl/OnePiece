@@ -5,7 +5,7 @@ namespace fucking_cool
 
     void BASlam::UpdateFrame(const geometry::RGBDFrame &frame)
     {
-        auto K = camera.ToCameraMatrix();
+
         global_frames.push_back(frame);
         auto &current_frame = global_frames.back();
         current_frame.frame_id = global_frames.size() - 1;
@@ -86,7 +86,7 @@ namespace fucking_cool
                     int last_kid = global_frames[last_keyframe_id].keyframe_kid;
                     //std::cout<<"matches: "<<matches.size()<<" "<<PCS.size()<<std::endl;
                     std::cout<<last_keyframe_id<<" "<<global_keyframe_poses[last_kid]<<std::endl;
-                    for(int i = 0; i < matches.size(); ++i)
+                    for(size_t i = 0; i < matches.size(); ++i)
                     {
                         int source_local_id = matches[i].first;
                         int target_local_id = matches[i].second;
@@ -150,13 +150,13 @@ namespace fucking_cool
                 }
                 mild_lcd.SelectCandidates(current_frame, candidates);
                 std::cout<<"Candidate frame id:{";
-                for(int i = 0; i < candidates.size(); ++i)
+                for(size_t i = 0; i < candidates.size(); ++i)
                 {
                     std::cout<<" "<<keyframe_ids[candidates[i]];
                 }
                 std::cout<<"}"<<std::endl;
 
-                for(int i = 0; i != candidates.size(); ++i)
+                for(size_t i = 0; i != candidates.size(); ++i)
                 {
                     //last keyframe has been matched
                     geometry::TransformationMatrix loop_T = geometry::TransformationMatrix::Identity();
@@ -164,7 +164,7 @@ namespace fucking_cool
                     geometry::FMatchSet loop_matches;
                     bool success_matched;
                     int candidate_frame_id = keyframe_ids[candidates[i]];
-                    if(candidates[i] == keyframe_ids.size() - 1) continue;
+                    if(candidates[i] == static_cast<int>(keyframe_ids.size() - 1)) continue;
                     auto tracking_result = 
                         rgbd_odometry.SparseTrackingMILD(global_frames[candidate_frame_id], 
                         current_frame);
@@ -195,7 +195,7 @@ namespace fucking_cool
                         if(success_matched)
                         {
 
-                            for(int j = 0; j < loop_matches.size(); ++j)
+                            for(size_t j = 0; j < loop_matches.size(); ++j)
                             {
                                 int source_local_id = loop_matches[j].first;
                                 int target_local_id = loop_matches[j].second;
@@ -282,7 +282,7 @@ namespace fucking_cool
     {
         optimizer.BA(world_points, projected_points, 
             global_keyframe_poses, camera);
-        for(int i = 0; i != keyframe_ids.size(); ++i)
+        for(size_t i = 0; i != keyframe_ids.size(); ++i)
         {
             global_poses[keyframe_ids[i]] = global_keyframe_poses[i];
         }        

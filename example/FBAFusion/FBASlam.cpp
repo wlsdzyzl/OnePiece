@@ -72,19 +72,19 @@ namespace fucking_cool
                 }
                 mild_lcd.SelectCandidates(current_frame, candidates);
                 std::cout<<"Candidate frame id:{";
-                for(int i = 0; i < candidates.size(); ++i)
+                for(size_t i = 0; i < candidates.size(); ++i)
                 {
                     std::cout<<" "<<keyframe_ids[candidates[i]];
                 }
                 std::cout<<"}"<<std::endl;
 
-                for(int i = 0; i != candidates.size(); ++i)
+                for(size_t i = 0; i != candidates.size(); ++i)
                 {
                     //last keyframe has been matched
                     geometry::TransformationMatrix loop_T = geometry::TransformationMatrix::Identity();
                     geometry::PointCorrespondenceSet loop_PCS;
                     int candidate_frame_id = keyframe_ids[candidates[i]];
-                    if(candidates[i] == keyframe_ids.size() - 1) continue;
+                    if(candidates[i] == static_cast<int>(keyframe_ids.size() - 1)) continue;
                     auto tracking_result  = 
                         rgbd_odometry.SparseTrackingMILD(global_frames[candidate_frame_id], 
                         current_frame);
@@ -140,7 +140,7 @@ namespace fucking_cool
     void FBASlam::Optimize()
     {
         optimizer.FastBA(global_correspondences, global_keyframe_poses);
-        for(int i = 0; i != keyframe_ids.size(); ++i)
+        for(size_t i = 0; i != keyframe_ids.size(); ++i)
         {
             global_poses[keyframe_ids[i]] = global_keyframe_poses[i];
         }

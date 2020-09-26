@@ -69,7 +69,7 @@ namespace MILD
 		distance_threshold = input_distance_threshold;
 
 		features_buffer = std::vector<sparse_match_entry>(entry_num_per_hash_table * hash_table_num);
-		for (int i = 0; i < entry_num_per_hash_table * hash_table_num; i++)
+		for (unsigned int i = 0; i < entry_num_per_hash_table * hash_table_num; i++)
 		{
 			features_buffer[i].clear();
 		}
@@ -109,7 +109,7 @@ namespace MILD
 		int feature_f2_num = d2.rows;
 		cout << "f1 " << feature_f1_num << endl << "f2 " << feature_f2_num << endl;
 		unsigned short * delta_distribution = new unsigned short[feature_f1_num * feature_f2_num];
-		uint64_t current_descriptor[4];
+		// uint64_t current_descriptor[4];
 		for (int f1 = 0; f1 < feature_f1_num; f1++)
 		{
 			uint64_t *feature1_ptr = (d1.ptr<uint64_t>(f1));
@@ -159,7 +159,7 @@ namespace MILD
 		{
 			unsigned int *data = desc.ptr<unsigned int>(feature_idx);
 			multi_index_hashing(hash_entry_index, data, hash_table_num, bits_per_substring);
-			for (int hash_table_id = 0; hash_table_id < hash_table_num; hash_table_id++)
+			for (unsigned int hash_table_id = 0; hash_table_id < hash_table_num; hash_table_id++)
 			{
 				int entry_pos = hash_table_id*entry_num_per_hash_table + hash_entry_index[hash_table_id];
 				features_buffer[entry_pos].push_back(feature_idx);
@@ -186,7 +186,7 @@ namespace MILD
 			unsigned short best_corr_fid = 0;
 			uint64_t * f1 = desc.ptr<uint64_t>(feature_idx);
 			multi_index_hashing(hash_entry_index, data, hash_table_num, bits_per_substring);
-			for (int hash_table_id = 0; hash_table_id < hash_table_num; hash_table_id++)
+			for (unsigned int hash_table_id = 0; hash_table_id < hash_table_num; hash_table_id++)
 			{
 				unsigned long entry_idx = hash_table_id*entry_num_per_hash_table + hash_entry_index[hash_table_id];
 				int conflict_num = features_buffer[entry_idx].size();
@@ -207,7 +207,7 @@ namespace MILD
 				{
 					std::vector<unsigned long> neighbor_entry_idx;
 					generate_neighbor_candidates(depth_level, entry_idx, neighbor_entry_idx, bits_per_substring);
-					for (int iter = 0; iter < neighbor_entry_idx.size(); iter++)
+					for (size_t iter = 0; iter < neighbor_entry_idx.size(); iter++)
 					{
 						search_entry(f1, neighbor_entry_idx[iter], min_distance, best_corr_fid);
 					}
@@ -239,7 +239,7 @@ namespace MILD
 		for (unsigned short feature_idx = 0; feature_idx < feature_num; feature_idx++)
 		{
 			unsigned char *data = (unsigned char *)features_descriptor + 32 * feature_idx;
-			for (int hash_table_id = 0; hash_table_id < hash_table_num; hash_table_id++)
+			for (unsigned int hash_table_id = 0; hash_table_id < hash_table_num; hash_table_id++)
 			{
 				int entry_pos = hash_table_id*entry_num_per_hash_table + data[hash_table_id];
 				features_buffer[entry_pos].push_back(feature_idx);
@@ -258,7 +258,7 @@ namespace MILD
 			uint64_t * f1 = (uint64_t *)desc.data + feature_idx * 4;
 			unsigned short min_distance = 256;
 			unsigned short best_corr_fid = 0;
-			for (int hash_table_id = 0; hash_table_id < hash_table_num; hash_table_id++)
+			for (unsigned int hash_table_id = 0; hash_table_id < hash_table_num; hash_table_id++)
 			{
 				unsigned long entry_idx = hash_table_id*entry_num_per_hash_table + data[hash_table_id];
 				int conflict_num = features_buffer[entry_idx].size();
@@ -305,7 +305,7 @@ namespace MILD
             cv::Point2f query_feature = query_features[feature_idx].pt;
 			unsigned short min_distance = 256;
 			unsigned short best_corr_fid = 0;
-			for (int hash_table_id = 0; hash_table_id < hash_table_num; hash_table_id++)
+			for (unsigned int hash_table_id = 0; hash_table_id < hash_table_num; hash_table_id++)
 			{
 				unsigned long entry_idx = hash_table_id*entry_num_per_hash_table + data[hash_table_id];
 				int conflict_num = features_buffer[entry_idx].size();
@@ -367,7 +367,7 @@ namespace MILD
 			unsigned short min_distance = 256;
 			unsigned short best_corr_fid = 0;
 			std::vector<cv::DMatch> feature_matches;
-			for (int hash_table_id = 0; hash_table_id < hash_table_num; hash_table_id++)
+			for (unsigned int hash_table_id = 0; hash_table_id < hash_table_num; hash_table_id++)
 			{
 				unsigned long entry_idx = hash_table_id*entry_num_per_hash_table + data[hash_table_id];
 				int conflict_num = features_buffer[entry_idx].size();

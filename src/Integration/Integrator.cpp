@@ -44,11 +44,10 @@ namespace integration
         int width = camera.GetWidth();
         int height = camera.GetHeight();
         float depth_scale = camera.GetDepthScale();
-        //float cube_resolution = c_para.VoxelResolution * CUBE_SIZE;
+
         geometry::TransformationMatrix pose_inv = pose.inverse();
-        //CubeID cube_id = voxel_cube.cube_id;
-        //std::cout<<voxel_cube.cube_id<<std::endl;
-        bool updated = false;
+
+        // bool updated = false;
 
         for(int x = 0; x!= CUBE_SIZE; ++x)
         {
@@ -85,16 +84,13 @@ namespace integration
                         }
                         else
                             voxel_cube.voxels[voxel_id] = new_voxel;
-                        //
-                        updated = true;
+                        // updated = true;
                     }
 
                     
                 }
             }
         }
-        //if(!updated)
-            //std::cout<<RED <<"FUCK!"<<RESET<<std::endl;
     }
     
 }

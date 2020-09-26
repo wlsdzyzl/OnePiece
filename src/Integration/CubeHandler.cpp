@@ -10,7 +10,7 @@ namespace integration
     {
         /* 
         auto iter = cube_map.begin();
-        for(int i = 0;i!=cube_map.size()-2; ++i)
+        for(size_t i = 0;i!=cube_map.size()-2; ++i)
         iter++;
         GenerateMeshByCube(iter->first,mesh);
          */
@@ -48,13 +48,13 @@ namespace integration
         for(auto iter = cube_map.begin(); iter != cube_map.end(); ++iter)
         {
             //std::cout<<iter->first<<std::endl;
-            for(int x = 0 ; x != CUBE_SIZE; ++x)
+            for(size_t x = 0 ; x != CUBE_SIZE; ++x)
             {
-                for(int y = 0 ; y != CUBE_SIZE; ++y)
+                for(size_t y = 0 ; y != CUBE_SIZE; ++y)
                 {
-                    for(int z = 0 ; z != CUBE_SIZE; ++z)
+                    for(size_t z = 0 ; z != CUBE_SIZE; ++z)
                     {       
-                        int voxel_id = x + y * CUBE_SIZE + z * CUBE_SIZE * CUBE_SIZE;
+                        size_t voxel_id = x + y * CUBE_SIZE + z * CUBE_SIZE * CUBE_SIZE;
                         if(iter->second.voxels[voxel_id].weight !=0 && std::fabs(iter->second.voxels[voxel_id].sdf) <integrator.truncation)
                         {
                             float fabs_sdf = std::fabs(iter->second.voxels[voxel_id].sdf) / integrator.truncation;
@@ -73,13 +73,13 @@ namespace integration
         geometry::Point3List corner_voxel(8);
 
         //std::cout<<cube_id<<std::endl;
-        for(int x = 0 ; x != CUBE_SIZE; ++x)
+        for(size_t x = 0 ; x != CUBE_SIZE; ++x)
         {
-            for(int y = 0 ; y != CUBE_SIZE; ++y)
+            for(size_t y = 0 ; y != CUBE_SIZE; ++y)
             {
-                for(int z = 0 ; z != CUBE_SIZE; ++z)
+                for(size_t z = 0 ; z != CUBE_SIZE; ++z)
                 {        
-                    int voxel_id = x + y * CUBE_SIZE + z * CUBE_SIZE * CUBE_SIZE;
+                    //int voxel_id = x + y * CUBE_SIZE + z * CUBE_SIZE * CUBE_SIZE;
                     int index = (x == (CUBE_SIZE-1) ) + ((y == (CUBE_SIZE-1))<<1) + ((z == (CUBE_SIZE -1)) << 2);
                     Eigen::Vector3i cube_offset =  c_para.NeighborCubeIDOffset[index];
                     //std::cout<<"CUBE OFFSET: "<<index<<std::endl;
@@ -128,7 +128,7 @@ namespace integration
         frustum.ComputeFromCamera(camera, pose,far,near);
         max_pos = geometry::Point3(std::numeric_limits<float>::lowest () ,std::numeric_limits<float>::lowest () ,std::numeric_limits<float>::lowest () );
         min_pos = geometry::Point3(std::numeric_limits<float>::max () ,std::numeric_limits<float>::max () ,std::numeric_limits<float>::max () );
-        for(int i = 0;i!=points.size(); ++i)
+        for(size_t i = 0;i!=points.size(); ++i)
         {
             //std::cout <<points[i]<<std::endl;
             if(frustum.ContainPoint(points[i]))
@@ -145,7 +145,7 @@ namespace integration
     }
 
     void CubeHandler::PrepareCubes(const cv::Mat &depth, const geometry::TransformationMatrix &pose, 
-        std::vector<PreparedCubeID> &cube_id_list)
+        std::vector<CubeID> &cube_id_list)
     {
         //std::cout<<c_para.VoxelResolution<<std::endl;
         geometry::Point3 max_point, min_point;
@@ -169,7 +169,7 @@ namespace integration
                 for(int k = min_cube_id(2)-1; k<= max_cube_id(2)+1; ++k)
                 {
                     float min_sdf = std::numeric_limits<float>::max();
-                    for(int c = 0; c!= 8; ++c)
+                    for(size_t c = 0; c!= 8; ++c)
                     {
                         geometry::Point3 voxel = geometry::Point3(i*cube_resolution, j*cube_resolution, 
                             k*cube_resolution) + c_para.VoxelCentroidOffSet[voxel_index[c]];
@@ -181,13 +181,13 @@ namespace integration
                     if(min_sdf < integrator.truncation)
                     {
                         CubeID cube_id = CubeID(i,j,k);
-                        bool is_new_cube=false;
+                        // bool is_new_cube=false;
                         if(cube_map.find(cube_id) == cube_map.end())
                         {
-                            is_new_cube == true;
+                            // is_new_cube = true;
                             cube_map[cube_id] = VoxelCube(cube_id);
                         }
-                        cube_id_list.push_back(std::make_tuple(cube_id, is_new_cube, false));
+                        cube_id_list.push_back(cube_id);
                     }
                     //std::cout<<k<<std::endl;
                 }
@@ -197,14 +197,14 @@ namespace integration
     void CubeHandler::IntegrateImage(const cv::Mat &depth, const cv::Mat &rgb, const geometry::TransformationMatrix & pose)
     {
         
-        std::vector<PreparedCubeID> cube_id_list;
+        std::vector<CubeID> cube_id_list;
         PrepareCubes(depth, pose, cube_id_list);
 #if DEBUG_MODE
         std::cout<<BLUE<<"[PrepareCubes]::[DEBUG]::Number of Candidate Cubes: "<<cube_id_list.size() <<RESET<<std::endl;
 #endif
-        for(int i = 0; i!= cube_id_list.size(); ++i)
+        for(size_t i = 0; i!= cube_id_list.size(); ++i)
         {
-            integrator.IntegrateImage(depth, rgb,  pose, camera, cube_map[std::get<0>(cube_id_list[i])], c_para);
+            integrator.IntegrateImage(depth, rgb,  pose, camera, cube_map[cube_id_list[i]], c_para);
         }
         std::cout<<GREEN<<"[IntegrateImage]::[Info]::Finish image integration."<<RESET<<std::endl;
     }

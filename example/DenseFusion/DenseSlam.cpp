@@ -10,7 +10,6 @@ namespace fucking_cool
         global_frames.push_back(frame);
         auto &current_frame = global_frames.back();
         current_frame.frame_id = global_frames.size() - 1;
-        int frame_id = current_frame.frame_id;
         std::cout <<"Process on "<<current_frame.frame_id <<"th image"<<std::endl;
 
         geometry::TransformationMatrix T = geometry::TransformationMatrix::Identity();
@@ -77,7 +76,7 @@ namespace fucking_cool
             registration::DownSampleAndExtractFeature(*pcd_ptr, r_para);
         auto &pcd = submaps[submap_id].downsampled_pcd;
         auto &features = submaps[submap_id].features;
-        for(int i = 0; i != submaps.size(); ++i)
+        for(size_t i = 0; i != submaps.size(); ++i)
         {
             //same submap or last submap
             if(submaps[i].submap_id == submap_id ) continue;
@@ -91,11 +90,11 @@ namespace fucking_cool
                 geometry::SE3 init_T = submap_poses[submap_id].inverse() * submap_poses[submap_id - 1];
                 auto icp_result = registration::PointToPoint(previous_pcd, pcd, init_T, icp_para);
                 optimization::Correspondence submap_correspondence(submaps[i].submap_id, submap_id);
-                int tmp_step = 1;
+                size_t tmp_step = 1;
                 if(icp_result->correspondence_set.size() > MAX_ICP_CORRESPONDENCE)
                 tmp_step = icp_result->correspondence_set.size() / MAX_ICP_CORRESPONDENCE;
-                int ptr = 0;
-                for(int j = 0; j < icp_result->correspondence_set.size(); j += tmp_step, ptr += 1)
+                size_t ptr = 0;
+                for(size_t j = 0; j < icp_result->correspondence_set.size(); j += tmp_step, ptr += 1)
                 {
                     icp_result->correspondence_set[ptr] = icp_result->correspondence_set[j];
                 }

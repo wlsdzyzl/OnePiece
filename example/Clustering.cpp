@@ -4,7 +4,7 @@ using namespace fucking_cool;
 int main()
 {
     int point_number = 200;
-    const int MAX_CLUSTERS = 7;
+    //const int MAX_CLUSTERS = 7;
 
     geometry::Point2List points;
     for(int i = 0;i != point_number; ++i)

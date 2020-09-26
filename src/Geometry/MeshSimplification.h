@@ -13,7 +13,7 @@ namespace geometry
     void ClusteringSimplification(TriangleMesh &wait_to_simplify, float grid_len);
     //Surface Simplification Using Quadric Error Metrics, 1997.
     void QuadricSimplification(TriangleMesh &wait_to_simplify, int target_triangle);
-    void MeshPruning(TriangleMesh &mesh, int min_points);
+    void MeshPruning(TriangleMesh &mesh, size_t min_points);
     typedef std::pair<int, int> PositionInTriangle;//triangleID, and index in triangle
     typedef std::vector<std::pair<int, int>> Reference;//For each vertex, reference is used to find contained triangles
     struct QuadricHelper
@@ -58,7 +58,7 @@ namespace geometry
         std::set<int> unvisited;
         std::vector<std::set<int >> connected_patches;
     };
-    void MeshPruning(TriangleMesh &mesh, int min_points);
+    // void MeshPruning(TriangleMesh &mesh, int min_points);
     Eigen::Vector3i GetGridIndex(const geometry::Point3 &points, float grid_size);
     bool Flipped(QuadricHelper &helper, int p1, int p2, geometry::Point3 v, std::vector<bool> &deleted);
     void UpdateTriangles(QuadricHelper &helper,int p1, int p2, std::vector<bool> &deleted);

@@ -9,7 +9,7 @@ namespace integration
         {
             float fx = camera.GetFx();
             float fy = camera.GetFy();
-            float cx = camera.GetCx();
+            // float cx = camera.GetCx();
             float cy = camera.GetCy();
             float height = camera.GetHeight();
             float width = camera.GetWidth();

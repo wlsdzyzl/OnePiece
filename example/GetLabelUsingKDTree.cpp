@@ -42,7 +42,7 @@ int main(int argc, char** argv)
     geometry::KDTree<> kdtree;
     kdtree.BuildTree(reference_mesh.points);
 
-    for(int i = 0; i != mesh.points.size(); ++i)
+    for(size_t i = 0; i != mesh.points.size(); ++i)
     {
         geometry::Point3 query_point = mesh.points[i];
         std::vector<int> indices;
@@ -70,7 +70,7 @@ int main(int argc, char** argv)
     comments.push_back("each vertex will have semantic labels.");
     tool::WritePLY("Labeled_model.ply", mesh.points, mesh.normals, mesh.colors, mesh.triangles, comments, additional_labels);
     mesh.colors.resize(mesh.points.size());
-    for(int i = 0; i != mesh.points.size(); ++i)
+    for(size_t i = 0; i != mesh.points.size(); ++i)
     {
         cv::Scalar label_color = visualization::color_tab[labels[i] % visualization::color_tab.size()];
         mesh.colors[i] = geometry::Point3(label_color(0)/255.0, label_color(1)/255.0, label_color(2)/255.0 );

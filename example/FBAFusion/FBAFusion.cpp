@@ -14,7 +14,7 @@ int main(int argc, char **argv)
         std::cout<<"Usage: [basepath] [voxel resolution]"<<std::endl;
         return 0;
     }
-    int keyframe_step = 8;
+
     std::string base_path = std::string(argv[1]);
     float voxel_resolution = atof(argv[2]);
     geometry::TriangleMesh mesh;
@@ -28,7 +28,7 @@ int main(int argc, char **argv)
     std::vector<std::string> rgb_files, depth_files;
 
     std::vector<optimization::Correspondence> global_correspondences;
-    optimization::Optimizer optimizer;
+
 
     tool::ReadImageSequence(base_path,rgb_files, depth_files);
     // rgb_files.resize(500);
@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     visualizer.Initialize();
 
     FBASlam fba_slam(camera);
-    for(int frame_id = 0; frame_id < rgb_files.size(); ++frame_id)
+    for(size_t frame_id = 0; frame_id < rgb_files.size(); ++frame_id)
     {
         cv::Mat rgb = cv::imread(rgb_files[frame_id]);
         cv::Mat depth = cv::imread(depth_files[frame_id],-1);
@@ -70,11 +70,11 @@ int main(int argc, char **argv)
     cube_handler.SetVoxelResolution(voxel_resolution);
     
     std::ofstream ofs(base_path +"/trajectory.txt");
-    for(int i = 0; i < fba_slam.global_frames.size() ; ++i)
+    for(size_t i = 0; i < fba_slam.global_frames.size() ; ++i)
     {
         // int keyframe_id = fba_slam.keyframe_ids[i];
         if(!fba_slam.global_frames[i].tracking_success) continue;
-        if(i % 1 == 0)
+        if(i % 10 == 0)
         {
 
             cv::Mat refined_depth;

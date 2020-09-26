@@ -27,10 +27,10 @@ namespace visualization
             glLineWidth(0.5f);
             glBegin(GL_LINES);
 
-            for(int i = 0; i < line_indexs.size(); ++ i)
+            for(size_t i = 0; i < line_indexs.size(); ++ i)
             {
-                int p_s = line_indexs[i].first;
-                int p_d = line_indexs[i].second;
+                size_t p_s = line_indexs[i].first;
+                size_t p_d = line_indexs[i].second;
                 
                 glColor4f(line_colors[i](0), line_colors[i](1), line_colors[i](2), 0.0);
                 glVertex3f(line_points[p_s](0), line_points[p_s](1), line_points[p_s](2));
@@ -43,7 +43,7 @@ namespace visualization
         if(has_cameras)
         {
             //draw camera
-            for(int i = 0; i != camera_poses.size(); ++i)
+            for(size_t i = 0; i != camera_poses.size(); ++i)
             DrawCamera(camera_poses[i], camera_colors[i]);
         }
         std::shared_ptr<Shader> program = GetShader();
@@ -138,8 +138,8 @@ namespace visualization
             std::cout<<YELLOW<<"[Visualizer]::[WARNING]::Geometry type is not pointcloud, the visualizer will clear buffer."<<RESET<<std::endl;
             Reset();
         }
-        int size = pcd.GetSize();
-        int step = 3;
+        size_t size = pcd.GetSize();
+        size_t step = 3;
         
         if(pcd.HasColors()) step += 3;
         if(pcd.HasNormals()) step += 3;
@@ -148,23 +148,23 @@ namespace visualization
             std::cout<<YELLOW<<"[Visualizer]::[WARNING]::Different types of pointcloud, the visualizer will clear buffer."<<RESET<<std::endl;
             Reset();            
         }
-        for(int i = 0;i!=size;++i)
+        for(size_t i = 0;i!=size;++i)
         {
             //position
-            int start = 0;
-            for(int j = 0;j<3; ++j, ++start)
+            size_t start = 0;
+            for(size_t j = 0;j<3; ++j, ++start)
                 point_buffer[point_buffer_size + i*step+start] = pcd.points[i](j);
 
             //normal
             if(pcd.HasNormals())
             {
-            for(int j = 0;j<3; ++j, ++start)
+            for(size_t j = 0;j<3; ++j, ++start)
                 point_buffer[point_buffer_size + i*step+start] = pcd.normals[i](j);
             }
             //color
             if(pcd.HasColors())
             {
-            for(int j = 0;j<3; ++j, ++start)
+            for(size_t j = 0;j<3; ++j, ++start)
                 point_buffer[point_buffer_size + i*step+start] = pcd.colors[i](j);
             }
 
@@ -231,9 +231,9 @@ namespace visualization
             std::cout<<YELLOW<<"[Visualizer]::[WARNING]::Geometry type is not mesh, the visualizer will clear buffer."<<RESET<<std::endl;
             Reset();
         }
-        int point_size = mesh.GetPointSize();
-        int triangle_size = mesh.GetTriangleSize();
-        int step = 3;
+        size_t point_size = mesh.GetPointSize();
+        size_t triangle_size = mesh.GetTriangleSize();
+        size_t step = 3;
         if((step != point_step || has_normals != mesh.HasNormals() || has_colors != mesh.HasColors()) && point_step != 0)
         {
             std::cout<<YELLOW<<"[Visualizer]::[WARNING]::Different types of mesh, the visualizer will clear buffer."<<RESET<<std::endl;
@@ -242,31 +242,31 @@ namespace visualization
         if(mesh.HasColors()) step += 3;
         if(mesh.HasNormals()) step +=3;
 
-        for(int i = 0;i!=point_size;++i)
+        for(size_t i = 0;i!=point_size;++i)
         {
             //position
-            int start = 0;
-            for(int j = 0;j<3; ++j, ++start)
+            size_t start = 0;
+            for(size_t j = 0;j<3; ++j, ++start)
                 point_buffer[point_buffer_size + i*step+start] = mesh.points[i](j);
 
             //normal
             if(mesh.HasNormals())
             {
-            for(int j = 0;j<3; ++j, ++start)
+            for(size_t j = 0;j<3; ++j, ++start)
                 point_buffer[point_buffer_size + i*step+start] = mesh.normals[i](j);
             }
             //color
             if(mesh.HasColors())
             {
-            for(int j = 0;j<3; ++j, ++start)
+            for(size_t j = 0;j<3; ++j, ++start)
                 point_buffer[point_buffer_size + i*step+start] = mesh.colors[i](j);
             }
 
         }
 
-        for(int i = 0; i!=triangle_size; ++i)
+        for(size_t i = 0; i!=triangle_size; ++i)
         {
-            for(int j = 0;j<3; ++j)
+            for(size_t j = 0;j<3; ++j)
                 index_buffer[i*3 + j] = mesh.triangles[i](j);
             //std::cout <<mesh.triangles[i]<<std::endl;
         }

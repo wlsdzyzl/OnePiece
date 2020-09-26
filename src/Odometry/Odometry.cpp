@@ -25,7 +25,7 @@ namespace odometry
     // {
     //     correspondence_set.clear();
     //     float x1,y1,z1,x2,y2,z2;
-    //     for(int i = 0; i < matches.size(); ++i)
+    //     for(size_t i = 0; i < matches.size(); ++i)
     //     {
 
     //         const cv::KeyPoint &source = source_keypoints[matches[i].queryIdx];
@@ -56,7 +56,7 @@ namespace odometry
     {
         correspondence_set.clear();
         match_set.clear();
-        for(int i = 0; i < matches.size(); ++i)
+        for(size_t i = 0; i < matches.size(); ++i)
         {
             correspondence_set.push_back(std::make_pair(source_local_points[matches[i].queryIdx],target_local_points[matches[i].trainIdx]));
             match_set.push_back(std::make_pair(matches[i].queryIdx, matches[i].trainIdx));
@@ -68,7 +68,7 @@ namespace odometry
     {
         float x,y,z;
         local_points.resize(keypoints.size());
-        for(int i = 0; i < keypoints.size(); ++i)
+        for(size_t i = 0; i < keypoints.size(); ++i)
         {
 
             const cv::KeyPoint &keypoint = keypoints[i];
@@ -331,7 +331,7 @@ namespace odometry
 #if DEBUG_MODE
         //show matching results
         matches.clear();
-        for(int i = 0; i != fmatch_set.size() && i != 3; ++i)
+        for(size_t i = 0; i != fmatch_set.size() && i != 3; ++i)
         {
             auto match = cv::DMatch();
             match.queryIdx = fmatch_set[i].first;
@@ -454,7 +454,7 @@ namespace odometry
     {
         source_XYZ.clear();
         source_XYZ.resize(pyramid_cameras.size());
-        for(int i = 0; i != pyramid_cameras.size(); ++i)
+        for(size_t i = 0; i != pyramid_cameras.size(); ++i)
         {
             geometry::TransformToMatXYZ(depth_pyramid[i], pyramid_cameras[i], source_XYZ[i]);
         }
@@ -631,7 +631,7 @@ namespace odometry
     {
 
         //compute pyramid
-        float fx = camera.GetFx(), fy = camera.GetFy(), cx = camera.GetCx(), cy = camera.GetCy();   
+        //float fx = camera.GetFx(), fy = camera.GetFy(), cx = camera.GetCx(), cy = camera.GetCy();   
         int width = camera.GetWidth(), height = camera.GetHeight();
 
         geometry::PixelCorrespondenceSet correspondences;
@@ -671,12 +671,12 @@ namespace odometry
         }
         // int step = correspondences.size()/feature_number;
 
-        for(int i = 0; i<correspondences.size(); ++i)
+        for(size_t i = 0; i<correspondences.size(); ++i)
         {
             int v_s = correspondences[i].first(0);
             int u_s = correspondences[i].first(1);
-            int v_t = correspondences[i].second(0);
-            int u_t = correspondences[i].second(1);
+            //int v_t = correspondences[i].second(0);
+            //int u_t = correspondences[i].second(1);
             correspondence_set.push_back(std::make_pair(source_image_xyz_pyramid[0][v_s][u_s], 
                 target_image_xyz_pyramid[0][v_s][u_s]));
         }

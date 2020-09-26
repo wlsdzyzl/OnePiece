@@ -77,7 +77,7 @@ namespace geometry
         void BuildTree(const geometry::PointXList &points)
         {
             nano_point_list.point_list.clear();
-            for(int i = 0; i != points.size(); ++i)
+            for(size_t i = 0; i != points.size(); ++i)
             nano_point_list.point_list.push_back(points[i]);
             kdtree_ptr = NanoKDTreePtr( new NanoKDTree(T /*dim*/, nano_point_list, 
                 nanoflann::KDTreeSingleIndexAdaptorParams(max_leaf /* max leaf */) ));  
@@ -97,7 +97,7 @@ namespace geometry
             std::vector<size_t> _indices;
             RadiusSearch(point, _indices, dists, radius, max_result, sp);
             indices.resize(_indices.size());
-            for(int i = 0; i != _indices.size(); ++i)
+            for(size_t i = 0; i != _indices.size(); ++i)
             indices[i] = static_cast<int> (_indices[i]);
         }
         void RadiusSearch(const geometry::VectorX &point, std::vector<size_t> &indices, 
@@ -119,7 +119,7 @@ namespace geometry
             std::vector<size_t> _indices;
             RadiusSearch(point, _indices, dists, radius, max_result, sp);
             indices.resize(_indices.size());
-            for(int i = 0; i != _indices.size(); ++i)
+            for(size_t i = 0; i != _indices.size(); ++i)
             indices[i] = static_cast<int> (_indices[i]);
         }
         void RadiusSearch(const geometry::Vector<T> &point, std::vector<size_t> &indices, 
@@ -148,7 +148,7 @@ namespace geometry
             std::vector<size_t> _indices;
             KnnSearch(point, _indices, dists, k, sp);
             indices.resize(_indices.size());
-            for(int i = 0; i != _indices.size(); ++i)
+            for(size_t i = 0; i != _indices.size(); ++i)
             indices[i] = static_cast<int> (_indices[i]);
         }
         void KnnSearch(const geometry::VectorX &point, std::vector<size_t> &indices, 
@@ -171,7 +171,7 @@ namespace geometry
             std::vector<size_t> _indices;
             KnnSearch(point, _indices, dists, k, sp);
             indices.resize(_indices.size());
-            for(int i = 0; i != _indices.size(); ++i)
+            for(size_t i = 0; i != _indices.size(); ++i)
             indices[i] = static_cast<int> (_indices[i]);
         }
         void KnnSearch(const geometry::Vector<T> &point, std::vector<size_t> &indices, 
@@ -207,7 +207,7 @@ namespace geometry
         void BuildTree(const geometry::PointXList &points)
         {
             std::vector<cv::Vec<float,T>> cv_pcd;
-            for(int i = 0; i != points.size(); ++i)
+            for(size_t i = 0; i != points.size(); ++i)
             {
                 if(points[i].rows() != T)
                 {
@@ -226,7 +226,7 @@ namespace geometry
         void BuildTree(const geometry::PointList<T> &points)
         {
             std::vector<cv::Vec<float,T>> cv_pcd;
-            for(int i = 0; i < points.size(); ++i)
+            for(size_t i = 0; i < points.size(); ++i)
             {
                 cv::Mat point_cv;
                 const Eigen::VectorXf point_f = points[i].template cast<float>();
@@ -236,7 +236,7 @@ namespace geometry
 
             input_array = cv::Mat(cv_pcd).clone();
             kdtree.build(input_array.reshape(1), cv::flann::KDTreeIndexParams(trees));
-            // for(int i = 0; i != indices.size(); ++i)
+            // for(size_t i = 0; i != indices.size(); ++i)
             // std::cout<<indices[i]<<std::endl;
         }
         //strange rules in opencv flann: 

@@ -35,7 +35,7 @@ namespace tool
     void SobelFiltering(const std::vector<cv::Mat> &sources,std::vector<cv::Mat> &targets, char type )
     {
         targets.resize(sources.size());
-        for(int i = 0;i!=sources.size(); ++i)
+        for(size_t i = 0;i!=sources.size(); ++i)
         {
             SobelFiltering(sources[i], targets[i], type);
         }

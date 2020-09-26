@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     camera::PinholeCamera camera;
     std::vector<std::string> rgb_files, depth_files;
     tool::ReadImageSequence(argv[1],rgb_files, depth_files);
-    for(int i = 0; i < rgb_files.size(); ++i)
+    for(size_t i = 0; i < rgb_files.size(); ++i)
     {
         if(i%1 == 0)
         {

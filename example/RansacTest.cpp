@@ -11,7 +11,7 @@ std::shared_ptr<geometry::PointCloud> DrawMatches(const geometry::PointCloud &so
 
     result.points.insert(result.points.end(), target.points.begin(), target.points.end());
     result.colors.insert(result.colors.end(), target.colors.begin(), target.colors.end());
-    for(int i = 0; i != inliers.size(); ++i)
+    for(size_t i = 0; i != inliers.size(); ++i)
     {
         
         geometry::Point3 first = T.block<3,3>(0,0) * inliers[i].first + T.block<3,1>(0,3);
@@ -62,7 +62,7 @@ std::shared_ptr<geometry::PointCloud> DrawMatches(const geometry::PointCloud &so
 //     std::cout<<BLUE<<"[DEBUG]::[GlobalRegistrationRANSAC]::Before/After: "<<before<<"/"<<after<<RESET<<std::endl;
 // #endif        
 //     geometry::PointCorrespondenceSet correspondence_set;
-//     for(int i = 0; i != matches.size(); ++i)
+//     for(size_t i = 0; i != matches.size(); ++i)
 //     {
 //         correspondence_set.push_back(std::make_pair(source_pcd.points[matches[i].first], 
 //             target_pcd.points[matches[i].second]));
@@ -84,7 +84,7 @@ std::shared_ptr<geometry::PointCloud> DrawMatches(const geometry::PointCloud &so
 // void LoadMatrixFromFile(const std::string &filename, geometry::MatrixX &e)
 // {
 //     std::ifstream ifs(filename);
-//     size_t rows, cols;
+//     int rows, cols;
 //     ifs>>rows>>cols;
 //     e.resize(rows, cols);
 //     for(int i = 0; i != rows; ++i)
@@ -128,14 +128,14 @@ int main(int argc, char **argv)
     s_pcd.colors.resize(s_pcd.points.size());
     t_pcd.colors.resize(t_pcd.points.size());
 
-    for(int i = 0; i != s_pcd.points.size(); ++i)
+    for(size_t i = 0; i != s_pcd.points.size(); ++i)
     {
         s_pcd.colors[i] = geometry::Point3(1, 0, 0);
     }
 
     //s_pcd.Transform(result1->T);
 
-    for(int i = 0; i != t_pcd.points.size(); ++i)
+    for(size_t i = 0; i != t_pcd.points.size(); ++i)
         t_pcd.colors[i] = geometry::Point3(0, 0, 1);
 #else
     geometry::PointCloud s_pcd, t_pcd;
@@ -160,20 +160,20 @@ int main(int argc, char **argv)
     s_pcd.colors.resize(s_pcd.points.size());
     t_pcd.colors.resize(t_pcd.points.size());
 
-    for(int i = 0; i != s_pcd.points.size(); ++i)
+    for(size_t i = 0; i != s_pcd.points.size(); ++i)
     {
         s_pcd.colors[i] = geometry::Point3(1, 0, 0);
     }
 
     s_pcd.Transform(result1->T);
-    for(int i = 0; i != t_pcd.points.size(); ++i)
+    for(size_t i = 0; i != t_pcd.points.size(); ++i)
         t_pcd.colors[i] = geometry::Point3(0, 1, 0);
 #endif
     //Draw correspondence
     geometry::Point3List line_points;
     geometry::Point3List line_colors;
     std::vector<std::pair<int, int>> line_index;
-    for(int i = 0; i != result1->correspondence_set.size() ; ++i)
+    for(size_t i = 0; i != result1->correspondence_set.size() ; ++i)
     {
         line_points.push_back(result1->correspondence_set[i].first);
         line_points.push_back(result1->correspondence_set[i].second);

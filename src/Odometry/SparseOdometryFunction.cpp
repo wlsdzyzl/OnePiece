@@ -44,7 +44,7 @@ namespace odometry
             
             return false;
         }
-        for(int i = 0; i < max_inliers.size(); ++i)
+        for(size_t i = 0; i < max_inliers.size(); ++i)
         {
             correspondence_set[i] = correspondence_set[max_inliers[i]];
             matches[i] = matches[max_inliers[i]];
@@ -62,7 +62,7 @@ namespace odometry
     std::vector<int> CountInlier(const geometry::TransformationMatrix &T, const geometry::PointCorrespondenceSet & correspondence_set)
     {
         std::vector<int> inliers;        
-        for(int i = 0;i!=correspondence_set.size();++i)
+        for(size_t i = 0;i!=correspondence_set.size();++i)
         {
             float error;
             error = ReprojectionError3D(T,correspondence_set[i].first,correspondence_set[i].second);

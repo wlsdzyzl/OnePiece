@@ -14,7 +14,7 @@ int main(int argc, char **argv)
     pcd.LoadFromPLY(argv[1]);
     std::vector<algorithm::PlanePatch> result;
     algorithm::PlaneDetection(pcd.points, result);
-    for(int i = 0; i != result.size(); ++i)
+    for(size_t i = 0; i != result.size(); ++i)
     {
         std::cout<<"Plane "<<i<<": "<<result[i].items.size()<<" "
         <<result[i].rep(0)<<" "<<result[i].rep(1)<<" "<<result[i].rep(2)<<" "<<result[i].rep(3)<<std::endl;
