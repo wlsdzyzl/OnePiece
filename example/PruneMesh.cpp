@@ -5,14 +5,14 @@ int main(int argc, char* argv[])
 {
     if(argc != 3)
     {
-        std::cout << "Usage: PruneMesh [filename.obj] [min_points]"<<std::endl;
+        std::cout << "Usage: PruneMesh [filename.ply] [min_points]"<<std::endl;
         return 0;
     }
     geometry::TriangleMesh mesh;
-    //mesh.LoadFromPLY(argv[1]);
-    mesh.LoadFromOBJ(argv[1]);
+    mesh.LoadFromPLY(argv[1]);
+    //mesh.LoadFromOBJ(argv[1]);
     float min_points = atof(argv[2]);
     std::shared_ptr<geometry::TriangleMesh> s_mesh = mesh.Prune(min_points);
-    s_mesh->WriteToOBJ( argv[1] + std::string("_pruned.obj"));
+    s_mesh->WriteToPLY( argv[1] + std::string("_pruned.ply"));
     return 0;
 }

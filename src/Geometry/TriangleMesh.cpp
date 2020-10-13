@@ -26,7 +26,7 @@ namespace geometry
         if(HasNormals())
         geometry::TransformNormals(T,normals);
     }
-    std::shared_ptr<geometry::TriangleMesh> TriangleMesh::QuadricSimplify(int target_num) const
+    std::shared_ptr<geometry::TriangleMesh> TriangleMesh::QuadricSimplify(size_t target_num) const
     {
         geometry::TriangleMesh s_mesh = *this;
         QuadricSimplification(s_mesh,target_num);
@@ -38,7 +38,7 @@ namespace geometry
         ClusteringSimplification(s_mesh,grid_len);
         return std::make_shared<geometry::TriangleMesh>(s_mesh);
     }
-    std::shared_ptr<geometry::TriangleMesh> TriangleMesh::Prune(int min_points) const
+    std::shared_ptr<geometry::TriangleMesh> TriangleMesh::Prune(size_t min_points) const
     {
         geometry::TriangleMesh s_mesh = *this;
         MeshPruning(s_mesh,min_points);

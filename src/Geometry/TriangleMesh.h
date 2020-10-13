@@ -31,9 +31,9 @@ namespace geometry
         {
             return normals.size() == points.size() && normals.size() > 0;
         }
-        std::shared_ptr<geometry::TriangleMesh> QuadricSimplify(int target_num) const;
+        std::shared_ptr<geometry::TriangleMesh> QuadricSimplify(size_t target_num) const;
         std::shared_ptr<geometry::TriangleMesh> ClusteringSimplify(float grid_len) const;
-        std::shared_ptr<geometry::TriangleMesh> Prune(int min_points) const;
+        std::shared_ptr<geometry::TriangleMesh> Prune(size_t min_points) const;
         std::shared_ptr<geometry::PointCloud> GetPointCloud() const;
         size_t GetPointSize() const{return points.size();}
         size_t GetTriangleSize() const{return triangles.size();}

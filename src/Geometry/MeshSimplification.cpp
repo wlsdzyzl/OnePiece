@@ -153,13 +153,13 @@ namespace geometry
         UpdateReferences(*helper.triangles_ptr,  helper.references);
         
     }
-    void QuadricSimplification(TriangleMesh &wait_to_simplify, int target_triangle)
+    void QuadricSimplification(TriangleMesh &wait_to_simplify, size_t target_triangle)
     {
         QuadricHelper q_helper;
         InitializeHelper(wait_to_simplify,q_helper);
         int iteration = 1, max_iteration = 100;
         float error_threshold ;
-        int origin_triangle = wait_to_simplify.triangles.size();
+        size_t origin_triangle = wait_to_simplify.triangles.size();
 
         if(origin_triangle <= target_triangle)
         {
@@ -539,9 +539,9 @@ namespace geometry
         }
     }
     void ComputeNormalsAndQMatrix(const geometry::Point3uiList &triangles, const geometry::Point3List &points,
-        std::vector<Reference> &references, geometry::Point3List &normals ,std::vector<geometry::Matrix4> &QMatrix)
+        std::vector<Reference> &references, geometry::Point3List &normals ,geometry::Mat4List &QMatrix)
     {
-        std::vector<geometry::Matrix4> plane_matrix;
+        geometry::Mat4List plane_matrix;
         geometry::Point3 n,p1,p2,p3;
         float d;
         geometry::Vector4 plane;

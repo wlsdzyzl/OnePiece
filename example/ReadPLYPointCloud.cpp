@@ -3,24 +3,20 @@
 using namespace fucking_cool;
 int main(int argc, char* argv[]) 
 {
-    if(argc != 2)
+    if(argc < 2)
     {
-        std::cout << "Usage: ReadPLYPCD [filename.ply]"<<std::endl;
+        std::cout << "Usage: ReadPLYPCD [filename.ply] [voxel_len = 0.01]"<<std::endl;
         return 0;
     }
     geometry::PointCloud pcd;
+    float voxel_len = 0.01;
+    if(argc == 3)
+        voxel_len = atof(argv[2]);
     pcd.LoadFromPLY(argv[1]);
-    /*
-    if(!pcd.HasNormals())
-    {
-        pcd.EstimateNormals();
-    }
-    */
-    //pcd.WriteToPLY("Duplicate.ply");
-    auto d_pcd = pcd.DownSample(0.05);
-    d_pcd->WriteToPLY("down_sample_pcd.ply");
+    auto pcd_ptr = pcd.DownSample(voxel_len);
+    std::cout<<"down sample: from "<< pcd.points.size() <<" to "<<pcd_ptr->points.size()<<std::endl;
     visualization::Visualizer visualizer;
-    visualizer.AddPointCloud(*d_pcd);
+    visualizer.AddPointCloud( * pcd_ptr);
     visualizer.Show();
     
     return 0;

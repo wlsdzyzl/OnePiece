@@ -12,7 +12,7 @@ namespace geometry
     //multi-resolution 3d approximations for rendering complex scenes, 1992.
     void ClusteringSimplification(TriangleMesh &wait_to_simplify, float grid_len);
     //Surface Simplification Using Quadric Error Metrics, 1997.
-    void QuadricSimplification(TriangleMesh &wait_to_simplify, int target_triangle);
+    void QuadricSimplification(TriangleMesh &wait_to_simplify, size_t target_triangle);
     void MeshPruning(TriangleMesh &mesh, size_t min_points);
     typedef std::pair<int, int> PositionInTriangle;//triangleID, and index in triangle
     typedef std::vector<std::pair<int, int>> Reference;//For each vertex, reference is used to find contained triangles
@@ -24,12 +24,12 @@ namespace geometry
         geometry::Point3List *normals_ptr;
         geometry::Point3List *colors_ptr;
         geometry::Point3uiList *triangles_ptr;
-        std::vector<geometry::Matrix4> QMatrix;
+        geometry::Mat4List QMatrix;
         std::vector<std::vector<float>> error;
         std::vector<Reference> references;
         std::vector<bool> is_border;
         geometry::Point3List normals;//plane normal
-        int deleted_triangle = 0;
+        size_t deleted_triangle = 0;
     };
 
     struct ClusteringHelper
@@ -78,7 +78,7 @@ namespace geometry
     float ComputeError(QuadricHelper &helper, int i, int j, geometry::Point3 &new_p);
     void UpdateReferences(const geometry::Point3uiList &triangles, std::vector<Reference> &references);
     void ComputeNormalsAndQMatrix(const geometry::Point3uiList &triangles, const geometry::Point3List &points,
-        std::vector<Reference> &references, geometry::Point3List &normals ,std::vector<geometry::Matrix4> &QMatrix);
+        std::vector<Reference> &references, geometry::Point3List &normals ,geometry::Mat4List &QMatrix);
     
 }
 }

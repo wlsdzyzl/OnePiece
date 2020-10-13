@@ -135,7 +135,7 @@ add_library(fucking_cool SHARED ${Geometry_SRC}  ${GRANSAC_SRC}
     ${Integration_SRC} ${Algorithm_SRC} ${Registration_SRC} ${Optimization_SRC})
 
 set(CMAKE_CXX_FLAGS " -std=c++11 ")
-set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -O0 -g -msse4.2 -Wall -fopenmp") 
+set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -O3 -msse4.2 -Wall -fopenmp") 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 add_executable(SparseOdometry "example/SparseOdometry.cpp"   )

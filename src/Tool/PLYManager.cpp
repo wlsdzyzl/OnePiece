@@ -48,6 +48,7 @@ namespace tool
         {
             std::cout<<RED<<"[ERROR]::[ReadPLY]::Unknown Type."<<RESET<<std::endl;
         }
+        // std::cout<<p_data->count<<" "<<point_list.size()<<std::endl;
     }
     void PlyDataToPoint3uiList(const std::shared_ptr<PlyData> &p_data, geometry::Point3uiList &point_list)
     {
@@ -131,13 +132,14 @@ namespace tool
                 try { faces = file.request_properties_from_element("face", { "vertex_index" }, 3); }
                 catch (const std::exception & e) { }
             }
-
             for(size_t i = 0; i != additional_labels.size(); ++i)
             {
                 additional_elements_ptr[i] = file.request_properties_from_element(additional_labels[i].element_key, 
                     additional_labels[i].element_property);
             }
+
             file.read(*file_stream);
+
             std::cout << BLUE <<"[INFO]::[ReadPLY]::"<<std::endl;
             if (vertices)   std::cout << "\tRead " << vertices->count  << " total vertices "<< std::endl;
             if (normals)    std::cout << "\tRead " << normals->count   << " total vertex normals " << std::endl;
