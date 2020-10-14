@@ -70,11 +70,12 @@ int main(int argc, char ** argv)
     auto strs = tool::RSplit(file_path, "/", 1);
     if(strs.size() == 2)
     { 
-        c_mesh_ptr->WriteToPLY(strs[0] +"/incomplete_models/"+strs[1]+".ply");
+        c_mesh_ptr->WriteToPLY(strs[1]+".ply");
     }
     else
     {
-        std::cout<<"Something wrong when parsing the path"<<std::endl;
+        std::cout<<"Something wrong when parsing the path. If scene dir is in current dir, use \"./sceneXXXX_XX\"." 
+            "Do not add '/' in the end."<<std::endl;
     }
     return 0;
 }

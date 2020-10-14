@@ -29,6 +29,9 @@ include_directories(3rdparty/tinyobjloader)
 include_directories(3rdparty/MILD)
 include_directories(3rdparty/GRANSAC)
 include_directories(3rdparty/nanoflann/include)
+include_directories(3rdparty/jsoncpp/include)
+
+
 include_directories(src)
 
 #message("tinyobjloader")
@@ -75,7 +78,15 @@ file(GLOB TinyPly_SRC
 "3rdparty/tinyply/source/tinyply.h"
 "3rdparty/tinyply/source/tinyply.cpp"
 )
-
+file(GLOB Jsoncpp_SRC
+"3rdparty/jsoncpp/include/json/*.h"
+"3rdparty/jsoncpp/src/lib_json/json_tool.h"
+"3rdparty/jsoncpp/src/lib_json/json_reader.cpp"
+"3rdparty/jsoncpp/src/lib_json/json_valueiterator.inl"
+"3rdparty/jsoncpp/src/lib_json/json_value.cpp"
+"3rdparty/jsoncpp/src/lib_json/json_writer.cpp"
+"3rdparty/jsoncpp/src/lib_json/version.h.in"
+)
 file(GLOB Registration_SRC
 "src/Registration/*.cpp"
 "src/Registration/*.h"
@@ -114,9 +125,12 @@ file(GLOB DenseFusion_SRC
 "example/DenseFusion/*.h"
 )
 
+
+
 #add_library(rply SHARED ${Rply_SRC})
 add_library(tinyply SHARED ${TinyPly_SRC})
 add_library(objloader SHARED ${Objloader_SRC})
+add_library(jsoncpp SHARED ${Jsoncpp_SRC})
 add_library(mild SHARED ${MILD_SRC})
 
 #add_library(gransac SHARED ${GRANSAC_SRC})
@@ -133,6 +147,9 @@ add_library(optimization SHARED ${Registration_SRC})
 add_library(fucking_cool SHARED ${Geometry_SRC}  ${GRANSAC_SRC}
     ${Visualization_SRC} ${Odometry_SRC} ${Tool_SRC} ${LCDetection_SRC}  
     ${Integration_SRC} ${Algorithm_SRC} ${Registration_SRC} ${Optimization_SRC})
+
+
+
 
 set(CMAKE_CXX_FLAGS " -std=c++11 ")
 set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -O3 -msse4.2 -Wall -fopenmp") 
@@ -171,6 +188,7 @@ target_link_libraries(SparseOdometry
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS} 
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -182,6 +200,7 @@ target_link_libraries(SparseOdometryMild
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS} 
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -193,6 +212,7 @@ target_link_libraries(DenseOdometry
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS} 
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -204,6 +224,7 @@ target_link_libraries(ReadPLYPCD
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS}
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -215,6 +236,7 @@ target_link_libraries(ReadRGBD
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS}
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -226,6 +248,7 @@ target_link_libraries(ReadPLYMESH
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS}
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -237,6 +260,7 @@ target_link_libraries(SimplifyMeshQuadric
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS}
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -248,6 +272,7 @@ target_link_libraries(SimplifyMeshClustering
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS}
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -259,6 +284,7 @@ target_link_libraries(MCGenerateMesh
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS}
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -270,6 +296,7 @@ target_link_libraries(EstimateNormals
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS}
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -281,6 +308,7 @@ target_link_libraries(ImageIntegration
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS}
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -292,6 +320,7 @@ target_link_libraries(ImageSequenceIntegration
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS}
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -303,6 +332,7 @@ target_link_libraries(RoomDetection
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS}
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -314,6 +344,7 @@ target_link_libraries(Clustering
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS}
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -325,6 +356,7 @@ target_link_libraries(ConvertImageSequenceToPCD
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS}
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -336,6 +368,7 @@ target_link_libraries(PruneMesh
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS}
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -348,6 +381,7 @@ target_link_libraries(AcquireLiveData
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS} 
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -361,6 +395,7 @@ target_link_libraries(DetectPlane
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS} 
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -373,6 +408,7 @@ target_link_libraries(MergeMultipleSubmaps
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS} 
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -384,6 +420,7 @@ target_link_libraries(RansacTest
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS} 
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -395,6 +432,7 @@ target_link_libraries(ICPTest
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS} 
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -406,6 +444,7 @@ target_link_libraries(BATest
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS} 
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -417,6 +456,7 @@ target_link_libraries(GenerateModelFromScannet
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS} 
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -428,6 +468,7 @@ target_link_libraries(GetLabelUsingKDTree
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS} 
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -439,6 +480,7 @@ target_link_libraries(FBAFusion
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS} 
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -450,6 +492,7 @@ target_link_libraries(BAFusion
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS} 
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}
@@ -461,6 +504,7 @@ target_link_libraries(DenseFusion
     tinyply
     objloader
     mild
+    jsoncpp
     ${OpenCV_LIBS} 
     ${Eigen_LIBRARIES}
     ${Pangolin_LIBRARIES}

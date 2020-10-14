@@ -7,6 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+
 namespace fucking_cool
 {
 namespace tool
@@ -28,6 +29,8 @@ namespace tool
     void ReadImageSequenceFromScannetWithPose(const std::string & path, std::vector<std::string> &rgb_files, 
         std::vector<std::string> &depth_files, std::vector<geometry::TransformationMatrix > & poses, 
         camera::PinholeCamera &rgb_camera, camera::PinholeCamera &depth_camera);
+
+    void ReadIntanceInfoFromScannet(const std::string &path, std::vector<int> &point2object);
 
 } 
 }

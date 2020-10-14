@@ -1,5 +1,6 @@
 #include "IO.h"
 #include "CppExtension.h"
+#include "json/json.h"
 namespace fucking_cool
 {
 namespace tool
@@ -179,6 +180,112 @@ namespace tool
                 >>T(2, 0) >> T(2, 1) >> T(2, 2) >> T(2, 3)
                 >>T(3, 0) >> T(3, 1) >> T(3, 2) >> T(3, 3);                
             poses.push_back(T);
+        }
+    }
+
+    void ReadIntanceInfoFromScannet(const std::string &path, std::vector<int> &point2object)
+    {
+        std::vector<std::vector<int>> object2segments;
+        std::vector<std::string> object2name;
+        std::vector<int> point2segment;
+        std::vector<std::string> strs = tool::RSplit(path, "/", 1);
+        if(strs.size() < 2)
+        {
+            std::cout<<"[ERROR]::[ReadIntanceInfoFromScannet]::Something wrong when parsing the path."
+            "If scene dir is in current dir, use \"./sceneXXXX_XX\". Do not add '/' in the end."<<RESET<<std::endl;
+            return;
+        }
+        std::string seg_file = path + "/" + strs[1] + "_vh_clean.segs.json"; 
+        std::string group_file = path + "/" + strs[1] + "_vh_clean.aggregation.json";
+        //read all segments, build a table: point_id to segment
+        {
+            std::ifstream ifs(seg_file, std::ios::binary);
+            if (!ifs.is_open())
+            {
+                std::cout << RED<<"[ERROR]::[ReadIntanceInfoFromScannet]::open seg json file failed."<<RESET << std::endl;
+                exit(1);
+            }
+            
+            Json::CharReaderBuilder reader;
+            Json::Value root;
+            JSONCPP_STRING errs;
+            bool res = Json::parseFromStream(reader, ifs, &root, &errs);
+            if (!res || !errs.empty())
+            {
+                std::cout << RED<<"[ERROR]::[ReadIntanceInfoFromScannet]::Error in parsing json: "<<errs<<RESET << std::endl;
+                exit(1);                
+            }
+            else
+            {
+                const Json::Value seg_indices = root["segIndices"];
+                for (Json::ArrayIndex i = 0; i < seg_indices.size(); ++i)
+                {
+                    point2segment.push_back(seg_indices[i].asInt());
+                }
+            }
+            ifs.close();        
+        }
+
+        //read all group, build a table: group to segments
+        {
+            std::ifstream ifs(group_file, std::ios::binary);
+            if (!ifs.is_open())
+            {
+                std::cout << RED<<"[ERROR]::[ReadIntanceInfoFromScannet]::open aggregation json file failed."<<RESET << std::endl;
+                exit(1);
+            }
+            //parse json
+            Json::CharReaderBuilder reader;
+            Json::Value root;
+            JSONCPP_STRING errs;
+            bool res = Json::parseFromStream(reader, ifs, &root, &errs);
+            if (!res || !errs.empty())
+            {
+                std::cout << RED<<"[ERROR]::[ReadIntanceInfoFromScannet]::Error in parsing json: "<<errs<<RESET << std::endl;
+                exit(1);                
+            }
+            else
+            {
+                const Json::Value seg_groups = root["segGroups"];
+                
+                for (Json::ArrayIndex i = 0; i < seg_groups.size(); i++)
+                {
+                    std::string name = seg_groups[i]["label"].asString();
+                    object2name.push_back(name);
+                    
+                    std::vector<int> segments_in_group;
+                    for (Json::ArrayIndex j = 0; j < seg_groups[i]["segments"].size(); ++j)
+                    {
+                        segments_in_group.push_back(seg_groups[i]["segments"][j].asInt());
+                    }
+                    object2segments.push_back(segments_in_group);
+                }
+            }
+            ifs.close();
+        }
+
+
+        
+        
+        std::unordered_map<size_t, int> segment2object;
+        point2object.clear();
+        point2object.resize(point2segment.size(), -1);
+        //get corresponding object of each segment
+        for(size_t i = 0; i != object2segments.size(); ++ i)
+        {
+            for(size_t j = 0; j != object2segments[i].size(); ++ j)
+            {
+                segment2object[object2segments[i][j]] = i;
+            }
+        }
+        //get each point's instance
+        for(size_t i = 0; i != point2object.size(); ++i)
+        {
+            size_t segment_id = point2segment[i];
+            if(segment2object.find( segment_id ) != segment2object.end())
+            {
+                point2object[i] = segment2object[segment_id];
+            }
         }
     }
 }
