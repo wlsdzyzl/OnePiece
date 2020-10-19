@@ -7,7 +7,7 @@
 #include "Geometry/RGBDFrame.h"
 #include "Optimization/Optimizer.h"
 #include "Registration/GlobalRegistration.h"
-namespace fucking_cool
+namespace one_piece
 {
     class Submap
     {

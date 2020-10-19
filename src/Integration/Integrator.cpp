@@ -1,7 +1,7 @@
 
 #include "Integrator.h"
 
-namespace fucking_cool
+namespace one_piece
 {
 namespace integration
 {

@@ -9,7 +9,7 @@ No other libraries such as g2o.
 #define SIMPLE_BA_H
 #include "Geometry/Geometry.h"
 #include "Optimization/Correspondence.h"
-namespace fucking_cool
+namespace one_piece
 {
 namespace optimization
 {

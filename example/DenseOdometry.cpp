@@ -3,7 +3,7 @@
 #include "Geometry/PointCloud.h"
 #include "Visualization/Visualizer.h"
 #include <string>
-using namespace fucking_cool;
+using namespace one_piece;
 int main(int argc, char** argv)
 {
     if(argc < 5)

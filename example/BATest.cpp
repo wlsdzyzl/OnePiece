@@ -1,7 +1,7 @@
 #include "Optimization/BundleAdjustment.h"
 #include "Odometry/Odometry.h"
 #include "Visualization/Visualizer.h"
-using namespace fucking_cool;
+using namespace one_piece;
 
 //0: randomly generate data
 //1: feature matching

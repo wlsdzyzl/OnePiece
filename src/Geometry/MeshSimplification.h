@@ -5,7 +5,7 @@
 #include "Tool/ConsoleColor.h"
 #include "Geometry/Geometry.h"
 #include <unordered_map>
-namespace fucking_cool 
+namespace one_piece 
 {
 namespace geometry
 {

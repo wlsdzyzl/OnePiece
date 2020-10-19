@@ -8,7 +8,7 @@
 #include "LCDetection/MildLCDetector.h"
 #include "Optimization/Optimizer.h"
 
-namespace fucking_cool
+namespace one_piece
 {
 namespace tool
 {

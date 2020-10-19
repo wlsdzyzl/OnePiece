@@ -3,7 +3,7 @@
 #include "BundleAdjustment.h"
 #include "SimpleBA.h"
 
-namespace fucking_cool
+namespace one_piece
 {
 namespace optimization
 {

@@ -4,7 +4,7 @@
 #include "Geometry/Geometry.h"
 #include "Camera/Camera.h"
 #include "Tool/ConsoleColor.h"
-namespace fucking_cool
+namespace one_piece
 {
 namespace odometry
 {

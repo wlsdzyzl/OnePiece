@@ -3,7 +3,7 @@
 #include "Geometry/TransformationModel.hpp"
 #include "Geometry/PlaneFittingModel.hpp"
 #include "GRANSAC.hpp"
-namespace fucking_cool
+namespace one_piece
 {
 namespace geometry
 {

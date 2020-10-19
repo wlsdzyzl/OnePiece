@@ -1,6 +1,6 @@
 #include "Geometry/PointCloud.h"
 #include "Visualization/Visualizer.h"
-using namespace fucking_cool;
+using namespace one_piece;
 void GeneratePlane(double a, double b, double c, double d, geometry::Point3List &points)
 {
     for(int i = 0;i != 100; ++i)

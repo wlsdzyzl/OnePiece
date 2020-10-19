@@ -4,7 +4,7 @@
 #include "Algorithm/PatchDetection.h"
 #include "Algorithm/Clustering.h"
 #include "ColorTab.h"
-namespace fucking_cool
+namespace one_piece
 {
 namespace visualization
 {

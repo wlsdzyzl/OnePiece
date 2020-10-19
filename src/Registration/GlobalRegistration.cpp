@@ -1,6 +1,6 @@
 #include "GlobalRegistration.h"
 #include <opencv2/core/eigen.hpp>
-namespace fucking_cool
+namespace one_piece
 {
 namespace registration
 {

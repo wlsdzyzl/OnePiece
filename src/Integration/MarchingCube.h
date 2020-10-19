@@ -4,7 +4,7 @@
 #include "Geometry/TriangleMesh.h"
 #include "TSDFVoxel.h"
 #include <map>
-namespace fucking_cool
+namespace one_piece
 {
 namespace integration
 {

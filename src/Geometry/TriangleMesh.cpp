@@ -5,7 +5,7 @@
 #include <fstream>
 #include "MeshSimplification.h"
 #include <omp.h>
-namespace fucking_cool
+namespace one_piece
 {
 namespace geometry
 {

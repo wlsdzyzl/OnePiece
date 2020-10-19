@@ -8,7 +8,7 @@
 #include <opencv2/opencv.hpp>
 #include "ConsoleColor.h"
 #include <string>
-namespace fucking_cool
+namespace one_piece
 {
 namespace tool
 {

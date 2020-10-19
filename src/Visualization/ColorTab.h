@@ -1,6 +1,6 @@
 #ifndef COLOR_TAB_H
 #define COLOR_TAB_H
-namespace fucking_cool
+namespace one_piece
 {
 namespace visualization
 {

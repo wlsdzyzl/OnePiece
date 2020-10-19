@@ -1,7 +1,7 @@
 #include "Geometry.h"
 #include "Camera/Camera.h"
 #include <random>
-namespace fucking_cool
+namespace one_piece
 {
 namespace geometry 
 {

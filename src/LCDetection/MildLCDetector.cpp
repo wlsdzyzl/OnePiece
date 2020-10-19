@@ -1,6 +1,6 @@
 #include "MildLCDetector.h"
 #include <functional>
-namespace fucking_cool
+namespace one_piece
 {
 namespace lcdetection
 {

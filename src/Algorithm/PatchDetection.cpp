@@ -2,7 +2,7 @@
 #include "Geometry/KDTree.h"
 #include <algorithm>
 #include <queue>
-namespace fucking_cool
+namespace one_piece
 {
 namespace algorithm
 {

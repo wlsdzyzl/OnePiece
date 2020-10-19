@@ -11,7 +11,7 @@ We also need to use Schur completeness and other tricks to solve this problem.
 #include "Geometry/Geometry.h"
 #include "Camera/Camera.h"
 #include "Geometry/RGBDFrame.h"
-namespace fucking_cool
+namespace one_piece
 {
 namespace optimization
 {

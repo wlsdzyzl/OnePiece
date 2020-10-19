@@ -2,7 +2,7 @@
 #define CORRESPONDENCE_H
 #include "Geometry/Geometry.h"
 #include "Camera/Camera.h"
-namespace fucking_cool
+namespace one_piece
 {
 namespace optimization
 {

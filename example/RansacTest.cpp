@@ -1,6 +1,6 @@
 #include "Registration/GlobalRegistration.h"
 #include "Visualization/Visualizer.h"
-using namespace fucking_cool;
+using namespace one_piece;
 std::shared_ptr<geometry::PointCloud> DrawMatches(const geometry::PointCloud &source, 
     const geometry::PointCloud &target, const geometry::PointCorrespondenceSet &inliers)
 {

@@ -4,7 +4,7 @@
 #include "Geometry.h"
 #include "AbstractModel.hpp"
 #define MIN_INLIER_SIZE_RANSAC_PLANEFITTING 8
-namespace fucking_cool
+namespace one_piece
 {
 namespace geometry
 {

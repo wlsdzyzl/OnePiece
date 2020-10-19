@@ -5,7 +5,7 @@
 #include "Visualization/Visualizer.h"
 #include <fstream>
 #include <iostream>
-using namespace fucking_cool;
+using namespace one_piece;
 
 int main()
 {

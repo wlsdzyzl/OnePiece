@@ -1,6 +1,6 @@
 #include "CppExtension.h"
 #include <algorithm>
-namespace fucking_cool
+namespace one_piece
 {
 namespace tool
 {

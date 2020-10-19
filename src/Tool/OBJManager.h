@@ -3,7 +3,7 @@
 #include "ConsoleColor.h"
 #include <vector>
 #include "../Geometry/Geometry.h"
-namespace fucking_cool
+namespace one_piece
 {
 namespace tool
 {

@@ -4,7 +4,7 @@
 #include "Geometry/PointCloud.h"
 #include "RegistrationResult.h"
 #include <memory>
-namespace fucking_cool
+namespace one_piece
 {
 namespace registration
 {

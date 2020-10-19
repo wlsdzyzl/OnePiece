@@ -6,7 +6,7 @@
 #include "../Geometry/Geometry.h"
 #include "rply.h"
 //this file has been discared and will not be maintained. Try to use functions in PLYManager.
-namespace fucking_cool
+namespace one_piece
 {
 namespace tool
 {

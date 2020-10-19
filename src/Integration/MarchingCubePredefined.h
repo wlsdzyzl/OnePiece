@@ -1,7 +1,7 @@
 #ifndef MARCHING_CUBE_PREDEFINED_H
 #define MARCHING_CUBE_PREDEFINED_H
 
-namespace fucking_cool
+namespace one_piece
 {
 namespace integration
 {

@@ -6,7 +6,7 @@
 #include "Tool/CppExtension.h"
 #include <random>
 
-using namespace fucking_cool;
+using namespace one_piece;
 
 int main(int argc, char ** argv)
 {

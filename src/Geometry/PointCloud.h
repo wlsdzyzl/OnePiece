@@ -6,7 +6,7 @@
 #include <opencv2/core/core.hpp>
 #include <Eigen/Core>
 #include <memory>
-namespace fucking_cool
+namespace one_piece
 {
 namespace geometry 
 {

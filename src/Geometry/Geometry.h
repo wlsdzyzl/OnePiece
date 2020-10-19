@@ -17,7 +17,7 @@
 #include "Tool/ConsoleColor.h"
 #define DEBUG_MODE 1
 
-namespace fucking_cool 
+namespace one_piece 
 {
 // if you want to use a class A which has been used in current class B
 // just declare the class A at current B.h file, and import the A.h file in B.cpp 

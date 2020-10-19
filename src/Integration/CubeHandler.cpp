@@ -2,7 +2,7 @@
 #include "Tool/MultiThreads.h"
 #include "MarchingCube.h"
 #define SINGLE_THREAD 0
-namespace fucking_cool
+namespace one_piece
 {
 namespace integration
 {

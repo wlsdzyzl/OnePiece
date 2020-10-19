@@ -3,7 +3,7 @@
 #include "Geometry/Geometry.h"
 #include "Camera/Camera.h"
 #include "VoxelCube.h"
-namespace fucking_cool
+namespace one_piece
 {
 namespace integration
 {

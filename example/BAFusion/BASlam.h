@@ -2,7 +2,7 @@
 #define BASLAM_H
 #include "Tool/KeyframeBasedSlam.h"
 
-namespace fucking_cool
+namespace one_piece
 {
     class BASlam: public tool::KeyframeBasedSlam
     {

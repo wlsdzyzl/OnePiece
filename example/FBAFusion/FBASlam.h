@@ -3,7 +3,7 @@
 
 #include "Tool/KeyframeBasedSlam.h"
 
-namespace fucking_cool
+namespace one_piece
 {
     class FBASlam: public tool::KeyframeBasedSlam
     {

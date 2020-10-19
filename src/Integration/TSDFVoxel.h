@@ -1,7 +1,7 @@
 #ifndef TSDF_VOXEL_H
 #define TSDF_VOXEL_H
 #include "Geometry/Geometry.h"
-namespace fucking_cool
+namespace one_piece
 {
 namespace integration
 {

@@ -4,7 +4,7 @@
 #include "Visualization/Visualizer.h"
 #include "Visualization/DrawImage.h"
 #include "Visualization/DrawPointCloud.h"
-using namespace fucking_cool;
+using namespace one_piece;
 //2564786688 floor
 //2932336640 wall
 //3592890368 door

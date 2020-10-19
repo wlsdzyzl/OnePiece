@@ -3,7 +3,7 @@
 #include "Visualization/Visualizer.h"
 #include "Tool/TickTock.h"
 #include "Tool/ImageProcessing.h"
-using namespace fucking_cool;
+using namespace one_piece;
 int main(int argc, char *argv[])
 {
     if (argc < 3)

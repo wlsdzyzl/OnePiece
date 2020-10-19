@@ -1,7 +1,7 @@
 #include "DenseOdometryFunction.h"
 #include <Eigen/Cholesky>
 #define SHOW_VERBOSE 0
-namespace fucking_cool
+namespace one_piece
 {
 namespace odometry 
 {

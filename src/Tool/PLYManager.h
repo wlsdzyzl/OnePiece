@@ -4,7 +4,7 @@
 #include <vector>
 #include "Geometry/Geometry.h"
 #include "tinyply.h"
-namespace fucking_cool
+namespace one_piece
 {
 namespace tool
 {

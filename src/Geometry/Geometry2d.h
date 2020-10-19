@@ -1,7 +1,7 @@
 #ifndef GEOMETRY_2D_H
 #define GEOMETRY_2D_H
 #include "Geometry.h"
-namespace fucking_cool 
+namespace one_piece 
 {
 namespace geometry 
 { 

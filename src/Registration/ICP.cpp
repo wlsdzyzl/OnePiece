@@ -1,7 +1,7 @@
 #include "ICP.h"
 #include <omp.h>
 #include "Geometry/KDTree.h"
-namespace fucking_cool
+namespace one_piece
 {
 namespace registration
 {

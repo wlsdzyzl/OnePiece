@@ -4,7 +4,7 @@
 #define INCREASE_SCALE 2
 #define DECREASE_SCALE 0.7
 #define ERROR_REDUCTION_THRESHOLD 0.5 //if error reduction less than 0.5, increase the lambda
-namespace fucking_cool
+namespace one_piece
 {
 namespace optimization
 {

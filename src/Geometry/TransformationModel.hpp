@@ -3,7 +3,7 @@
 #include "AbstractModel.hpp"
 #include "Geometry.h"
 #define MIN_INLIER_SIZE_RANSAC_TRANSFORMATION 8
-namespace fucking_cool
+namespace one_piece
 {
 namespace geometry
 {

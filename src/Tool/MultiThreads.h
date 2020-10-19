@@ -4,7 +4,7 @@
 //#include <functional>
 //f(x) = y => f(X) = Y
 #define MAX_THREADS 100
-namespace fucking_cool
+namespace one_piece
 {
 namespace tool
 {

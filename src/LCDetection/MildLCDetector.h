@@ -6,7 +6,7 @@
 #include "sparse_match.h"
 #include "Geometry/RGBDFrame.h"
 
-namespace fucking_cool
+namespace one_piece
 {
 namespace lcdetection
 {

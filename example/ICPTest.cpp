@@ -1,7 +1,7 @@
 #include "Geometry/Geometry.h"
 #include "Registration/ICP.h"
 #include "Visualization/Visualizer.h"
-using namespace fucking_cool;
+using namespace one_piece;
 
 int main(int argc, char **argv)
 {

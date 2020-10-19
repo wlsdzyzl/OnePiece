@@ -6,7 +6,7 @@
 #include <memory>
 //use nanoflann library
 #define NANO_IMPLAMENTATION 1
-namespace fucking_cool
+namespace one_piece
 {
 namespace geometry
 {
@@ -57,8 +57,8 @@ namespace geometry
         bool kdtree_get_bbox(BBOX& /* bb */) const { return false; }
     };
 #endif
-// nanoflann::KDTreeSingleIndexAdaptor<nanoflann::L2_Simple_Adaptor<float, fucking_cool::geometry::NanoPointList<3>, float>, 
-//     fucking_cool::geometry::NanoPointList<3>, 3, long unsigned int>::KDTreeSingleIndexAdaptor()
+// nanoflann::KDTreeSingleIndexAdaptor<nanoflann::L2_Simple_Adaptor<float, one_piece::geometry::NanoPointList<3>, float>, 
+//     one_piece::geometry::NanoPointList<3>, 3, long unsigned int>::KDTreeSingleIndexAdaptor()
     template<int T = 3>
     class KDTree
     {

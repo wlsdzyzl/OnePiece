@@ -2,7 +2,7 @@
 #define REGISTRATION_RESULT_H
 #include "Geometry/Geometry.h"
 #include "Geometry/PointCloud.h"
-namespace fucking_cool
+namespace one_piece
 {
 namespace registration
 {

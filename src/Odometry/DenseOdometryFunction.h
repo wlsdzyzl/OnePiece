@@ -6,7 +6,7 @@
 #include "Tool/ImageProcessing.h"
 #include <opencv2/opencv.hpp>
 #include "OdometryPredefined.h"
-namespace fucking_cool
+namespace one_piece
 {
 namespace odometry
 {

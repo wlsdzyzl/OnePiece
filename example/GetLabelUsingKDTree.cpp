@@ -4,7 +4,7 @@
 #include "Tool/IO.h"
 #include "Tool/CppExtension.h"
 #include "Visualization/ColorTab.h"
-using namespace fucking_cool;
+using namespace one_piece;
 
 int main(int argc, char** argv)
 {

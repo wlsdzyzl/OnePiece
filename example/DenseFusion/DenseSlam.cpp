@@ -1,7 +1,7 @@
 #include "DenseSlam.h"
 #include "Registration/ICP.h"
 #define MAX_ICP_CORRESPONDENCE 500
-namespace fucking_cool
+namespace one_piece
 {
 
 

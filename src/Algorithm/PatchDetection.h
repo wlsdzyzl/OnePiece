@@ -1,7 +1,7 @@
 #ifndef PATCH_DETECTION_H
 #define PATCH_DETECTION_H
 #include "Geometry/Geometry.h"
-namespace fucking_cool
+namespace one_piece
 {
 namespace algorithm
 {

@@ -4,7 +4,7 @@
 #include "Geometry/Ransac.h"
 #include "RegistrationResult.h"
 #include "3DFeature.h"
-namespace fucking_cool
+namespace one_piece
 {
 namespace registration
 {

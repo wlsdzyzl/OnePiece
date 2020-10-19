@@ -144,7 +144,7 @@ add_library(tool SHARED ${Tool_SRC})
 add_library(algorithm SHARED ${Algorithm_SRC})
 add_library(regitration SHARED ${Optimization_SRC})
 add_library(optimization SHARED ${Registration_SRC})
-add_library(fucking_cool SHARED ${Geometry_SRC}  ${GRANSAC_SRC}
+add_library(one_piece SHARED ${Geometry_SRC}  ${GRANSAC_SRC}
     ${Visualization_SRC} ${Odometry_SRC} ${Tool_SRC} ${LCDetection_SRC}  
     ${Integration_SRC} ${Algorithm_SRC} ${Registration_SRC} ${Optimization_SRC})
 
@@ -184,7 +184,7 @@ add_executable(BAFusion ${BAFusion_SRC})
 add_executable(DenseFusion ${DenseFusion_SRC})
 
 target_link_libraries(SparseOdometry
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -196,7 +196,7 @@ target_link_libraries(SparseOdometry
 	${GLUT_LIBRARY}
 )
 target_link_libraries(SparseOdometryMild
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -208,7 +208,7 @@ target_link_libraries(SparseOdometryMild
 	${GLUT_LIBRARY}
 )
 target_link_libraries(DenseOdometry 
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -220,7 +220,7 @@ target_link_libraries(DenseOdometry
 	${GLUT_LIBRARY}
 )
 target_link_libraries(ReadPLYPCD
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -232,7 +232,7 @@ target_link_libraries(ReadPLYPCD
 	${GLUT_LIBRARY}
 )
 target_link_libraries(ReadRGBD
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -244,7 +244,7 @@ target_link_libraries(ReadRGBD
 	${GLUT_LIBRARY}
 )
 target_link_libraries(ReadPLYMESH
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -256,7 +256,7 @@ target_link_libraries(ReadPLYMESH
 	${GLUT_LIBRARY}
 )
 target_link_libraries(SimplifyMeshQuadric
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -268,7 +268,7 @@ target_link_libraries(SimplifyMeshQuadric
 	${GLUT_LIBRARY}
 )
 target_link_libraries(SimplifyMeshClustering
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -280,7 +280,7 @@ target_link_libraries(SimplifyMeshClustering
 	${GLUT_LIBRARY}
 )
 target_link_libraries(MCGenerateMesh
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -292,7 +292,7 @@ target_link_libraries(MCGenerateMesh
 	${GLUT_LIBRARY}
 )
 target_link_libraries(EstimateNormals
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -304,7 +304,7 @@ target_link_libraries(EstimateNormals
 	${GLUT_LIBRARY}
 )
 target_link_libraries(ImageIntegration
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -316,7 +316,7 @@ target_link_libraries(ImageIntegration
 	${GLUT_LIBRARY}
 )
 target_link_libraries(ImageSequenceIntegration
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -328,7 +328,7 @@ target_link_libraries(ImageSequenceIntegration
 	${GLUT_LIBRARY}
 )
 target_link_libraries(RoomDetection
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -340,7 +340,7 @@ target_link_libraries(RoomDetection
 	${GLUT_LIBRARY}
 )
 target_link_libraries(Clustering
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -352,7 +352,7 @@ target_link_libraries(Clustering
 	${GLUT_LIBRARY}
 )
 target_link_libraries(ConvertImageSequenceToPCD
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -364,7 +364,7 @@ target_link_libraries(ConvertImageSequenceToPCD
 	${GLUT_LIBRARY}
 )
 target_link_libraries(PruneMesh
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -377,7 +377,7 @@ target_link_libraries(PruneMesh
 )
 
 target_link_libraries(AcquireLiveData
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -391,7 +391,7 @@ target_link_libraries(AcquireLiveData
 )
 
 target_link_libraries(DetectPlane
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -404,7 +404,7 @@ target_link_libraries(DetectPlane
 )
 
 target_link_libraries(MergeMultipleSubmaps
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -416,7 +416,7 @@ target_link_libraries(MergeMultipleSubmaps
 	${GLUT_LIBRARY}
 )
 target_link_libraries(RansacTest
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -428,7 +428,7 @@ target_link_libraries(RansacTest
 	${GLUT_LIBRARY}
 )
 target_link_libraries(ICPTest
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -440,7 +440,7 @@ target_link_libraries(ICPTest
 	${GLUT_LIBRARY}
 )
 target_link_libraries(BATest
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -452,7 +452,7 @@ target_link_libraries(BATest
 	${GLUT_LIBRARY}
 )
 target_link_libraries(GenerateModelFromScannet
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -464,7 +464,7 @@ target_link_libraries(GenerateModelFromScannet
 	${GLUT_LIBRARY}
 )
 target_link_libraries(GetLabelUsingKDTree
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -476,7 +476,7 @@ target_link_libraries(GetLabelUsingKDTree
 	${GLUT_LIBRARY}
 )
 target_link_libraries(FBAFusion
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -488,7 +488,7 @@ target_link_libraries(FBAFusion
 	${GLUT_LIBRARY}
 )
 target_link_libraries(BAFusion
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild
@@ -500,7 +500,7 @@ target_link_libraries(BAFusion
 	${GLUT_LIBRARY}
 )
 target_link_libraries(DenseFusion
-    fucking_cool
+    one_piece
     tinyply
     objloader
     mild

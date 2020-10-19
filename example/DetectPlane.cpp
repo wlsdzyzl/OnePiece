@@ -1,7 +1,7 @@
 #include "Algorithm/PatchDetection.h"
 #include "Geometry/PointCloud.h"
 #include "Visualization/DrawPointCloud.h"
-using namespace fucking_cool;
+using namespace one_piece;
 int main(int argc, char **argv)
 {
     if (argc < 2)

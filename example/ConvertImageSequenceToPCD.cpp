@@ -1,7 +1,7 @@
 #include "Geometry/Geometry.h"
 #include "Geometry/PointCloud.h"
 #include "Tool/IO.h"
-using namespace fucking_cool;
+using namespace one_piece;
 int main(int argc, char *argv[])
 {
     if (argc < 2)

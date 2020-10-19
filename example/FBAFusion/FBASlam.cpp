@@ -1,5 +1,5 @@
 #include "FBASlam.h"
-namespace fucking_cool
+namespace one_piece
 {
 
     void FBASlam::UpdateFrame(const geometry::RGBDFrame &frame)

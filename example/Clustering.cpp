@@ -1,6 +1,6 @@
 #include "Algorithm/Clustering.h"
 #include "Visualization/DrawImage.h"
-using namespace fucking_cool;
+using namespace one_piece;
 int main()
 {
     int point_number = 200;

@@ -5,7 +5,7 @@
 
 
 #define SOBLE_SCALE 0.125
-namespace fucking_cool
+namespace one_piece
 {
 namespace tool
 {

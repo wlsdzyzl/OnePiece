@@ -9,7 +9,7 @@ Now we only support fpfh feature.
 #include "Geometry/Geometry.h"
 #include "Geometry/PointCloud.h"
 #include "Geometry/KDTree.h"
-namespace fucking_cool
+namespace one_piece
 {
 namespace registration
 {

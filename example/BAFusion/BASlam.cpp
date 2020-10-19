@@ -1,6 +1,6 @@
 #include "BASlam.h"
 #define MAX_MATCHES 30
-namespace fucking_cool
+namespace one_piece
 {
 
     void BASlam::UpdateFrame(const geometry::RGBDFrame &frame)

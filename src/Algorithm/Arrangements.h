@@ -3,7 +3,7 @@
 
 #include "DCEL.h"
 #include <memory>
-namespace fucking_cool
+namespace one_piece
 {
 namespace algorithm
 {

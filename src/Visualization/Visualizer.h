@@ -12,7 +12,7 @@
 #include <GL/glut.h>
 #include <GL/glew.h>
 #define MAX_BUFFER_SIZE 1024*1024*30
-namespace fucking_cool
+namespace one_piece
 {
 namespace visualization 
 {
@@ -51,7 +51,7 @@ namespace visualization
         {
             geometry_type = type;
         }
-        void Initialize(const std::string &name = "FuckingCool")
+        void Initialize(const std::string &name = "OnePiece")
         {
             if(is_initialized) return;
             pangolin::CreateWindowAndBind(name,640,480); 
@@ -214,7 +214,7 @@ namespace visualization
         void InitializeGlut()
         {
             int argc = 1;
-            char ProjectName[256] = "fucking_cool";
+            char ProjectName[256] = "one_piece";
             char *argv= ProjectName;
             glutInit(&argc, &argv);
 

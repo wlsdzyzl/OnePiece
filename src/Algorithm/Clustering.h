@@ -4,7 +4,7 @@
 #include "Geometry/KDTree.h"
 #include "Tool/ConsoleColor.h"
 #include <opencv2/core/core.hpp>
-namespace fucking_cool
+namespace one_piece
 {
 namespace algorithm
 {

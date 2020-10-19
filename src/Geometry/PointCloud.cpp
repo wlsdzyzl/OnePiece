@@ -8,7 +8,7 @@
 #include <unordered_set>
 #include <omp.h>
 #include "RGBDFrame.h"
-namespace fucking_cool
+namespace one_piece
 {
 namespace geometry 
 {

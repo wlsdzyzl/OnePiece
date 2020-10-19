@@ -12,7 +12,7 @@
 #include "Geometry/RGBDFrame.h"
 #include <ctime>
 
-namespace fucking_cool
+namespace one_piece
 {
 namespace odometry
 {

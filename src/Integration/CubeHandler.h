@@ -13,7 +13,7 @@
 #include "Frustum.h"
 
 #define TRUNCATED_DISTANCES 1.0
-namespace fucking_cool
+namespace one_piece
 {
 namespace integration
 {

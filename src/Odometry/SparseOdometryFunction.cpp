@@ -3,7 +3,7 @@
 #include <iostream>
 #include <algorithm>
 
-namespace fucking_cool
+namespace one_piece
 {
 namespace odometry
 {
