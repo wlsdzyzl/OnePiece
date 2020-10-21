@@ -5,19 +5,15 @@ set (CMAKE_BINARY_DIR "./example")
 
 # set (EIGEN3_INCLUDE_DIRS "")
 # set (OpenCV_INCLUDE_DIRS "")
-# set (Pangolin_INCLUDE_DIR "")
 # set(OPENNI2_LIBRARY "/home/zheng/Desktop/exp_for_leo/instance_demo/deps/OpenNI-Linux-x64-2.2/Redist/libOpenNI2.so")
 # set(OPENNI2_INCLUDE_DIR "/home/zheng/Desktop/exp_for_leo/instance_demo/deps/OpenNI-Linux-x64-2.2/Include")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
 find_package(OpenGL)
 find_package(GLUT)
-find_package(GLEW)
 find_package(OpenCV REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(OpenNI2 REQUIRED)
-
 
 include_directories(${EIGEN3_INCLUDE_DIRS})
 include_directories(${OpenCV_INCLUDE_DIRS})
@@ -25,7 +21,8 @@ include_directories(${GLUT_INCLUDE_DIRS})
 include_directories(${OPENGL_INCLUDE_DIRS})
 include_directories(${OPENNI2_INCLUDE_DIR})
 
-include_directories(3rdparty/Pangolin/include)
+# include_directories(3rdparty/rply)
+
 include_directories(3rdparty/tinyply/source)
 include_directories(3rdparty/tinyobjloader)
 include_directories(3rdparty/MILD)
@@ -33,6 +30,8 @@ include_directories(3rdparty/GRANSAC)
 include_directories(3rdparty/nanoflann/include)
 include_directories(3rdparty/jsoncpp/include)
 include_directories(3rdparty/Sophus)
+include_directories(3rdparty/Pangolin/include)
+
 
 include_directories(src)
 
@@ -49,7 +48,7 @@ file(GLOB Geometry_SRC
 "src/Geometry/*.hpp"
 )
 
-file(GLOB_RECURSE Visualization_SRC
+file(GLOB Visualization_SRC
 "src/Visualization/Shaders/*.h"
 "src/Visualization/*.cpp"
 "src/Visualization/*.h"
@@ -75,7 +74,6 @@ file(GLOB Objloader_SRC
 "3rdparty/tinyobjloader/*.cc"
 "3rdparty/tinyobjloader/*.h"
 )
-
 file(GLOB TinyPly_SRC
 "3rdparty/tinyply/source/tinyply.h"
 "3rdparty/tinyply/source/tinyply.cpp"
@@ -129,7 +127,6 @@ file(GLOB DenseFusion_SRC
 
 
 
-
 #add_library(rply SHARED ${Rply_SRC})
 add_library(tinyply SHARED ${TinyPly_SRC})
 add_library(objloader SHARED ${Objloader_SRC})
@@ -139,20 +136,18 @@ add_library(mild SHARED ${MILD_SRC})
 #add_library(gransac SHARED ${GRANSAC_SRC})
 
 
-add_subdirectory(3rdparty/Pangolin)
-link_directories($Pangolin_DIRS)
-
 add_library(one_piece SHARED ${Geometry_SRC}  ${GRANSAC_SRC}
     ${Visualization_SRC} ${Odometry_SRC} ${Tool_SRC} ${LCDetection_SRC}  
     ${Integration_SRC} ${Algorithm_SRC} ${Registration_SRC} ${Optimization_SRC})
 
 
+add_subdirectory("3rdparty/Pangolin")
+link_directories(${Pangolin_DIRS})
 
 set(CMAKE_CXX_FLAGS " -std=c++11 ")
 set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -O3 -msse4.2 -Wall -fopenmp") 
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-set(GL_LIB ${GLUT_LIBRARIES} ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES})
 
 add_executable(SparseOdometry "example/SparseOdometry.cpp"   )
 add_executable(SparseOdometryMild "example/SparseOdometryMild.cpp"   )
@@ -188,11 +183,11 @@ target_link_libraries(SparseOdometry
     objloader
     mild
     jsoncpp
+    pangolin
     ${OpenCV_LIBS} 
     ${Eigen_LIBRARIES}
-    pangolin
-    ${GL_LIB}
-
+    ${OPENGL_LIBRARIES} 
+	${GLUT_LIBRARY}
 )
 target_link_libraries(SparseOdometryMild
     one_piece
@@ -203,7 +198,8 @@ target_link_libraries(SparseOdometryMild
     ${OpenCV_LIBS} 
     ${Eigen_LIBRARIES}
     pangolin
-    ${GL_LIB}
+    ${OPENGL_LIBRARIES} 
+	${GLUT_LIBRARY}
 )
 target_link_libraries(DenseOdometry 
     one_piece
@@ -214,7 +210,8 @@ target_link_libraries(DenseOdometry
     ${OpenCV_LIBS} 
     ${Eigen_LIBRARIES}
     pangolin
-    ${GL_LIB}
+    ${OPENGL_LIBRARIES} 
+	${GLUT_LIBRARY}
 )
 target_link_libraries(ReadPLYPCD
     one_piece
@@ -225,7 +222,8 @@ target_link_libraries(ReadPLYPCD
     ${OpenCV_LIBS}
     ${Eigen_LIBRARIES}
     pangolin
-    ${GL_LIB}
+    ${OPENGL_LIBRARIES} 
+	${GLUT_LIBRARY}
 )
 target_link_libraries(ReadRGBD
     one_piece
@@ -236,7 +234,8 @@ target_link_libraries(ReadRGBD
     ${OpenCV_LIBS}
     ${Eigen_LIBRARIES}
     pangolin
-    ${GL_LIB}
+    ${OPENGL_LIBRARIES} 
+	${GLUT_LIBRARY}
 )
 target_link_libraries(ReadPLYMESH
     one_piece
