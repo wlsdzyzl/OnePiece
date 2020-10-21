@@ -663,6 +663,8 @@ endif()
 #######################################################
 ## Create config.h file for inclusion in library
 
+file(COPY "${INCDIR}" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/include/")
+
 configure_file(
   "${CMAKE_CURRENT_SOURCE_DIR}/config.h.in"
   "${CMAKE_CURRENT_BINARY_DIR}/include/${LIBRARY_NAME}/config.h"
@@ -738,6 +740,7 @@ configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}Config.cmake.in
 set( EXPORT_LIB_INC_DIR "\${PROJECT_CMAKE_DIR}/${REL_INCLUDE_DIR}" )
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}Config.cmake.in
     ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/${PROJECT_NAME}Config.cmake @ONLY )
+
 
 # Add package to CMake package registery for use from the build tree
 option( EXPORT_${PROJECT_NAME}

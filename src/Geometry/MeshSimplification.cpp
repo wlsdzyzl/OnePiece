@@ -1,6 +1,7 @@
 #include "MeshSimplification.h"
 #include <iostream>
 #include <map>
+#include <queue>
 namespace one_piece 
 {
 namespace geometry

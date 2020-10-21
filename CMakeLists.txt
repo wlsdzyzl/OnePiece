@@ -11,15 +11,16 @@ find_package(GLEW)
 find_package(OpenCV REQUIRED)
 find_package(OpenNI2 REQUIRED)
 
-
+add_subdirectory(3rdparty/Pangolin)
+link_directories(${Pangolin_DIRS})
 
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${GLUT_INCLUDE_DIRS})
 include_directories(${OPENGL_INCLUDE_DIRS})
 include_directories(${OPENNI2_INCLUDE_DIR})
 
+include_directories(${Pangolin_INCDIRS})
 include_directories(3rdparty/eigen)
-include_directories(3rdparty/Pangolin/include)
 include_directories(3rdparty/tinyply/source)
 include_directories(3rdparty/tinyobjloader)
 include_directories(3rdparty/MILD)
@@ -133,8 +134,7 @@ add_library(mild SHARED ${MILD_SRC})
 #add_library(gransac SHARED ${GRANSAC_SRC})
 
 
-add_subdirectory(3rdparty/Pangolin)
-link_directories($Pangolin_DIRS)
+
 
 add_library(one_piece SHARED ${Geometry_SRC}  ${GRANSAC_SRC}
     ${Visualization_SRC} ${Odometry_SRC} ${Tool_SRC} ${LCDetection_SRC}  
