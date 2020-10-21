@@ -3,28 +3,22 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}")
 set (CMAKE_BUILD_TYPE "Release")
 set (CMAKE_BINARY_DIR "./example")
 
-# set (EIGEN3_INCLUDE_DIRS "")
-# set (OpenCV_INCLUDE_DIRS "")
-# set (Pangolin_INCLUDE_DIR "")
-# set(OPENNI2_LIBRARY "/home/zheng/Desktop/exp_for_leo/instance_demo/deps/OpenNI-Linux-x64-2.2/Redist/libOpenNI2.so")
-# set(OPENNI2_INCLUDE_DIR "/home/zheng/Desktop/exp_for_leo/instance_demo/deps/OpenNI-Linux-x64-2.2/Include")
-
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(OpenGL)
 find_package(GLUT)
 find_package(GLEW)
 find_package(OpenCV REQUIRED)
-find_package(Eigen3 REQUIRED)
 find_package(OpenNI2 REQUIRED)
 
 
-include_directories(${EIGEN3_INCLUDE_DIRS})
+
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${GLUT_INCLUDE_DIRS})
 include_directories(${OPENGL_INCLUDE_DIRS})
 include_directories(${OPENNI2_INCLUDE_DIR})
 
+include_directories(3rdparty/eigen)
 include_directories(3rdparty/Pangolin/include)
 include_directories(3rdparty/tinyply/source)
 include_directories(3rdparty/tinyobjloader)
@@ -189,7 +183,7 @@ target_link_libraries(SparseOdometry
     mild
     jsoncpp
     ${OpenCV_LIBS} 
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${GL_LIB}
 
@@ -201,7 +195,7 @@ target_link_libraries(SparseOdometryMild
     mild
     jsoncpp
     ${OpenCV_LIBS} 
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${GL_LIB}
 )
@@ -212,7 +206,7 @@ target_link_libraries(DenseOdometry
     mild
     jsoncpp
     ${OpenCV_LIBS} 
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${GL_LIB}
 )
@@ -223,7 +217,7 @@ target_link_libraries(ReadPLYPCD
     mild
     jsoncpp
     ${OpenCV_LIBS}
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${GL_LIB}
 )
@@ -234,7 +228,7 @@ target_link_libraries(ReadRGBD
     mild
     jsoncpp
     ${OpenCV_LIBS}
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${GL_LIB}
 )
@@ -245,7 +239,7 @@ target_link_libraries(ReadPLYMESH
     mild
     jsoncpp
     ${OpenCV_LIBS}
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -257,7 +251,7 @@ target_link_libraries(SimplifyMeshQuadric
     mild
     jsoncpp
     ${OpenCV_LIBS}
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -269,7 +263,7 @@ target_link_libraries(SimplifyMeshClustering
     mild
     jsoncpp
     ${OpenCV_LIBS}
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -281,7 +275,7 @@ target_link_libraries(MCGenerateMesh
     mild
     jsoncpp
     ${OpenCV_LIBS}
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -293,7 +287,7 @@ target_link_libraries(EstimateNormals
     mild
     jsoncpp
     ${OpenCV_LIBS}
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -305,7 +299,7 @@ target_link_libraries(ImageIntegration
     mild
     jsoncpp
     ${OpenCV_LIBS}
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -317,7 +311,7 @@ target_link_libraries(ImageSequenceIntegration
     mild
     jsoncpp
     ${OpenCV_LIBS}
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -329,7 +323,7 @@ target_link_libraries(RoomDetection
     mild
     jsoncpp
     ${OpenCV_LIBS}
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -341,7 +335,7 @@ target_link_libraries(Clustering
     mild
     jsoncpp
     ${OpenCV_LIBS}
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -353,7 +347,7 @@ target_link_libraries(ConvertImageSequenceToPCD
     mild
     jsoncpp
     ${OpenCV_LIBS}
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -365,7 +359,7 @@ target_link_libraries(PruneMesh
     mild
     jsoncpp
     ${OpenCV_LIBS}
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -378,7 +372,7 @@ target_link_libraries(AcquireLiveData
     mild
     jsoncpp
     ${OpenCV_LIBS} 
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -392,7 +386,7 @@ target_link_libraries(DetectPlane
     mild
     jsoncpp
     ${OpenCV_LIBS} 
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -405,7 +399,7 @@ target_link_libraries(MergeMultipleSubmaps
     mild
     jsoncpp
     ${OpenCV_LIBS} 
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -417,7 +411,7 @@ target_link_libraries(RansacTest
     mild
     jsoncpp
     ${OpenCV_LIBS} 
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -429,7 +423,7 @@ target_link_libraries(ICPTest
     mild
     jsoncpp
     ${OpenCV_LIBS} 
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -441,7 +435,7 @@ target_link_libraries(BATest
     mild
     jsoncpp
     ${OpenCV_LIBS} 
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -453,7 +447,7 @@ target_link_libraries(GenerateModelFromScannet
     mild
     jsoncpp
     ${OpenCV_LIBS} 
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -465,7 +459,7 @@ target_link_libraries(GetLabelUsingKDTree
     mild
     jsoncpp
     ${OpenCV_LIBS} 
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -477,7 +471,7 @@ target_link_libraries(FBAFusion
     mild
     jsoncpp
     ${OpenCV_LIBS} 
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -489,7 +483,7 @@ target_link_libraries(BAFusion
     mild
     jsoncpp
     ${OpenCV_LIBS} 
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
@@ -501,7 +495,7 @@ target_link_libraries(DenseFusion
     mild
     jsoncpp
     ${OpenCV_LIBS} 
-    ${Eigen_LIBRARIES}
+    
     pangolin
     ${OPENGL_LIBRARIES} 
 	${GLUT_LIBRARY}
