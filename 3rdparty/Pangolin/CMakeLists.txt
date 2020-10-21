@@ -106,5 +106,5 @@ if(BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
-set(Pangolin_DIRS ${Pangolin_BINARY_DIR}/src)
-set(Pangolin_INCDIRS ${Pangolin_BINARY_DIR}/src/include)
+set(Pangolin_DIRS ${Pangolin_BINARY_DIR}/src PARENT_SCOPE)
+set(Pangolin_INCDIRS ${Pangolin_BINARY_DIR}/src/include PARENT_SCOPE)
