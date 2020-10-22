@@ -9,7 +9,7 @@ find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(OpenCV REQUIRED)
-find_package(Eigen3 REQUIRED)
+
 # optional
 find_package(OpenNI2)
 
@@ -20,8 +20,9 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${GLUT_INCLUDE_DIRS})
 include_directories(${OPENGL_INCLUDE_DIRS})
 include_directories(${OPENNI2_INCLUDE_DIR})
-include_directories(${EIGEN3_INCLUDE_DIRS})
 include_directories(${Pangolin_INCDIRS})
+
+include_directories(3rdparty/Eigen)
 include_directories(3rdparty/tinyply/source)
 include_directories(3rdparty/tinyobjloader)
 include_directories(3rdparty/MILD)
