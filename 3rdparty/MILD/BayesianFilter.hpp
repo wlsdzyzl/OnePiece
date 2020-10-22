@@ -11,7 +11,7 @@
 #define BAYSIAN_FILTER_H
 
 #include <vector>
-#include <eigen3/Eigen/Eigen>
+#include <Eigen/Eigen>
 #include <algorithm>
 #include "mild.hpp"
 
