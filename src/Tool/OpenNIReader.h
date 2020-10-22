@@ -1,3 +1,4 @@
+#ifdef WITH_OPENNI2
 #ifndef XTION_READER_H
 #define XTION_READER_H
 #include <OpenNI.h>
@@ -100,4 +101,5 @@ namespace tool
     };
 }
 }
+#endif
 #endif

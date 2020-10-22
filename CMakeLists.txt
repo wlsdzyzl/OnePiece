@@ -5,11 +5,13 @@ set (CMAKE_BINARY_DIR "./example")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-find_package(OpenGL)
-find_package(GLUT)
-find_package(GLEW)
+find_package(OpenGL REQUIRED)
+find_package(GLUT REQUIRED)
+find_package(GLEW REQUIRED)
 find_package(OpenCV REQUIRED)
-find_package(OpenNI2 REQUIRED)
+find_package(Eigen3 REQUIRED)
+# optional
+find_package(OpenNI2)
 
 add_subdirectory(3rdparty/Pangolin)
 link_directories(${Pangolin_DIRS})
@@ -18,9 +20,9 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${GLUT_INCLUDE_DIRS})
 include_directories(${OPENGL_INCLUDE_DIRS})
 include_directories(${OPENNI2_INCLUDE_DIR})
+include_directories(${EIGEN3_INCLUDE_DIR})
 
 include_directories(${Pangolin_INCDIRS})
-include_directories(3rdparty/eigen)
 include_directories(3rdparty/tinyply/source)
 include_directories(3rdparty/tinyobjloader)
 include_directories(3rdparty/MILD)
@@ -144,9 +146,12 @@ add_library(one_piece SHARED ${Geometry_SRC}  ${GRANSAC_SRC}
 
 set(CMAKE_CXX_FLAGS " -std=c++11 ")
 set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -O3 -msse4.2 -Wall -fopenmp") 
+if(OpenNI2_FOUND)
+    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -DWITH_OPENNI2")
+endif()
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-set(GL_LIB ${GLUT_LIBRARIES} ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES})
+
 
 add_executable(SparseOdometry "example/SparseOdometry.cpp"   )
 add_executable(SparseOdometryMild "example/SparseOdometryMild.cpp"   )
@@ -164,7 +169,9 @@ add_executable(RoomDetection "example/RoomDetection.cpp")
 add_executable(Clustering "example/Clustering.cpp")
 add_executable(ConvertImageSequenceToPCD "example/ConvertImageSequenceToPCD.cpp")
 add_executable(PruneMesh "example/PruneMesh.cpp")
-add_executable(AcquireLiveData "example/AcquireLiveData.cpp")
+if(OpenNI2_FOUND)
+    add_executable(AcquireLiveData "example/AcquireLiveData.cpp")
+endif()
 add_executable(DetectPlane "example/DetectPlane.cpp")
 add_executable(MergeMultipleSubmaps "example/MergeMultipleSubmaps.cpp")
 add_executable(RansacTest "example/RansacTest.cpp")
@@ -176,327 +183,126 @@ add_executable(FBAFusion ${FBAFusion_SRC})
 add_executable(BAFusion ${BAFusion_SRC})
 add_executable(DenseFusion ${DenseFusion_SRC})
 
-target_link_libraries(SparseOdometry
-    one_piece
-    tinyply
+set(THIRD_LIB 
+    tinyply 
     objloader
     mild
     jsoncpp
-    ${OpenCV_LIBS} 
-    
     pangolin
-    ${GL_LIB}
-
+    ${OpenCV_LIBS} 
+    ${GLUT_LIBRARIES}  
+    ${GLEW_LIBRARIES} 
+    ${OPENGL_LIBRARIES} 
+)
+target_link_libraries(SparseOdometry
+    one_piece
+    ${THIRD_LIB}
 )
 target_link_libraries(SparseOdometryMild
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS} 
-    
-    pangolin
-    ${GL_LIB}
+    ${THIRD_LIB}
 )
 target_link_libraries(DenseOdometry 
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS} 
-    
-    pangolin
-    ${GL_LIB}
+    ${THIRD_LIB}
 )
 target_link_libraries(ReadPLYPCD
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS}
-    
-    pangolin
-    ${GL_LIB}
+    ${THIRD_LIB}
 )
 target_link_libraries(ReadRGBD
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS}
-    
-    pangolin
-    ${GL_LIB}
+    ${THIRD_LIB}
 )
 target_link_libraries(ReadPLYMESH
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS}
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
 target_link_libraries(SimplifyMeshQuadric
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS}
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
 target_link_libraries(SimplifyMeshClustering
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS}
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
 target_link_libraries(MCGenerateMesh
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS}
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
 target_link_libraries(EstimateNormals
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS}
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
 target_link_libraries(ImageIntegration
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS}
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
 target_link_libraries(ImageSequenceIntegration
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS}
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
 target_link_libraries(RoomDetection
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS}
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
 target_link_libraries(Clustering
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS}
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
 target_link_libraries(ConvertImageSequenceToPCD
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS}
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
 target_link_libraries(PruneMesh
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS}
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
-
+if(OpenNI2_FOUND)
 target_link_libraries(AcquireLiveData
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS} 
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
-    ${OPENNI2_LIBRARY}
+    ${THIRD_LIB}
 )
+endif()
 
 target_link_libraries(DetectPlane
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS} 
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
 
 target_link_libraries(MergeMultipleSubmaps
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS} 
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
 target_link_libraries(RansacTest
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS} 
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
 target_link_libraries(ICPTest
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS} 
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
 target_link_libraries(BATest
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS} 
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
 target_link_libraries(GenerateModelFromScannet
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS} 
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
 target_link_libraries(GetLabelUsingKDTree
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS} 
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
 target_link_libraries(FBAFusion
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS} 
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
 target_link_libraries(BAFusion
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS} 
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
 target_link_libraries(DenseFusion
     one_piece
-    tinyply
-    objloader
-    mild
-    jsoncpp
-    ${OpenCV_LIBS} 
-    
-    pangolin
-    ${OPENGL_LIBRARIES} 
-	${GLUT_LIBRARY}
+    ${THIRD_LIB}
 )
