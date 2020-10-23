@@ -14,7 +14,7 @@ find_package(OpenCV REQUIRED)
 find_package(OpenNI2)
 
 add_subdirectory(3rdparty/Pangolin)
-link_directories(${Pangolin_DIRS})
+
 
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${GLUT_INCLUDE_DIRS})
@@ -150,8 +150,6 @@ if(OpenNI2_FOUND)
     set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -DWITH_OPENNI2")
 endif()
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-
-
 
 add_executable(SparseOdometry "example/SparseOdometry.cpp"   )
 add_executable(SparseOdometryMild "example/SparseOdometryMild.cpp"   )
