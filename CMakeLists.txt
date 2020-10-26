@@ -148,6 +148,8 @@ add_library(one_piece SHARED ${Geometry_SRC}  ${GRANSAC_SRC}
 
 set(CMAKE_CXX_FLAGS " -std=c++11 ")
 set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -O3 -msse4.2 -Wall -fopenmp -Wno-maybe-uninitialized") 
+# if you want a double-precision
+# set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -DUSING_FLOAT64") 
 if(OpenNI2_FOUND)
     set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -DWITH_OPENNI2")
 endif()
