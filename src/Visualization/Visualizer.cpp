@@ -11,7 +11,7 @@ namespace visualization
         if(buffer_data_updated)
         {
             glBindBuffer(GL_ARRAY_BUFFER,vbo);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, point_buffer_size * sizeof(scalar), &point_buffer[0]);     
+            glBufferSubData(GL_ARRAY_BUFFER, 0, point_buffer_size * sizeof(float), &point_buffer[0]);     
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
             glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, index_buffer_size * sizeof(int), &index_buffer[0]);
@@ -57,17 +57,17 @@ namespace visualization
         {
         
             glEnableVertexAttribArray(0);
-            glVertexAttribPointer(0, 3, data_type, GL_TRUE, point_step * sizeof(scalar), reinterpret_cast<GLvoid*>(0));//vertex
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_TRUE, point_step * sizeof(float), reinterpret_cast<GLvoid*>(0));//vertex
             if(point_step > 3)
             {
                 glEnableVertexAttribArray(1);
-                glVertexAttribPointer(1, 3, data_type, GL_TRUE,point_step * sizeof(scalar), reinterpret_cast<GLvoid*>(3*sizeof(scalar)));                
+                glVertexAttribPointer(1, 3, GL_FLOAT, GL_TRUE,point_step * sizeof(float), reinterpret_cast<GLvoid*>(3*sizeof(float)));                
             }
 
             if(point_step > 6)
             {
                 glEnableVertexAttribArray(2);
-                glVertexAttribPointer(2, 3, data_type, GL_TRUE, point_step * sizeof(scalar),reinterpret_cast< GLvoid*>(6*sizeof(scalar)));
+                glVertexAttribPointer(2, 3, GL_FLOAT, GL_TRUE, point_step * sizeof(float),reinterpret_cast< GLvoid*>(6*sizeof(float)));
             }
                 
             if(geometry_type == GeometryType::TRIANGLE_MESH)
@@ -102,20 +102,24 @@ namespace visualization
         
     }
     void Visualizer::ConfigProgram(const std::shared_ptr<Shader> &program, const bool drawNormals, const bool drawColors)
-    {                
-        program->setUniform(Uniform("MVP", s_cam.GetProjectionModelViewMatrix()));
-        //std::cout<<"mvp: "<<mvp<<std::endl;
+    {   
+
+        Eigen::Matrix4d tmp_mvp(s_cam.GetProjectionModelViewMatrix().m); 
+        Eigen::Matrix4f mvp = tmp_mvp.cast<float>();
+
+        program->setUniform(Uniform("MVP", mvp));
+       
         int color_type = (drawNormals ? 1 : drawColors ? 2 : 0);
         if(draw_color_phong) color_type = 3;
-        //std::cout<<"color_type: "<<color_type<<std::endl;
+        
         program->setUniform(Uniform("colorType", color_type));
         float s_materialShininess = 8.0f;
         Eigen::Vector4f s_materialAmbient   = Eigen::Vector4f(0.85f, 0.85f, 0.85f, 1.0f);
         Eigen::Vector4f s_materialDiffuse   = Eigen::Vector4f(0.85f, 0.85f, 0.85f, 1.0f);
         Eigen::Vector4f s_materialSpecular  = Eigen::Vector4f(1.0f, 1.0f, 1.0f, 1.0f);
-        Eigen::Vector4f s_lightAmbient 	    = Eigen::Vector4f(0.4f, 0.4f, 0.4f, 1.0f);
-        Eigen::Vector4f s_lightDiffuse 		= Eigen::Vector4f(0.6f, 0.52944f, 0.4566f, 0.6f);
-        Eigen::Vector4f s_lightSpecular 	= Eigen::Vector4f(0.3f, 0.3f, 0.3f, 1.0f);
+        Eigen::Vector4f s_lightAmbient 	  = Eigen::Vector4f(0.4f, 0.4f, 0.4f, 1.0f);
+        Eigen::Vector4f s_lightDiffuse      = Eigen::Vector4f(0.6f, 0.52944f, 0.4566f, 0.6f);
+        Eigen::Vector4f s_lightSpecular     = Eigen::Vector4f(0.3f, 0.3f, 0.3f, 1.0f);
         Eigen::Vector3f lightDir 	= Eigen::Vector3f(0.0f, -1.0f, 2.0f);
 
         program->setUniform(Uniform("materialShininess", s_materialShininess));
@@ -153,19 +157,19 @@ namespace visualization
             //position
             size_t start = 0;
             for(size_t j = 0;j<3; ++j, ++start)
-                point_buffer[point_buffer_size + i*step+start] = pcd.points[i](j);
+                point_buffer[point_buffer_size + i*step+start] = static_cast<float>(pcd.points[i](j));
 
             //normal
             if(pcd.HasNormals())
             {
             for(size_t j = 0;j<3; ++j, ++start)
-                point_buffer[point_buffer_size + i*step+start] = pcd.normals[i](j);
+                point_buffer[point_buffer_size + i*step+start] = static_cast<float>(pcd.normals[i](j));
             }
             //color
             if(pcd.HasColors())
             {
             for(size_t j = 0;j<3; ++j, ++start)
-                point_buffer[point_buffer_size + i*step+start] = pcd.colors[i](j);
+                point_buffer[point_buffer_size + i*step+start] = static_cast<float>(pcd.colors[i](j));
             }
 
         }
@@ -247,19 +251,19 @@ namespace visualization
             //position
             size_t start = 0;
             for(size_t j = 0;j<3; ++j, ++start)
-                point_buffer[point_buffer_size + i*step+start] = mesh.points[i](j);
+                point_buffer[point_buffer_size + i*step+start] = static_cast<float>(mesh.points[i](j));
 
             //normal
             if(mesh.HasNormals())
             {
             for(size_t j = 0;j<3; ++j, ++start)
-                point_buffer[point_buffer_size + i*step+start] = mesh.normals[i](j);
+                point_buffer[point_buffer_size + i*step+start] = static_cast<float>(mesh.normals[i](j));
             }
             //color
             if(mesh.HasColors())
             {
             for(size_t j = 0;j<3; ++j, ++start)
-                point_buffer[point_buffer_size + i*step+start] = mesh.colors[i](j);
+                point_buffer[point_buffer_size + i*step+start] = static_cast<float>(mesh.colors[i](j));
             }
 
         }

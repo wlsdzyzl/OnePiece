@@ -61,7 +61,7 @@ class Shader : public pangolin::GlSlProgram
                 default:
                     assert(false && "Uniform type not implemented!");
                     break;
-            }
+            } 
         }
 };
 

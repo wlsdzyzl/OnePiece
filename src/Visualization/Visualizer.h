@@ -22,17 +22,13 @@ namespace visualization
     };
     class Visualizer
     {
-        typedef geometry::scalar scalar;
         public:
         Visualizer()
         {
-            if(sizeof(scalar) == sizeof(double))
-            data_type = GL_DOUBLE;
-            else data_type = GL_FLOAT;
             Reset();
-            point_buffer = new scalar[MAX_BUFFER_SIZE];
+            point_buffer = new float[MAX_BUFFER_SIZE];
             index_buffer = new int[MAX_BUFFER_SIZE];
-            memset(point_buffer,0,MAX_BUFFER_SIZE*sizeof(scalar));
+            memset(point_buffer,0,MAX_BUFFER_SIZE*sizeof(float));
             memset(index_buffer,0,MAX_BUFFER_SIZE*sizeof(int));
 
         }
@@ -227,7 +223,7 @@ namespace visualization
 
             glGenBuffers(1, &vbo);
             glBindBuffer(GL_ARRAY_BUFFER,vbo);
-            glBufferData(GL_ARRAY_BUFFER, MAX_BUFFER_SIZE * sizeof(geometry::scalar), &point_buffer[0], GL_DYNAMIC_DRAW);     
+            glBufferData(GL_ARRAY_BUFFER, MAX_BUFFER_SIZE * sizeof(float), &point_buffer[0], GL_DYNAMIC_DRAW);     
 
             glGenBuffers(1, &ebo);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
@@ -249,6 +245,7 @@ namespace visualization
         }
         void SetShaderPath()
         {
+
             if(!has_colors && !has_normals)
             shader_vert = "draw_point.vert";
             if(has_colors && !has_normals)
@@ -257,12 +254,11 @@ namespace visualization
             shader_vert = "draw_normal.vert";
             if(has_colors && has_normals)
             shader_vert = "draw_all.vert";
-
             std::cout<<BLUE<<"[Visualizer]::[INFO]::Using shader: "<<shader_vert<<RESET<<std::endl;
         }
         protected:
         size_t point_step;
-        scalar * point_buffer;
+        float * point_buffer;
         int * index_buffer;
         size_t point_buffer_size;
         size_t index_buffer_size;
@@ -282,6 +278,7 @@ namespace visualization
         GeometryType geometry_type;
         bool dynamic_first_view = true;
         //vertex shader
+
         std::string shader_vert = "draw_all.vert";
         //fragment shader
         std::string shader_frag = "draw_feedback.frag";
@@ -293,7 +290,6 @@ namespace visualization
         bool has_colors = true;
         bool has_normals = true;
         bool is_initialized = false;
-        int data_type = GL_FLOAT;
         protected:
         
         GLuint vbo;

@@ -21,7 +21,7 @@
 
 #include <string>
 #include <Eigen/Core>
-#include "Geometry/Geometry.h"
+
 class Uniform
 {
     public:
@@ -60,9 +60,12 @@ class Uniform
            m4(v),
            t(MAT4)
         {}
-
+        // Uniform(const std::string & id, const Eigen::Matrix4d & v)
+        //  : id(id),
+        //    m4(v.cast<float>()),
+        //    t(MAT4)
+        // {}
         std::string id;
-
         int i;
         float f;
         Eigen::Vector2f v2;

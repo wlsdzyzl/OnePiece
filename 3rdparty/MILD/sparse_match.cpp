@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <malloc.h>
+#include <cmath>
 
 
 
@@ -41,18 +42,18 @@ namespace MILD
 		{
 			case FEATURE_TYPE_ORB:
 			{
-									 descriptor_length = ORB_DESCRIPTOR_LEN;
-									 break;
+				descriptor_length = ORB_DESCRIPTOR_LEN;
+				break;
 			}
 			case FEATURE_TYPE_BRISK:
 			{
-									   descriptor_length = BRISK_DESCRIPTOR_LEN;
-									   break;
+				descriptor_length = BRISK_DESCRIPTOR_LEN;
+				break;
 			}
 			default:
 			{
-					   cout << "unknown descriptor" << endl;
-					   return;
+				cout << "unknown descriptor" << endl;
+				return;
 			}
 		}
 		descriptor_type = feature_type;
@@ -149,7 +150,7 @@ namespace MILD
 		if (descriptor_type == FEATURE_TYPE_ORB)
 		{
 			int descriptor_length = desc.cols * 8;
-			if (descriptor_length != descriptor_length)
+			if (std::isnan(descriptor_length))
 			{
 				cout << "error ! feature descriptor length doesn't match" << endl;
 			}
@@ -231,7 +232,7 @@ namespace MILD
 		if (descriptor_type == FEATURE_TYPE_ORB)
 		{
 			int descriptor_length = desc.cols * 8;
-			if (descriptor_length != descriptor_length)
+			if (std::isnan(descriptor_length))
 			{
 				cout << "error ! feature descriptor length doesn't match" << endl;
 			}

@@ -3,6 +3,7 @@
 #include "tiny_obj_loader.h"
 #include <iostream>
 #include <fstream>
+#include <numeric>
 namespace one_piece
 {
 namespace tool

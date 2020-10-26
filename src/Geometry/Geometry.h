@@ -25,8 +25,12 @@ namespace camera
 {
     class PinholeCamera;
 }
-namespace geometry { 
+namespace geometry {
+#ifdef USING_FLOAT64
+    typedef double scalar;
+#else
     typedef float scalar;
+#endif
     typedef Eigen::Matrix<scalar, 2, 1> Vector2;
     typedef Eigen::Matrix<scalar, 3, 1> Vector3;
     typedef Eigen::Matrix<scalar, 4, 1> Vector4;

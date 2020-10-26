@@ -11,7 +11,7 @@
 
 #include <iostream>
 #include "smmintrin.h"
-
+#include <cmath>
 using namespace std;
 
 
@@ -98,7 +98,7 @@ namespace MILD
 		if (descriptor_type == FEATURE_TYPE_ORB)
 		{
 			int descriptor_length = desc.cols * 8;
-			if (descriptor_length != descriptor_length)
+			if (std::isnan(descriptor_length))
 			{
 				cout << "error ! feature descriptor length doesn't match" << endl;
 			}
@@ -151,7 +151,7 @@ namespace MILD
 		if (descriptor_type == FEATURE_TYPE_ORB)
 		{
 			int descriptor_length = desc.cols * 8;
-			if (descriptor_length != descriptor_length)
+			if (std::isnan(descriptor_length))
 			{
 				cout << "error ! feature descriptor length doesn't match" << endl;
 			}

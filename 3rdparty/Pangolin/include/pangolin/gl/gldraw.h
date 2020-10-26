@@ -417,7 +417,11 @@ inline void glSetFrameOfReference( const pangolin::OpenGlMatrix& T_wf )
 {
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
+#ifndef HAVE_GLES
     glMultMatrixd( T_wf.m );
+#else
+    glMultMatrixf( T_wf.m );
+#endif
 }
 
 inline void glUnsetFrameOfReference()
