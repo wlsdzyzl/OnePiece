@@ -113,10 +113,9 @@ int main(int argc, char **argv)
     r_para.search_radius = 0.25;
     r_para.max_nn = 100;
     r_para.voxel_len = 0.05;
-    r_para.threshold = 0.5;
     r_para.search_radius_normal = 0.1;
     r_para.max_nn_normal = 30;
-    r_para.max_iteration = 40000;
+    r_para.max_iteration = 400;
     r_para.threshold = 0.1;
     auto result1 = registration::RansacRegistration(s_pcd, t_pcd, r_para);
     std::cout<<result1->T<<std::endl;
@@ -195,6 +194,13 @@ int main(int argc, char **argv)
     //visualizer.AddPointCloud(result1->down_sample_target);
     visualizer.AddPointCloud(s_pcd);
     visualizer.AddPointCloud(t_pcd);
+
+    for(size_t i = 0; i != s_pcd.points.size(); ++i)
+    {
+        s_pcd.colors[i] = geometry::Point3(1, 0, 1);
+    }
+    s_pcd.Transform(result1->T);
+    visualizer.AddPointCloud(s_pcd);
     visualizer.AddLineSet(line_points, line_index, line_colors);
     visualizer.AddCameraSet(camera_poses, camera_colors);
     visualizer.Show();    
