@@ -135,9 +135,9 @@ namespace visualization
             //just change the y value
             geometry::TransformationMatrix camera_pose = geometry::TransformationMatrix::Identity();
             camera_pose.block<3, 1>(0, 3) = average_point + geometry::Point3(0, -5, 0);
-            //let camera
+            //set camera
             // camera_pose.block<3, 1>(0, 0) = geometry::Point3(1, 0, 0);
-            camera_pose.block<3, 1>(0, 1) = geometry::Point3(0, 0, 1);
+            camera_pose.block<3, 1>(0, 1) = geometry::Point3(0, 0, -1);
             camera_pose.block<3, 1>(0, 2) = geometry::Point3(0, 1, 0);
             camera_pose_for_view = camera_pose;
         }
