@@ -1,6 +1,9 @@
 #include <string>
 #include <vector>
 #include <random>
+#include <sys/stat.h>
+#include <iostream>
+#include "Tool/ConsoleColor.h"
 namespace one_piece
 {
 namespace tool
@@ -21,5 +24,8 @@ namespace tool
             std::swap<T>(v[i], v[u(e)]);
         }
     }
+    bool DirExists(const std::string & folder_name);
+    bool MakeDir(const std::string & folder_name);
+
 }
 }

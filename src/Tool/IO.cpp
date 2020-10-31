@@ -1,6 +1,7 @@
 #include "IO.h"
 #include "CppExtension.h"
 #include "json/json.h"
+#include "Tool/ImageProcessing.h"
 namespace one_piece
 {
 namespace tool
@@ -11,7 +12,19 @@ namespace tool
     {
         //color_to_depth means relative pose from rgb_camera to depth_camera
         geometry::ImageXYZ xyz;
-        geometry::TransformToMatXYZ(depth, depth_camera, xyz);
+        cv::Mat refined_depth;
+        if(depth.depth() == CV_16UC1 )
+        {
+            tool::ConvertDepthTo32F(depth, refined_depth, depth_camera.GetDepthScale());
+            geometry::TransformToMatXYZ(refined_depth, depth_camera, xyz);
+        }
+        else if(depth.depth() == CV_32FC1 )
+            geometry::TransformToMatXYZ(depth, depth_camera, xyz);
+        else
+        {
+            std::cout <<RED<< "[ImageProcessing]::[ERROR]::Unknown depth image type: "<<depth.depth()<<RESET<<std::endl;
+            exit(1);            
+        }
         auto color_K = rgb_camera.ToCameraMatrix();
         // auto depth_K = depth_camera.ToCameraMatrix();
         int depth_width = depth_camera.GetWidth();
@@ -157,7 +170,7 @@ namespace tool
             oss<<std::setw(6)<<std::setfill('0')<<i; 
             std::string index = oss.str();
             rgb_files.push_back(path + "/frame-" +index +".color.jpg");
-            depth_files.push_back(path + "/frame-" +index +".depth.pgm");
+            depth_files.push_back(path + "/frame-" +index +".depth.png");
         }
     }
 

@@ -65,5 +65,28 @@ namespace tool
         std::reverse(results.begin(), results.end());
         return results;
     }
+    bool DirExists(const std::string & folder_name)
+    {
+        struct stat st;
+        if(stat(folder_name.c_str(),&st) == 0)
+            if((st.st_mode) & (S_IFDIR != 0))
+                return true;
+        return false;
+    }
+    bool MakeDir(const std::string & folder_name)
+    {
+        if(DirExists(folder_name))
+        {
+            std::cout<<YELLOW<<"[WARNNING]::[MakeDir]::Directory exsits!"<<RESET<<std::endl;
+            return true;            
+        }
+        const int dir_err = mkdir(folder_name.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+        if (-1 == dir_err)
+        {
+            std::cout<<RED<<"[ERROR]::[MakeDir]::Error creating directory!"<<RESET<<std::endl;
+            return false;
+        }
+        return true;
+    }
 }
 }
