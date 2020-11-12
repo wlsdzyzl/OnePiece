@@ -14,7 +14,6 @@ int main(int argc, char* argv[])
     cv::Mat depth = cv::imread(argv[2],-1);
     geometry::PointCloud pcd;
     pcd.LoadFromRGBD(rgb, depth,camera);
-
     pcd.WriteToPLY("0.ply");
     visualization::Visualizer visualizer;
     visualizer.AddPointCloud(pcd);

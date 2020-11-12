@@ -155,6 +155,8 @@ if(OpenNI2_FOUND)
 endif()
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
+
+add_executable(EigenTest "example/EigenTest.cpp")
 add_executable(SparseOdometry "example/SparseOdometry.cpp"   )
 add_executable(SparseOdometryMild "example/SparseOdometryMild.cpp"   )
 add_executable(DenseOdometry "example/DenseOdometry.cpp")
@@ -196,6 +198,10 @@ set(THIRD_LIB
     ${GLUT_LIBRARIES}  
     ${GLEW_LIBRARIES} 
     ${OPENGL_LIBRARIES} 
+)
+target_link_libraries(EigenTest
+    one_piece
+    ${THIRD_LIB}
 )
 target_link_libraries(SparseOdometry
     one_piece
