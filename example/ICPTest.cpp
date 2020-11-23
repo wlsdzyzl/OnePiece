@@ -29,8 +29,8 @@ int main(int argc, char **argv)
     t_pcd.EstimateNormals();
     registration::ICPParameter icp_para;
     icp_para.threshold = 0.01;
-    //auto result1 = registration::PointToPoint(s_pcd, t_pcd, init_T, icp_para);
-    auto result1 = registration::PointToPlane(s_pcd, t_pcd, init_T, icp_para);
+    auto result1 = registration::PointToPoint(s_pcd, t_pcd, init_T, icp_para);
+    //auto result1 = registration::PointToPlane(s_pcd, t_pcd, init_T, icp_para);
     std::cout<<result1->T<<std::endl;
     s_pcd.colors.resize(s_pcd.points.size());
     t_pcd.colors.resize(t_pcd.points.size());

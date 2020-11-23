@@ -118,9 +118,19 @@ namespace registration
         }
         ofs.close();
     }
-    std::shared_ptr<RegistrationResult> RansacRegistration(const geometry::PointCloud &source_pcd, const geometry::PointCloud &target_pcd, 
+    std::shared_ptr<RegistrationResult> RansacRegistration(const geometry::PointCloud &_source_pcd, const geometry::PointCloud &_target_pcd, 
         const RANSACParameter &r_para)
     {
+        geometry::PointCloud source_pcd = _source_pcd;
+        geometry::PointCloud target_pcd = _target_pcd;
+        if(r_para.scaling != 1)
+        {
+            for (size_t i = 0; i != source_pcd.points.size(); ++i)
+            source_pcd.points[i] = source_pcd.points[i] * r_para.scaling;
+            for (size_t i = 0; i != target_pcd.points.size(); ++i)
+            target_pcd.points[i] = target_pcd.points[i] * r_para.scaling;
+        }
+
 #if DEBUG_MODE
         std::cout<<BLUE<<"[DEBUG]::[GlobalRegistrationRANSAC]::Downsampling, voxel_len: "<<r_para.voxel_len<<RESET<<std::endl;
 #endif
@@ -172,8 +182,14 @@ namespace registration
         std::cout<<BLUE<<"[DEBUG]::[GlobalRegistrationRANSAC]::Ransac Estimation..."<<RESET<<std::endl;
 #endif
         std::vector<int> inlier_ids;
+        if(r_para.scaling != 1)
+        for(size_t i = 0; i != correspondence_set.size(); ++i)
+        {
+            correspondence_set[i].first = correspondence_set[i].first / r_para.scaling;
+            correspondence_set[i].second = correspondence_set[i].second / r_para.scaling;
+        }
         auto T = geometry::EstimateRigidTransformationRANSAC(correspondence_set, inliers, inlier_ids,
-            r_para.max_iteration, r_para.threshold);
+            r_para.max_iteration, r_para.threshold / r_para.scaling);
         RegistrationResult result;
         result.T = T;
         result.correspondence_set = inliers;
@@ -206,6 +222,7 @@ namespace registration
         const FeatureSet & target_features,
         const RANSACParameter &r_para)
     {
+        //here, if you want to scaling, scaling it outside.
         geometry::FMatchSet matches;
         FeatureMatching3D(source_features, target_features, matches);
         std::default_random_engine engine;
@@ -231,6 +248,7 @@ namespace registration
         std::cout<<BLUE<<"[DEBUG]::[GlobalRegistrationRANSAC]::Ransac Estimation..."<<RESET<<std::endl;
 #endif
         std::vector<int> inlier_ids;
+
         auto T = geometry::EstimateRigidTransformationRANSAC(correspondence_set, inliers, inlier_ids,
             r_para.max_iteration, r_para.threshold);
         RegistrationResult result;

@@ -117,6 +117,7 @@ int main(int argc, char **argv)
     r_para.max_nn_normal = 30;
     r_para.max_iteration = 400;
     r_para.threshold = 0.1;
+    r_para.scaling = 0.1;
     auto result1 = registration::RansacRegistration(s_pcd, t_pcd, r_para);
     std::cout<<result1->T<<std::endl;
     // auto draw_matches = DrawMatches(result1->down_sample_source, result1->down_sample_target, result1->correspondence_set);

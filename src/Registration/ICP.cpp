@@ -28,9 +28,18 @@ namespace registration
         }
         return sqrt(sum_error / inliers.size());
     }
-    std::shared_ptr<RegistrationResult> PointToPoint(const geometry::PointCloud &source, const geometry::PointCloud &target, 
+    std::shared_ptr<RegistrationResult> PointToPoint(const geometry::PointCloud &_source, const geometry::PointCloud &_target, 
         const geometry::TransformationMatrix &init_T, const ICPParameter &icp_para)
     {
+        geometry::PointCloud source = _source;
+        geometry::PointCloud target = _target;
+        if(icp_para.scaling != 1)
+        {
+            for (size_t i = 0; i != source.points.size(); ++i)
+            source.points[i] = source.points[i] * icp_para.scaling;
+            for (size_t i = 0; i != target.points.size(); ++i)
+            target.points[i] = target.points[i] * icp_para.scaling;
+        }
         // cost function: Tpi - pj
         //find closest point use kd-tree
         auto start_T = init_T;
@@ -79,19 +88,22 @@ namespace registration
             std::cout<<BLUE<<"[DEBUG]::[ICPPointToPoint]::iteration "<<iteration<<", inliers "<<inliers.size()<<RESET<<std::endl;
 #endif
         }
-        
-        result.rmse = CountInliers(source.points, target.points, corresponding_index, 
-            start_T, icp_para.threshold, inliers);
+        result.rmse = CountInliers(source.points, target.points, corresponding_index, start_T, icp_para.threshold, inliers);
         result.correspondence_set_index = inliers;
-        result.T = start_T;
-
+        if(icp_para.scaling != 1)
+        {
+            for (size_t i = 0; i != source.points.size(); ++i)
+            source.points[i] = source.points[i] / icp_para.scaling;
+            for (size_t i = 0; i != target.points.size(); ++i)
+            target.points[i] = target.points[i] / icp_para.scaling;
+        }        
         for(size_t i = 0; i != inliers.size(); ++i)
         {
             result.correspondence_set.push_back(std::make_pair(source.points[inliers[i].first], 
                 target.points[inliers[i].second]));
         }
+        result.T = geometry::EstimateRigidTransformation(result.correspondence_set);
         return std::make_shared<RegistrationResult>(result);
-        //unify, not good.        
     }
     geometry::TransformationMatrix EstimateRigidTransformationPointToPlane(const geometry::Point3List &source, 
         const geometry::Point3List &target, const geometry::Point3List &target_normal, 
@@ -131,12 +143,20 @@ namespace registration
         return geometry::Se3ToSE3(x);
     }
     
-    std::shared_ptr<RegistrationResult> PointToPlane(const geometry::PointCloud &source, const geometry::PointCloud &target,
+    std::shared_ptr<RegistrationResult> PointToPlane(const geometry::PointCloud &_source, const geometry::PointCloud &_target,
         const geometry::TransformationMatrix &init_T, const ICPParameter &icp_para)
     {
         //cost function n(Tpi - pj)
-        
-        if(!target.HasNormals())
+        geometry::PointCloud source = _source;
+        geometry::PointCloud target = _target;
+        if(icp_para.scaling != 1)
+        {
+            for (size_t i = 0; i != source.points.size(); ++i)
+            source.points[i] = source.points[i] * icp_para.scaling;
+            for (size_t i = 0; i != target.points.size(); ++i)
+            target.points[i] = target.points[i] * icp_para.scaling;
+        }
+        if(!target.HasNormals() || icp_para.scaling != 1)
         {
             std::cout<<RED<<"[ERROR]::[ICPPointToPlane]::target point cloud need to have normals."<<RESET<<std::endl;
             return std::make_shared<RegistrationResult>(RegistrationResult());
@@ -185,12 +205,20 @@ namespace registration
         }
         result.rmse = CountInliers(source.points, target.points, corresponding_index, start_T, icp_para.threshold, inliers);
         result.correspondence_set_index = inliers;
-        result.T = start_T;
+        // result.T = start_T;
+        if(icp_para.scaling != 1)
+        {
+            for (size_t i = 0; i != source.points.size(); ++i)
+            source.points[i] = source.points[i] / icp_para.scaling;
+            for (size_t i = 0; i != target.points.size(); ++i)
+            target.points[i] = target.points[i] / icp_para.scaling;
+        }        
         for(size_t i = 0; i != inliers.size(); ++i)
         {
             result.correspondence_set.push_back(std::make_pair(source.points[inliers[i].first], 
                 target.points[inliers[i].second]));
         }
+        result.T = geometry::EstimateRigidTransformation(result.correspondence_set);
         return std::make_shared<RegistrationResult>(result);
         
     }    
