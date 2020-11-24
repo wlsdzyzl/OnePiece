@@ -247,7 +247,7 @@ namespace tool
             std::cout<<RED << "[PLYWriter]::[ERROR] Cannot open file "<<filename<<RESET<<std::endl;
             return false;
         }
-        ply_add_comment(ply_file, "Created by OPLib");
+        ply_add_comment(ply_file, "Created by OnePiece");
         ply_add_element(ply_file, "vertex",
                         static_cast<long>(points.size()));
         ply_add_property(ply_file, "x", PLY_DOUBLE, PLY_DOUBLE, PLY_DOUBLE);
@@ -380,7 +380,7 @@ namespace tool
             std::cout<<RED << "[PLYWriter]::[ERROR] Cannot open file "<<filename<<RESET<<std::endl;
             return false;
         }
-        ply_add_comment(ply_file, "Created by OPLib");
+        ply_add_comment(ply_file, "Created by OnePiece");
         ply_add_element(ply_file, "vertex",
                         static_cast<long>(points.size()));
         ply_add_property(ply_file, "x", PLY_DOUBLE, PLY_DOUBLE, PLY_DOUBLE);

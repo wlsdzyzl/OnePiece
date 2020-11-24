@@ -19,7 +19,7 @@ namespace tool
         bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err,
                                     filename.c_str());
         if (!warn.empty()) {
-            std::cout<<YELLOW<<"[WARNNING]::[LoadFromOBJ]::"<<warn<<" (Notice that currently we don't support texture, uv coordinate in OPLib, because I know little about it, I never working on it)"<<RESET<<std::endl;
+            std::cout<<YELLOW<<"[WARNNING]::[LoadFromOBJ]::"<<warn<<" (Notice that currently we don't support texture, uv coordinate in OnePiece, because I know little about it, I never working on it)"<<RESET<<std::endl;
         }
         if (!err.empty()) {
             std::cout<<RED<<"[ERROR]::[LoadFromOBJ]::Read OBJ failed: "<<err<<RESET<<std::endl;
@@ -118,7 +118,7 @@ namespace tool
                                     filename.c_str());
         
         if (!warn.empty()) {
-            std::cout<<YELLOW<<"[WARNNING]::[LoadFromOBJ]::"<<warn<<" (Notice that currently we don't support texture, uv coordinate in OPLib, because I know little about it, I never working on it)"<<RESET<<std::endl;
+            std::cout<<YELLOW<<"[WARNNING]::[LoadFromOBJ]::"<<warn<<" (Notice that currently we don't support texture, uv coordinate in OnePiece, because I know little about it, I never working on it)"<<RESET<<std::endl;
         }
         
         if (!err.empty()) {
@@ -214,7 +214,7 @@ namespace tool
             std::cout<<RED<< "Write OBJ failed: unable to open file."<<RESET<<std::endl;
             return false;
         }
-        file << "# Created by OPLib " << std::endl;
+        file << "# Created by OnePiece " << std::endl;
         //file << "# object name: " << object_name << std::endl;
         file << "# number of vertices: " << points.size() << std::endl;
 
@@ -252,7 +252,7 @@ namespace tool
             std::cout<<RED<< "Write OBJ failed: unable to open file."<<RESET<<std::endl;
             return false;
         }
-        file << "# Created by OPLib " << std::endl;
+        file << "# Created by OnePiece " << std::endl;
         //file << "# object name: " << object_name << std::endl;
         file << "# number of vertices: " << points.size() << std::endl;
         file << "# number of triangles: " << triangles.size() << std::endl;
