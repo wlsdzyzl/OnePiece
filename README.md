@@ -6,9 +6,9 @@ RGB-D based 3D vision library, you can easily use OnePiece to build a SLAM syste
 
 ![](./fba_fusion.gif)
 
-Click [documentation(Chinese)](http://wlsdzyzl.top/OnePiece.github.io/) or [documentation(English)](http://wlsdzyzl.top/OnePiece.github.io/en/) for more information.
+Click [documentation(Chinese)](http://wlsdzyzl.top/onepiece.github.io/) or [documentation(English)](http://wlsdzyzl.top/onepiece.github.io/en/) for more information.
 
-Watch some demos [here](http://wlsdzyzl.top/OnePiece.github.io/examples).
+Watch some demos [here](http://wlsdzyzl.top/onepiece.github.io/examples).
 
 You can download `TestData` [here](https://cloud.tsinghua.edu.cn/f/a2372da684f14330af21/?dl=1). 
 
