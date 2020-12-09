@@ -30,8 +30,8 @@ void main()
             vec4 material = materialDiffuse;
 	    
             vec3 eyeDir = normalize(position.xyz);
-	    vec4 light_dir_vec4 = vec4(eyeDir,1.0);
-	    vec3 light_dir = light_dir_vec4.xyz; 
+            vec4 light_dir_vec4 = vec4(eyeDir,1.0);
+            vec3 light_dir = light_dir_vec4.xyz; 
             vec3 R = normalize(reflect(-normalize(light_dir), normal.xyz));
 
             vec4 res = lightAmbient  * materialAmbient                                                       // Ambient

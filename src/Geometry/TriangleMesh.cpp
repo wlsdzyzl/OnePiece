@@ -1,6 +1,7 @@
 #include "TriangleMesh.h"
 #include "Tool/PLYManager.h"
 #include "Tool/OBJManager.h"
+#include "Tool/CppExtension.h"
 #include <iostream>
 #include <fstream>
 #include "MeshSimplification.h"
@@ -19,6 +20,23 @@ namespace geometry
     {
         Reset();
         return tool::ReadOBJ(filename,points,normals,colors,triangles);
+    }
+    bool TriangleMesh::LoadFromFile(const std::string & filename)
+    {
+        std::vector<std::string> result = tool::RSplit(filename, ".", 1);
+        if(result.size() == 2)
+        {
+            if(result[1] == "obj")//obj
+            {
+                return LoadFromOBJ(filename);
+            }
+            else if(result[1] == "ply")
+            {
+                return LoadFromPLY(filename);
+            }
+        }
+        std::cout<<YELLOW<<"[WARNING]::[LoadFromFile]::Dragon only supports obj and ply file."<<RESET<<std::endl;
+        return false;
     }
     void TriangleMesh::Transform(const geometry::TransformationMatrix & T)
     {

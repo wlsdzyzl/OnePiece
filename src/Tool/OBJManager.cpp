@@ -19,7 +19,7 @@ namespace tool
         bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err,
                                     filename.c_str());
         if (!warn.empty()) {
-            std::cout<<YELLOW<<"[WARNNING]::[LoadFromOBJ]::"<<warn<<" (Notice that currently we don't support texture, uv coordinate in OnePiece, because I know little about it, I never working on it)"<<RESET<<std::endl;
+            std::cout<<YELLOW<<"[WARNNING]::[LoadFromOBJ]::"<<warn<<" (Notice that currently we don't support texture, uv coordinate in OnePiece)"<<RESET<<std::endl;
         }
         if (!err.empty()) {
             std::cout<<RED<<"[ERROR]::[LoadFromOBJ]::Read OBJ failed: "<<err<<RESET<<std::endl;
@@ -118,7 +118,7 @@ namespace tool
                                     filename.c_str());
         
         if (!warn.empty()) {
-            std::cout<<YELLOW<<"[WARNNING]::[LoadFromOBJ]::"<<warn<<" (Notice that currently we don't support texture, uv coordinate in OnePiece, because I know little about it, I never working on it)"<<RESET<<std::endl;
+            std::cout<<YELLOW<<"[WARNNING]::[LoadFromOBJ]::"<<warn<<" (Notice that currently we don't support texture, uv coordinate in OnePiece)"<<RESET<<std::endl;
         }
         
         if (!err.empty()) {

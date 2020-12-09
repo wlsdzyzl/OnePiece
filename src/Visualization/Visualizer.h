@@ -164,8 +164,7 @@ namespace visualization
             camera_poses.clear();
             camera_colors.clear();
         }
-        void ConfigProgram(const std::shared_ptr<Shader> &program, 
-            const bool drawNormals, const bool drawColors);
+        void ConfigProgram(const std::shared_ptr<Shader> &program);
         std::shared_ptr<Shader> GetShader()
         {
             return loadProgramFromFile(shader_path,shader_vert,shader_frag);
@@ -286,7 +285,7 @@ namespace visualization
         std::string shader_path = "../../src/Visualization/Shaders";
         bool draw_normal = false;
         bool draw_color = false;
-        bool draw_color_phong = false;
+        bool draw_color_phong = true;
         bool has_colors = true;
         bool has_normals = true;
         bool is_initialized = false;

@@ -50,7 +50,7 @@ namespace visualization
         // set this program as current program
         
         program->Bind();
-        ConfigProgram(program, draw_normal, draw_color);
+        ConfigProgram(program);
         if(point_step == 0)
             std::cout<<"[Visualizer]::[WARNING]::Nothing is in the buffer"<<std::endl;
         else
@@ -101,23 +101,24 @@ namespace visualization
         }
         
     }
-    void Visualizer::ConfigProgram(const std::shared_ptr<Shader> &program, const bool drawNormals, const bool drawColors)
+    void Visualizer::ConfigProgram(const std::shared_ptr<Shader> &program)
     {   
 
         Eigen::Matrix4d tmp_mvp(s_cam.GetProjectionModelViewMatrix().m); 
         Eigen::Matrix4f mvp = tmp_mvp.cast<float>();
-
+        // Eigen::Matrix4d projection_matrix(s_cam.GetProjectionMatrix().m);
+        // std::cout<<projection_matrix<<std::endl;
         program->setUniform(Uniform("MVP", mvp));
        
-        int color_type = (drawNormals ? 1 : drawColors ? 2 : 0);
+        int color_type = (draw_normal ? 1 : draw_color ? 2 : 0);
         if(draw_color_phong) color_type = 3;
         
         program->setUniform(Uniform("colorType", color_type));
         float s_materialShininess = 8.0f;
         Eigen::Vector4f s_materialAmbient   = Eigen::Vector4f(0.85f, 0.85f, 0.85f, 1.0f);
         Eigen::Vector4f s_materialDiffuse   = Eigen::Vector4f(0.85f, 0.85f, 0.85f, 1.0f);
-        Eigen::Vector4f s_materialSpecular  = Eigen::Vector4f(1.0f, 1.0f, 1.0f, 1.0f);
-        Eigen::Vector4f s_lightAmbient 	  = Eigen::Vector4f(0.4f, 0.4f, 0.4f, 1.0f);
+        Eigen::Vector4f s_materialSpecular  = Eigen::Vector4f(1.5f, 1.5f, 1.5f, 1.0f);
+        Eigen::Vector4f s_lightAmbient 	  = Eigen::Vector4f(0.8f, 0.8f, 0.8f, 1.0f);
         Eigen::Vector4f s_lightDiffuse      = Eigen::Vector4f(0.6f, 0.52944f, 0.4566f, 0.6f);
         Eigen::Vector4f s_lightSpecular     = Eigen::Vector4f(0.3f, 0.3f, 0.3f, 1.0f);
         Eigen::Vector3f lightDir 	= Eigen::Vector3f(0.0f, -1.0f, 2.0f);

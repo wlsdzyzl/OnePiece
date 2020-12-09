@@ -13,6 +13,7 @@ namespace geometry
         public:
         bool LoadFromPLY(const std::string &filename);
         bool LoadFromOBJ(const std::string &filename);
+        bool LoadFromFile(const std::string & filename);
         void ComputeNormals();
         void Transform(const geometry::TransformationMatrix & T);
         bool HasColors() const

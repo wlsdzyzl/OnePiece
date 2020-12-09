@@ -33,9 +33,10 @@ namespace geometry
             void LoadFromRGBD(const RGBDFrame &rgbd, const camera::PinholeCamera &camera );
             void LoadFromDepth(const cv::Mat &depth, const camera::PinholeCamera &camera );
             void LoadFromXYZ(const ImageXYZ &xyz);
-            void LoadFromPLY(const std::string &filename);
-            void LoadFromOBJ(const std::string &filename);
-            void WriteToOBJ(const std::string &filename);
+            bool LoadFromPLY(const std::string &filename);
+            bool LoadFromOBJ(const std::string &filename);
+            bool LoadFromFile(const std::string & filename);
+            bool WriteToOBJ(const std::string &filename);
             void EstimateNormals(float radius = 0.1, int knn = 30);
             void Transform(const TransformationMatrix &T);
             std::shared_ptr<PointCloud> DownSample(float grid_len) const;

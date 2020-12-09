@@ -57,8 +57,7 @@ void main()
             vec4 light_dir_vec4 = vec4(eyeDir,1.0);
             vec3 light_dir = light_dir_vec4.xyz; 
             vec3 R = normalize(reflect(-normalize(light_dir), normal.xyz));
-            vColor = vec4(color.xyz, 1.0);
-            vec4 res = lightAmbient  * materialAmbient                                                       // Ambient
+            vec4 res = lightAmbient  * materialAmbient                                                     // Ambient
                 + lightDiffuse  * material * max(dot(normal.xyz, -normalize(light_dir)), 0.0)                  // Diffuse
                 + lightSpecular * materialSpecular * pow(max(dot(R, eyeDir), 0.0f), materialShininess); // Specular
 

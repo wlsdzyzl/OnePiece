@@ -3,6 +3,7 @@
 #include "Tool/ConsoleColor.h"
 #include "Tool/PLYManager.h"
 #include "Tool/OBJManager.h"
+#include "Tool/CppExtension.h"
 #include <fstream>
 #include <iostream>
 #include <unordered_set>
@@ -223,21 +224,38 @@ namespace geometry
         }
         points.resize(cnt);
     }
-    void PointCloud::LoadFromPLY(const std::string &filename)
+    bool PointCloud::LoadFromPLY(const std::string &filename)
     {
         Reset();
         std::vector<tool::AdditionalElement> additional_labels;
         geometry::Point3uiList triangles;
-        tool::ReadPLY(filename,points,normals,colors, triangles, additional_labels);
+        return tool::ReadPLY(filename,points,normals,colors, triangles, additional_labels);
     }
-    void PointCloud::LoadFromOBJ(const std::string &filename)
+    bool PointCloud::LoadFromOBJ(const std::string &filename)
     {
         Reset();
-        tool::ReadOBJ(filename,points,normals,colors);
+        return tool::ReadOBJ(filename,points,normals,colors);
     }
-    void PointCloud::WriteToOBJ(const std::string &filename)
+    bool PointCloud::LoadFromFile(const std::string & filename)
     {
-        tool::WriteOBJ(filename,points,normals,colors);
+        std::vector<std::string> result = tool::RSplit(filename, ".", 1);
+        if(result.size() == 2)
+        {
+            if(result[1] == "obj")//obj
+            {
+                return LoadFromOBJ(filename);
+            }
+            else if(result[1] == "ply")
+            {
+                return LoadFromPLY(filename);
+            }
+        }
+        std::cout<<YELLOW<<"[WARNING]::[LoadFromFile]::Dragon only supports obj and ply file."<<RESET<<std::endl;
+        return false;
+    }
+    bool PointCloud::WriteToOBJ(const std::string &filename)
+    {
+        return tool::WriteOBJ(filename,points,normals,colors);
     }
     void PointCloud::Transform(const TransformationMatrix &T)
     {
