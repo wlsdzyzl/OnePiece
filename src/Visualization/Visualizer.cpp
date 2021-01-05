@@ -107,7 +107,7 @@ namespace visualization
         Eigen::Matrix4d tmp_mvp(s_cam.GetProjectionModelViewMatrix().m); 
         Eigen::Matrix4f mvp = tmp_mvp.cast<float>();
         // Eigen::Matrix4d projection_matrix(s_cam.GetProjectionMatrix().m);
-        // std::cout<<projection_matrix<<std::endl;
+        // std::cout<<tmp_mvp<<std::endl;
         program->setUniform(Uniform("MVP", mvp));
        
         int color_type = (draw_normal ? 1 : draw_color ? 2 : 0);

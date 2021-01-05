@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
         return 0;
     }
     geometry::TriangleMesh mesh;
-    mesh.LoadFromPLY(argv[1]);
+    mesh.LoadFromFile(argv[1]);
 
     if(!mesh.HasNormals())
         mesh.ComputeNormals();
@@ -18,6 +18,6 @@ int main(int argc, char* argv[])
     //visualizer.SetDrawColor(true);
     visualizer.AddTriangleMesh(mesh);
     visualizer.Show();
-    mesh.WriteToPLY("./open3d.ply");
+    //mesh.WriteToPLY("./open3d.ply");
     return 0;
 }

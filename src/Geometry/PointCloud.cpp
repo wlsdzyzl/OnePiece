@@ -101,32 +101,10 @@ namespace geometry
 
     void PointCloud::EstimateNormals(float radius, int knn)
     {
-#if 0
-        normals.clear();
 
-        geometry::Point3 mean_point(0,0,0);
-
-        auto dspcd = DownSample(0.05);
-        for(size_t i = 0; i != dspcd->points.size(); ++i)
-            mean_point+= dspcd->points[i];
-        mean_point /= dspcd->points.size();
-#endif
         
         normals.resize(points.size());        
-        // fill the cv_pcd with the cartesian coordinates (x, y z) 
 
-
-        // std::vector<cv::Point3f> cv_pcd;
-        // for(size_t i = 0; i < points.size(); ++i)
-        // {
-        //     cv_pcd.push_back(cv::Point3f(points[i](0), points[i](1), points[i](2)));
-        // } 
-        // cv::Mat input = cv::Mat(cv_pcd);
-        // std::cout<<input.rows<<" "<<input.cols<<std::endl;
-        // cv::flann::KDTreeIndexParams indexParams; 
-        // cv::flann::Index kdtree(cv::Mat(cv_pcd).reshape(1), indexParams);
-    
-        //std::vector<std::vector<int>>
         geometry::KDTree<> kdtree;
         kdtree.BuildTree(points);
         std::cout<<BLUE<<"[EstimateNormals]::[INFO]::RadiusSearch "<<knn<<" nearest points, radius: "<<radius<<RESET<<std::endl;
@@ -140,12 +118,12 @@ namespace geometry
             // kdtree.RadiusSearch(points[i], indices, dists, 
             //     radius, knn, geometry::SearchParameter(128));
             kdtree.RadiusSearch(points[i], indices, dists, radius, 
-                30, geometry::SearchParameter(30));
+                knn, geometry::SearchParameter(knn*2));
             
             geometry::Point3List nearest_points;
 
 
-            for(size_t j = 0; j!= indices.size() && j != static_cast<size_t>(knn);++j)
+            for(size_t j = 0; j!= indices.size() ;++j)
             {
                 nearest_points.push_back(points[indices[j]]);
                 //std::cout <<indices[j]<<" "<<std::endl;
