@@ -117,8 +117,8 @@ namespace geometry
             
             // kdtree.RadiusSearch(points[i], indices, dists, 
             //     radius, knn, geometry::SearchParameter(128));
-            kdtree.RadiusSearch(points[i], indices, dists, radius, 
-                knn, geometry::SearchParameter(knn*2));
+            kdtree.KnnRadiusSearch(points[i], indices, dists, knn, radius, 
+                geometry::SearchParameter(knn*2));
             
             geometry::Point3List nearest_points;
 

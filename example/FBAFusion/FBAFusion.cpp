@@ -93,6 +93,7 @@ int main(int argc, char **argv)
     }  
     ofs.close(); 
     cube_handler.ExtractTriangleMesh(mesh);
+    cube_handler.WriteToFile("./tsdf.map");
     auto c_mesh = mesh.ClusteringSimplify(voxel_resolution);
     c_mesh->WriteToPLY("./fbafusion_generated_mesh.ply");
     visualizer.DrawPhongRendering();

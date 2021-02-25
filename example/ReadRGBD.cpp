@@ -8,8 +8,9 @@ int main(int argc, char* argv[])
         std::cout << "Usage: ReadRGBD [color] [depth]"<<std::endl;
         return 0;
     }
-    camera::PinholeCamera camera;
-    camera.SetCameraType(camera::CameraType::OPEN3D_DATASET); 
+    //camera::PinholeCamera camera;
+    //camera.SetCameraType(camera::CameraType::OPEN3D_DATASET); 
+    camera::PinholeCamera camera(914.494141, 914.377991, 958.065430 / 3, 548.986206 * 4 / 9, 640, 480, 1000);
     cv::Mat rgb = cv::imread(argv[1]);
     cv::Mat depth = cv::imread(argv[2],-1);
     geometry::PointCloud pcd;

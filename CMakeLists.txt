@@ -182,6 +182,7 @@ add_executable(RansacTest "example/RansacTest.cpp")
 add_executable(ICPTest "example/ICPTest.cpp")
 add_executable(BATest "example/BATest.cpp")
 add_executable(ScannetToTum "example/ScannetToTum.cpp")
+add_executable(OppoToTum "example/OppoToTum.cpp")
 add_executable(GenerateModelFromScannet "example/GenerateModelFromScannet.cpp")
 add_executable(GetLabelUsingKDTree "example/GetLabelUsingKDTree.cpp")
 add_executable(FBAFusion ${FBAFusion_SRC})
@@ -296,6 +297,10 @@ target_link_libraries(BATest
     ${THIRD_LIB}
 )
 target_link_libraries(ScannetToTum
+    one_piece
+    ${THIRD_LIB}
+)
+target_link_libraries(OppoToTum
     one_piece
     ${THIRD_LIB}
 )

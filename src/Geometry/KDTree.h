@@ -194,6 +194,65 @@ namespace geometry
                 dists[i] = out_dist_sqr[i];
             }           
         }
+        void KnnRadiusSearch(const geometry::VectorX &point, std::vector<int> &indices, 
+            std::vector<float > &dists, int k, float radius,
+            const SearchParameter &sp = SearchParameter())
+        {
+            std::vector<size_t> _indices;
+            KnnRadiusSearch(point, _indices, dists, k, radius, sp);
+            indices.resize(_indices.size());
+            for(size_t i = 0; i != _indices.size(); ++i)
+            indices[i] = static_cast<int> (_indices[i]);
+        }
+        void KnnRadiusSearch(const geometry::VectorX &point, std::vector<size_t> &indices, 
+            std::vector<float > &dists, int k, float radius,
+            const SearchParameter &sp = SearchParameter())
+        {
+            if(point.rows() != T)
+            {
+                std::cout<<RED<<"[ERROR]::[KnnSearch]::Wrong dimension!"<<RESET<<std::endl;
+                return;
+            }
+            geometry::Vector<T> _point = point;
+            KnnRadiusSearch(_point, indices, dists, k, radius, sp);
+
+        }
+        void KnnRadiusSearch(const geometry::Vector<T> &point, std::vector<int> &indices, 
+            std::vector<float > &dists, int k, float radius,
+            const SearchParameter &sp = SearchParameter())
+        {
+            std::vector<size_t> _indices;
+            KnnRadiusSearch(point, _indices, dists, k, radius, sp);
+            indices.resize(_indices.size());
+            for(size_t i = 0; i != _indices.size(); ++i)
+            indices[i] = static_cast<int> (_indices[i]);
+        }
+        void KnnRadiusSearch(const geometry::Vector<T> &point, std::vector<size_t> &indices, 
+            std::vector<float > &dists, int k, float radius,
+            const SearchParameter &sp = SearchParameter())
+        {
+            indices.resize(k);
+            std::vector<float > out_dist_sqr(k);
+
+            const size_t search_num = kdtree_ptr->knnSearch(point.data(), k, &indices[0], &out_dist_sqr[0]);
+            
+            // In case of less points in the tree than requested: if that happen, we just use searched result.
+            // ret_index.resize(num_results);
+            // out_dist_sqr.resize(num_results);
+            indices.resize(search_num);
+            dists.resize(search_num);
+            for (size_t i = 0; i < search_num; ++i)
+            {
+                dists[i] = out_dist_sqr[i];
+            }      
+            size_t in_radius = 0;
+            for(; in_radius != search_num; ++in_radius)
+            {
+                if(dists[in_radius] > radius) break;
+            }
+            indices.resize(in_radius);
+            dists.resize(in_radius);
+        }
         protected:
         NanoKDTreePtr kdtree_ptr;
         int max_leaf = 10;
