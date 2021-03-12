@@ -31,4 +31,4 @@ You should know that, anaconda may install its own libpng, this can cause confli
 conda uninstall libpng
 ```
 ### License
-Under the GPL License, see [http://opensource.org/licenses/GPL](http://opensource.org/licenses/GPL).
+The code is free to everyone, however, I have used MILD which could have some limitations on commercial usages. See [license](https://github.com/lhanaf/MILD/blob/master/LICENSE.txt).
