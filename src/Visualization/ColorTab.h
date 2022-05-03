@@ -8,7 +8,7 @@ namespace visualization
     
     static std::vector<cv::Scalar> color_tab =   
     {
-             cv::Scalar(0, 0, 0),
+             cv::Scalar(255, 255, 255),
              cv::Scalar(174, 199, 232),     // wall
              cv::Scalar(152, 223, 138),     // floor
              cv::Scalar(31, 119, 180),      // cabinet
