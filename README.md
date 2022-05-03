@@ -10,7 +10,7 @@ Click [documentation(Chinese)](http://wlsdzyzl.top/onepiece.github.io/) or [docu
 
 Watch some demos [here](http://wlsdzyzl.top/onepiece.github.io/examples).
 
-You can download `TestData` [here](https://cloud.tsinghua.edu.cn/f/a2372da684f14330af21/?dl=1). 
+You can download `TestData` [here](https://drive.google.com/file/d/1eGKY3IEp4PYlxEI-Os0cP2s6gpi-tXmP/view?usp=sharing). 
 
 
 
